@@ -34,7 +34,13 @@ public interface HttpApi {
 //    Observable<ResponseBody> getUserList();
 
     @GET("api/Authorize/PubOwner")
+    Observable<ResponseBody> getDeviceList();
+
+    @GET("api/Authorize/PubOwner")
     Observable<ResponseBody> getUserList();
+
+    @GET("weather_mini")
+    Observable<ResponseBody> getUserList1(@Query("citykey") String citykey);
 
     @GET("user/getUserResultByUserId")
     Observable<ResponseBody> getUserResultByUserId(@Query("userId") String userId);

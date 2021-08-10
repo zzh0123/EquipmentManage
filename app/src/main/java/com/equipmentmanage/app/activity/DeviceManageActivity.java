@@ -19,6 +19,7 @@ import com.equipmentmanage.app.bean.BaseBean;
 import com.equipmentmanage.app.bean.DeviceBean;
 import com.equipmentmanage.app.netsubscribe.Subscribe;
 import com.equipmentmanage.app.utils.GsonUtils1;
+import com.equipmentmanage.app.utils.gson.GsonUtils;
 import com.equipmentmanage.app.utils.netutils.OnSuccessAndFaultListener;
 import com.equipmentmanage.app.utils.netutils.OnSuccessAndFaultSub;
 import com.google.gson.reflect.TypeToken;
@@ -33,6 +34,7 @@ import java.util.List;
 import java.util.Map;
 
 import butterknife.BindView;
+import es.dmoral.toasty.Toasty;
 
 /**
  * @Description: 装置管理
@@ -141,24 +143,45 @@ public class DeviceManageActivity extends BaseActivity {
      * 获取装置列表
      */
     private void getDeviceList() {
+        Map<String, String> params = new HashMap<>();
+        params.put(com.ahzjgy.library_interface.Constants.hdrNo, ""); // 单号或者是任务号，非必填
         Subscribe.getUserList(new OnSuccessAndFaultSub(new OnSuccessAndFaultListener() {
             @Override
             public void onSuccess(String result) {
                 //成功
-//                Toast.makeText(DeviceManageActivity.this, "请求成功！", Toast.LENGTH_SHORT).show();
-//                ResultInfo resultInfo = GsonUtils.fromJson(result,
-//                        ResultInfo.class);
-//                tvResult.setText(result);
                 try {
-//                    BaseBean<List<DeviceBean>> baseBean = GsonUtils.fromJson(result, new TypeToken<BaseBean<List<DeviceBean>>>() {
-//                    }.getType());
-
-                    BaseBean<List<DeviceBean>> baseBeanNew = GsonUtils1.fromJson(result, new TypeToken<BaseBean<List<DeviceBean>>>() {
+                    BaseBean<List<DeviceBean>> baseBean = GsonUtils.fromJson(result, new TypeToken<BaseBean<List<DeviceBean>>>() {
                     }.getType());
 
-                }catch (Exception e) {
+                    if (null != baseBean) {
+                        if (baseBean.isSuccess()) {
+                            if (pageIndex == 1) {
+                                mList.clear();
+                            }
+                            List<DeviceBean> dataList = baseBean.getData();
+                            if (dataList != null && dataList.size() > 0) {
+                                mList.addAll(dataList);
+                                srl.finishRefresh();
+                                srl.finishLoadMore();
+                            } else {
+                                srl.finishRefresh();
+                                srl.finishLoadMoreWithNoMoreData();
+                            }
+                            adapter.notifyDataSetChanged();
+                        } else {
+                            Toasty.error(DeviceManageActivity.this, R.string.search_fail, Toast.LENGTH_SHORT, true).show();
+                            srl.finishRefresh();
+                            srl.finishLoadMore();
+                        }
+                    } else {
+                        Toasty.error(DeviceManageActivity.this, R.string.return_empty, Toast.LENGTH_SHORT, true).show();
+                        srl.finishRefresh();
+                        srl.finishLoadMore();
+
+                    }
+                } catch (Exception e) {
                     e.printStackTrace();
-//                    ST.show(R.string.parse_failure);
+                    Toasty.error(DeviceManageActivity.this, R.string.parse_fail, Toast.LENGTH_SHORT, true).show();
                     srl.finishRefresh();
                     srl.finishLoadMore();
 
@@ -170,72 +193,11 @@ public class DeviceManageActivity extends BaseActivity {
             @Override
             public void onFault(String errorMsg) {
                 //失败
-                Toast.makeText(DeviceManageActivity.this, "请求失败：" + errorMsg, Toast.LENGTH_SHORT).show();
+                Toasty.error(DeviceManageActivity.this, R.string.search_fail, Toast.LENGTH_SHORT, true).show();
+                srl.finishRefresh();
+                srl.finishLoadMore();
             }
         }, DeviceManageActivity.this));
     }
 
-    private void getUnPickList() {
-        Map<String, String> params = new HashMap<>();
-        params.put(com.ahzjgy.library_interface.Constants.hdrNo, ""); // 单号或者是任务号，非必填
-        params.put(com.ahzjgy.library_interface.Constants.ownerId, "" + ownerId);
-        params.put(com.ahzjgy.library_interface.Constants.wahId, "" + wahId);
-        // 货状态 0-未完成 1-待拣货 2-拣货中 3-已完成
-        params.put(com.ahzjgy.library_interface.Constants.status, pickStatus);
-        params.put(com.ahzjgy.library_interface.Constants.pageIndex, CommonUtils.gs(pageIndex));
-        params.put(com.ahzjgy.library_interface.Constants.pageSize, CommonUtils.gs(pageSize));
-        params.put(com.ahzjgy.library_interface.Constants.orderBy, ""); // 默认CREATEDATE
-        if (pageIndex == 1) {
-            list.clear();
-        }
-        XHttpUtils.get(getActivity(), NetworkUtil.getFullUrl(com.ahzjgy.library_interface.Constants.GET_PICK_LIST), params, 0, 0, new ICommonCallback<String>() {
-            @Override
-            public void onSuccess(String response) {
-                try {
-                    BaseBeanNew<List<UnPickBean>> baseBeanNew = GsonUtils1.fromJson(response, new TypeToken<BaseBeanNew<List<UnPickBean>>>() {
-                    }.getType());
-                    if (null != baseBeanNew) {
-                        if (baseBeanNew.isSuccess()) {
-                            List<UnPickBean> dataList = baseBeanNew.getData();
-                            if (dataList != null && dataList.size() > 0) {
-                                if (pageIndex == 1) {
-                                    list.clear();
-                                }
-                                list.addAll(dataList);
-                                srl.finishRefresh();
-                                srl.finishLoadMore();
-                            } else {
-                                srl.finishRefresh();
-                                srl.finishLoadMoreWithNoMoreData();
-                            }
-                            adapter.notifyDataSetChanged();
-                        } else {
-                            ST.show(R.string.search_fail);
-                            srl.finishRefresh();
-                            srl.finishLoadMore();
-                        }
-                    } else {
-                        ST.show(R.string.return_empty);
-                        srl.finishRefresh();
-                        srl.finishLoadMore();
-
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    ST.show(R.string.parse_failure);
-                    srl.finishRefresh();
-                    srl.finishLoadMore();
-
-                }
-            }
-
-            @Override
-            public void onFailure(String msg) {
-                ST.show(R.string.search_fail);
-                srl.finishRefresh();
-                srl.finishLoadMore();
-
-            }
-        });
-    }
 }

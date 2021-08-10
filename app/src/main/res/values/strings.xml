@@ -5,4 +5,9 @@
     <string name="device_type">装置类型:</string>
     <string name="test_start_date">开始检测日期:</string>
     <string name="not_data">暂无数据，点击刷新</string>
+
+    <string name="search_success">查询成功！</string>
+    <string name="search_fail">查询失败！</string>
+    <string name="parse_fail">解析失败！</string>
+    <string name="return_empty">查询数据为空！</string>
 </resources>

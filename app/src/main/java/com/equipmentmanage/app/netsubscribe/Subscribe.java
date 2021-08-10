@@ -21,8 +21,21 @@ public class Subscribe {
     /**
      * getUserList
      */
+    public static void getDeviceList(DisposableObserver<ResponseBody> subscriber) {
+        Observable<ResponseBody> observable =  RetrofitFactory.getInstance().defaultBaseUrl().getHttpApi().getUserList();
+        RetrofitFactory.getInstance().defaultBaseUrl().toSubscribe(observable, subscriber);
+    }
+
+    /**
+     * getUserList
+     */
     public static void getUserList(DisposableObserver<ResponseBody> subscriber) {
         Observable<ResponseBody> observable =  RetrofitFactory.getInstance().defaultBaseUrl().getHttpApi().getUserList();
+        RetrofitFactory.getInstance().defaultBaseUrl().toSubscribe(observable, subscriber);
+    }
+
+    public static void getUserList1(DisposableObserver<ResponseBody> subscriber, String citykey) {
+        Observable<ResponseBody> observable =  RetrofitFactory.getInstance().defaultBaseUrl().getHttpApi().getUserList1(citykey);
         RetrofitFactory.getInstance().defaultBaseUrl().toSubscribe(observable, subscriber);
     }
 
