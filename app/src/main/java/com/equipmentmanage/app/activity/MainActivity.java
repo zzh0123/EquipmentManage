@@ -1,37 +1,49 @@
 package com.equipmentmanage.app.activity;
 
-import androidx.appcompat.app.AppCompatActivity;
-
-import android.os.Bundle;
 import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.equipmentmanage.app.R;
+import com.equipmentmanage.app.base.BaseActivity;
 import com.equipmentmanage.app.bean.ResultInfo;
 import com.equipmentmanage.app.netsubscribe.Subscribe;
-import com.equipmentmanage.app.utils.GsonUtils;
+import com.equipmentmanage.app.utils.GsonUtils1;
 import com.equipmentmanage.app.utils.netutils.OnSuccessAndFaultListener;
 import com.equipmentmanage.app.utils.netutils.OnSuccessAndFaultSub;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends BaseActivity{
 
     @BindView(R.id.tv_result) //绑定tv_result控件
     public TextView tvResult;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        ButterKnife.bind(this);
-
-        getUserList();
-
+//    @Override
+//    protected void onCreate(Bundle savedInstanceState) {
+//        super.onCreate(savedInstanceState);
+//        setContentView(R.layout.activity_main);
+//        ButterKnife.bind(this);
+//
 //        getUserList();
+//
+////        getUserList();
+//
+//    }
 
+    @Override
+    protected int initLayout() {
+        return R.layout.activity_main;
+    }
+
+    @Override
+    protected void initView() {
+
+    }
+
+    @Override
+    protected void initData() {
+        getUserList();
     }
 
     private void getUserList() {
@@ -41,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
                 Log.i("result--->", result);
                 //成功
                 Toast.makeText(MainActivity.this, "请求成功！", Toast.LENGTH_SHORT).show();
-                ResultInfo resultInfo = GsonUtils.fromJson(result,
+                ResultInfo resultInfo = GsonUtils1.fromJson(result,
                         ResultInfo.class);
                 tvResult.setText(result);
             }

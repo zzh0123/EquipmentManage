@@ -7,7 +7,7 @@ import com.google.gson.Gson;
  * Date: 2021/8/9
  * Description: 项目的util工具 gson解析
  */
-public class GsonUtils {
+public class GsonUtils1 {
     public static Gson gson = new Gson();
     /**
      * 说明：如果解析抛异常返回null

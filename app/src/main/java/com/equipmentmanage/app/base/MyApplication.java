@@ -5,6 +5,8 @@ import android.app.Application;
 import android.content.Context;
 import android.util.Log;
 
+import com.equipmentmanage.app.utils.AppUtils;
+
 import java.util.ArrayList;
 
 
@@ -14,12 +16,15 @@ public class MyApplication extends Application {
     public static ArrayList<Activity> allActivities = new ArrayList<Activity>();
     public static MyApplication app;
     public static boolean LOG_SWITCH = true;
+    public static String APP_NAME;
+
 
     @Override
     public void onCreate() {
         super.onCreate();
         appContext = getApplicationContext();
         app = this;
+        APP_NAME = AppUtils.getAppName(this);
     }
 
     public static Context getContext(){

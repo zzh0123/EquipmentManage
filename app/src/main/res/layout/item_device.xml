@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:padding="@dimen/dp_12"
+    android:background="@drawable/bg_rec_white"
+    android:layout_marginBottom="@dimen/dp_8">
+
+    <TextView
+        android:id="@+id/tv_device_name"
+        android:layout_width="@dimen/dp_0"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="start"
+        android:textColor="@color/c_303133"
+        android:textSize="@dimen/sp_16"
+        android:textStyle="bold"
+        tools:text="装置名称"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"/>
+
+    <TextView
+        android:id="@+id/tv_status"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="end"
+        android:textColor="@color/c_67C23A"
+        android:textSize="@dimen/sp_10"
+        android:layout_marginLeft="@dimen/dp_8"
+        tools:text="可用"
+        app:layout_constraintTop_toTopOf="@+id/tv_device_name"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_device_name"
+        app:layout_constraintLeft_toRightOf="@+id/tv_device_name"/>
+
+    <TextView
+        android:id="@+id/tv_device_code"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="end"
+        android:textColor="@color/c_909399"
+        android:textSize="@dimen/sp_12"
+        android:layout_marginTop="@dimen/dp_4"
+        tools:text="ZZ202105180987"
+        app:layout_constraintTop_toBottomOf="@+id/tv_device_name"
+        app:layout_constraintLeft_toLeftOf="@+id/tv_device_name" />
+
+    <!-- 部门-->
+    <TextView
+        android:id="@+id/tv_department_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="end"
+        android:text="@string/department"
+        android:textColor="@color/c_909399"
+        android:textSize="@dimen/sp_14"
+        android:layout_marginTop="@dimen/dp_4"
+        app:layout_constraintTop_toBottomOf="@+id/tv_device_code"
+        app:layout_constraintLeft_toLeftOf="@+id/tv_device_code" />
+
+    <TextView
+        android:id="@+id/tv_department_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="end"
+        android:textColor="@color/c_303133"
+        android:textSize="@dimen/sp_14"
+        android:layout_marginLeft="@dimen/dp_8"
+        tools:text="1111"
+        app:layout_constraintTop_toTopOf="@+id/tv_department_title"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_department_title"
+        app:layout_constraintLeft_toRightOf="@+id/tv_department_title"/>
+
+    <!-- 装置类型-->
+    <TextView
+        android:id="@+id/tv_device_type_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="end"
+        android:text="@string/device_type"
+        android:textColor="@color/c_909399"
+        android:textSize="@dimen/sp_14"
+        android:layout_marginTop="@dimen/dp_4"
+        app:layout_constraintTop_toBottomOf="@+id/tv_department_title"
+        app:layout_constraintLeft_toLeftOf="@+id/tv_department_title" />
+
+    <TextView
+        android:id="@+id/tv_device_type"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="end"
+        android:textColor="@color/c_303133"
+        android:textSize="@dimen/sp_14"
+        android:layout_marginLeft="@dimen/dp_8"
+        tools:text="222"
+        app:layout_constraintTop_toTopOf="@+id/tv_device_type_title"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_device_type_title"
+        app:layout_constraintLeft_toRightOf="@+id/tv_device_type_title"/>
+
+    <!-- 开始检测日期-->
+    <TextView
+        android:id="@+id/tv_test_start_date_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="end"
+        android:text="@string/test_start_date"
+        android:textColor="@color/c_909399"
+        android:textSize="@dimen/sp_14"
+        android:layout_marginTop="@dimen/dp_4"
+        app:layout_constraintTop_toBottomOf="@+id/tv_device_type_title"
+        app:layout_constraintLeft_toLeftOf="@+id/tv_device_type_title" />
+
+    <TextView
+        android:id="@+id/tv_test_start_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="end"
+        android:textColor="@color/c_303133"
+        android:textSize="@dimen/sp_14"
+        android:layout_marginLeft="@dimen/dp_8"
+        tools:text="3333"
+        app:layout_constraintTop_toTopOf="@+id/tv_test_start_date_title"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_test_start_date_title"
+        app:layout_constraintLeft_toRightOf="@+id/tv_test_start_date_title"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

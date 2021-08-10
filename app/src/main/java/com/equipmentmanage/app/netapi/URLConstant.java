@@ -1,9 +1,9 @@
 package com.equipmentmanage.app.netapi;
 
 /**
- * @Description:
+ * @Description: 存放全部的baseUrl（可分为开发、测试、正式）
  * @Author: zzh
- * @CreateDate: 存放全部的baseUrl（可分为开发、测试、正式）
+ * @CreateDate:
  */
 public class URLConstant {
 
