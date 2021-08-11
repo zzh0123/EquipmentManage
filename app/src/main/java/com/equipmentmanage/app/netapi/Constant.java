@@ -7,5 +7,8 @@ package com.equipmentmanage.app.netapi;
  */
 public class Constant {
 
-    public static String TOKEN = "";
+    public static String city = "city";
+    public static String department = "department";
+    public static String deviceType = "deviceType";
+
 }

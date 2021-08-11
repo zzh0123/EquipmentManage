@@ -8,7 +8,7 @@ import lombok.Data;
  * @CreateDate: 2021/8/10 16:39
  */
 @Data
-public class DeviceBean {
+public class DeviceManageBean {
     private String name;
     private String status;
     private String code;

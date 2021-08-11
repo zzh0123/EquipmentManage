@@ -21,8 +21,8 @@ public class Subscribe {
     /**
      * getUserList
      */
-    public static void getDeviceList(DisposableObserver<ResponseBody> subscriber) {
-        Observable<ResponseBody> observable =  RetrofitFactory.getInstance().defaultBaseUrl().getHttpApi().getUserList();
+    public static void getDeviceList(DisposableObserver<ResponseBody> subscriber, Map<String, Object> map) {
+        Observable<ResponseBody> observable =  RetrofitFactory.getInstance().defaultBaseUrl().getHttpApi().getDeviceList(map);
         RetrofitFactory.getInstance().defaultBaseUrl().toSubscribe(observable, subscriber);
     }
 

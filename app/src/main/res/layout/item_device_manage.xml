@@ -31,6 +31,11 @@
         android:textSize="@dimen/sp_10"
         android:layout_marginLeft="@dimen/dp_8"
         tools:text="可用"
+        android:background="@drawable/bg_rec_green"
+        android:paddingLeft="@dimen/dp_8"
+        android:paddingRight="@dimen/dp_8"
+        android:paddingTop="@dimen/dp_4"
+        android:paddingBottom="@dimen/dp_4"
         app:layout_constraintTop_toTopOf="@+id/tv_device_name"
         app:layout_constraintBottom_toBottomOf="@+id/tv_device_name"
         app:layout_constraintLeft_toRightOf="@+id/tv_device_name"/>

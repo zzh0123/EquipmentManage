@@ -24,9 +24,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.listener.OnItemClickListener;
 import com.equipmentmanage.app.R;
+import com.equipmentmanage.app.adapter.AreaAdapter;
 import com.equipmentmanage.app.adapter.DepartmentAdapter;
 import com.equipmentmanage.app.adapter.DeviceAdapter;
 import com.equipmentmanage.app.base.BaseActivity;
+import com.equipmentmanage.app.bean.AreaManageBean;
 import com.equipmentmanage.app.bean.BaseBean;
 import com.equipmentmanage.app.bean.DepartmentBean;
 import com.equipmentmanage.app.bean.DeviceManageBean;
@@ -57,11 +59,11 @@ import butterknife.OnClick;
 import es.dmoral.toasty.Toasty;
 
 /**
- * @Description: 装置管理
+ * @Description: 区域管理
  * @Author: zzh
- * @CreateDate: 2021/8/10
+ * @CreateDate: 2021/8/11
  */
-public class DeviceManageActivity extends BaseActivity {
+public class AreaManageActivity extends BaseActivity {
     @BindView(R.id.titleBar)
     TitleBar titleBar; //标题栏
 
@@ -74,17 +76,11 @@ public class DeviceManageActivity extends BaseActivity {
     @BindView(R.id.imb_clear)
     ImageButton imbClear; //清除
 
-    @BindView(R.id.ll_department)
-    LinearLayout llDepartment; //部门
+    @BindView(R.id.ll_device_name)
+    LinearLayout llDeviceName; //全部装置
 
-    @BindView(R.id.tv_department)
-    TextView tvDepartment; //部门
-
-    @BindView(R.id.ll_device_type)
-    LinearLayout llDeviceType; //装置类型
-
-    @BindView(R.id.tv_device_type)
-    TextView tvDeviceType; //装置类型
+    @BindView(R.id.tv_device_name)
+    TextView tvDeviceName; //全部装置
 
     //选择部门
     private ListPopupWindow departmentPopupWindow;
@@ -97,8 +93,8 @@ public class DeviceManageActivity extends BaseActivity {
     SmartRefreshLayout srl;
     @BindView(R.id.rv_list)
     RecyclerView rvList;
-    private DeviceAdapter adapter;
-    private List<DeviceManageBean> mList = new ArrayList<>();
+    private AreaAdapter adapter;
+    private List<AreaManageBean> mList = new ArrayList<>();
 
     private int pageIndex = 1, pageSize = 10;
 
@@ -112,7 +108,7 @@ public class DeviceManageActivity extends BaseActivity {
 
     @Override
     protected int initLayout() {
-        return R.layout.activity_device_manage;
+        return R.layout.activity_area_manage;
     }
 
     @Override
@@ -127,11 +123,11 @@ public class DeviceManageActivity extends BaseActivity {
         });
 
 
-        DeviceManageBean bean = new DeviceManageBean();
-        bean.setName("111");
+        AreaManageBean bean = new AreaManageBean();
+        bean.setAreaName("111");
         bean.setStatus("1");
-        DeviceManageBean bean1 = new DeviceManageBean();
-        bean1.setName("2222");
+        AreaManageBean bean1 = new AreaManageBean();
+        bean1.setAreaName("2222");
         bean1.setStatus("2");
         mList.add(bean);
         mList.add(bean1);
@@ -164,14 +160,14 @@ public class DeviceManageActivity extends BaseActivity {
 
         LinearLayoutManager manager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         rvList.setLayoutManager(manager);
-        adapter = new DeviceAdapter(mList);
+        adapter = new AreaAdapter(mList);
         adapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(@NonNull BaseQuickAdapter<?, ?> adapter, @NonNull View view, int position) {
-                DeviceManageBean bean = mList.get(position);
+                AreaManageBean bean = mList.get(position);
                 if (bean != null) {
-                    String name = bean.getName();
-                    DeviceManageDetailActivity.open(DeviceManageActivity.this, name);
+                    String name = bean.getAreaName();
+                    DeviceManageDetailActivity.open(AreaManageActivity.this, name);
                 }
 
             }
@@ -185,7 +181,7 @@ public class DeviceManageActivity extends BaseActivity {
         departmentPopupWindow.setPromptPosition(ListPopupWindow.POSITION_PROMPT_BELOW);
         departmentPopupWindow.setWidth(ViewGroup.LayoutParams.WRAP_CONTENT);
         departmentPopupWindow.setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
-        departmentPopupWindow.setAnchorView(llDepartment);
+        departmentPopupWindow.setAnchorView(llDeviceName);
         departmentPopupWindow.setVerticalOffset(ThemeUtils.resolveDimension(this, R.attr.ms_dropdown_offset));
         departmentPopupWindow.setListSelector(ResUtils.getDrawable(this, R.drawable.xui_config_list_item_selector));
         departmentPopupWindow.setBackgroundDrawable(ResUtils.getDrawable(this, R.drawable.ms_drop_down_bg_radius));
@@ -242,23 +238,20 @@ public class DeviceManageActivity extends BaseActivity {
                 DepartmentBean bean = departmentBeanList.get(position);
                 if (bean != null) {
                     departmentValue = bean.getValue();
-                    tvDepartment.setText(StringUtils.nullStrToEmpty(bean.getName()));
+                    tvDeviceName.setText(StringUtils.nullStrToEmpty(bean.getName()));
                 }
                 departmentPopupWindow.dismiss();
             }
         });
     }
 
-    @OnClick({R.id.imb_clear, R.id.ll_department, R.id.ll_device_type})
+    @OnClick({R.id.imb_clear, R.id.ll_device_name})
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.imb_clear:
                 etSearch.getText().clear();
                 break;
-            case R.id.ll_department:
-                departmentPopupWindow.show();
-                break;
-            case R.id.ll_device_type:
+            case R.id.ll_device_name:
                 departmentPopupWindow.show();
                 break;
         }
@@ -307,7 +300,7 @@ public class DeviceManageActivity extends BaseActivity {
             public void onSuccess(String result) {
                 //成功
                 try {
-                    BaseBean<List<DeviceManageBean>> baseBean = GsonUtils.fromJson(result, new TypeToken<BaseBean<List<DeviceManageBean>>>() {
+                    BaseBean<List<AreaManageBean>> baseBean = GsonUtils.fromJson(result, new TypeToken<BaseBean<List<AreaManageBean>>>() {
                     }.getType());
 
                     if (null != baseBean) {
@@ -315,7 +308,7 @@ public class DeviceManageActivity extends BaseActivity {
                             if (pageIndex == 1) {
                                 mList.clear();
                             }
-                            List<DeviceManageBean> dataList = baseBean.getData();
+                            List<AreaManageBean> dataList = baseBean.getData();
                             if (dataList != null && dataList.size() > 0) {
                                 mList.addAll(dataList);
                                 srl.finishRefresh();
@@ -326,19 +319,19 @@ public class DeviceManageActivity extends BaseActivity {
                             }
                             adapter.notifyDataSetChanged();
                         } else {
-                            Toasty.error(DeviceManageActivity.this, R.string.search_fail, Toast.LENGTH_SHORT, true).show();
+                            Toasty.error(AreaManageActivity.this, R.string.search_fail, Toast.LENGTH_SHORT, true).show();
                             srl.finishRefresh();
                             srl.finishLoadMore();
                         }
                     } else {
-                        Toasty.error(DeviceManageActivity.this, R.string.return_empty, Toast.LENGTH_SHORT, true).show();
+                        Toasty.error(AreaManageActivity.this, R.string.return_empty, Toast.LENGTH_SHORT, true).show();
                         srl.finishRefresh();
                         srl.finishLoadMore();
 
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
-                    Toasty.error(DeviceManageActivity.this, R.string.parse_fail, Toast.LENGTH_SHORT, true).show();
+                    Toasty.error(AreaManageActivity.this, R.string.parse_fail, Toast.LENGTH_SHORT, true).show();
                     srl.finishRefresh();
                     srl.finishLoadMore();
 
@@ -350,11 +343,11 @@ public class DeviceManageActivity extends BaseActivity {
             @Override
             public void onFault(String errorMsg) {
                 //失败
-                Toasty.error(DeviceManageActivity.this, R.string.search_fail, Toast.LENGTH_SHORT, true).show();
+                Toasty.error(AreaManageActivity.this, R.string.search_fail, Toast.LENGTH_SHORT, true).show();
                 srl.finishRefresh();
                 srl.finishLoadMore();
             }
-        }, DeviceManageActivity.this), params);
+        }, AreaManageActivity.this), params);
     }
 
 }

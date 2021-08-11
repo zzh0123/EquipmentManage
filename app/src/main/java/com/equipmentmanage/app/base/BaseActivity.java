@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Looper;
@@ -20,6 +21,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentActivity;
 
 import com.equipmentmanage.app.utils.ActivityCollector;
+import com.equipmentmanage.app.utils.L;
+import com.gyf.immersionbar.ImmersionBar;
 
 import butterknife.ButterKnife;
 
@@ -32,9 +35,9 @@ public abstract class BaseActivity extends AppCompatActivity {
     //获取TAG的activity名称
     protected final String TAG = this.getClass().getSimpleName();
     //是否显示标题栏
-    private boolean isShowTitle = true;
+    private boolean isShowTitle = false;
     //是否显示状态栏
-    private boolean isShowStatusBar = true;
+    private boolean isShowStatusBar = false;
     //是否允许旋转屏幕
     private boolean isAllowScreenRoate = true;
     //封装Toast对象
@@ -43,18 +46,25 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
         super.onCreate(savedInstanceState);
         context = this;
         //activity管理
         ActivityCollector.addActivity(this);
         if (!isShowTitle) {
             requestWindowFeature(Window.FEATURE_NO_TITLE);
+            if (getSupportActionBar()!=null){
+                getSupportActionBar().hide();
+            }
         }
 
         if (isShowStatusBar) {
+            L.i("zzz1--isShowStatusBar->" + isShowStatusBar);
             getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN
                     , WindowManager.LayoutParams.FLAG_FULLSCREEN);
         }
+
+        ImmersionBar.with(this).init();
 
         //设置布局
         setContentView(initLayout());
@@ -68,6 +78,8 @@ public abstract class BaseActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         //初始化控件
         initView();
+        //初始化控件事件
+        initEvent();
         //设置数据
         initData();
     }
@@ -83,6 +95,11 @@ public abstract class BaseActivity extends AppCompatActivity {
      * 初始化控件
      */
     protected abstract void initView();
+
+    /**
+     * 初始化控件事件
+     */
+    protected abstract void initEvent();
 
     /**
      * 设置数据
@@ -198,8 +215,18 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
     @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        // 如果你的app可以横竖屏切换，并且适配4.4或者emui3手机请务必在onConfigurationChanged方法里添加这句话
+        ImmersionBar.with(this).init();
+    }
+
+    @Override
     protected void onDestroy() {
         super.onDestroy();
+        // 必须调用该方法，防止内存泄漏
+        // 3.0不用再调用了
+//        ImmersionBar.with(this).des
         //activity管理
         ActivityCollector.removeActivity(this);
     }

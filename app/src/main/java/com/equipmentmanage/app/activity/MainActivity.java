@@ -42,6 +42,11 @@ public class MainActivity extends BaseActivity{
     }
 
     @Override
+    protected void initEvent() {
+
+    }
+
+    @Override
     protected void initData() {
         getUserList();
     }

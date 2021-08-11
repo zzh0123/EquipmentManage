@@ -1,0 +1,309 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <com.xuexiang.xui.widget.actionbar.TitleBar
+        android:id="@+id/titleBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/c_409EFF"
+        app:tb_barHeight="@dimen/dp_45"
+        app:tb_leftImageResource="@mipmap/ic_arrow_left"
+        app:tb_leftText=""
+        app:tb_sideTextPadding="20dp"
+        app:tb_actionPadding="20dp"
+        app:tb_titleText="@string/device_detail"
+        app:tb_useThemeColor="false"
+        app:tb_titleTextSize="@dimen/sp_16"
+        app:tb_immersive="true"/>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="@color/c_F5F5F5">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:paddingLeft="@dimen/dp_16"
+                android:paddingTop="@dimen/dp_10"
+                android:paddingBottom="@dimen/dp_10"
+                android:text="@string/device_info"
+                android:textColor="@color/c_909399"
+                android:textSize="@dimen/sp_14" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:paddingLeft="@dimen/dp_16"
+                android:paddingTop="@dimen/dp_10"
+                android:paddingBottom="@dimen/dp_10">
+
+                <!-- 名称-->
+                <TextView
+                    android:id="@+id/tv_device_name_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dp_10"
+                    android:text="@string/device_name"
+                    android:textColor="@color/c_909399"
+                    android:textSize="@dimen/sp_14"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/tv_device_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dp_80"
+                    android:textColor="@color/c_303133"
+                    android:textSize="@dimen/sp_14"
+                    app:layout_constraintBottom_toBottomOf="@+id/tv_device_name_title"
+                    app:layout_constraintLeft_toRightOf="@+id/tv_device_name_title"
+                    app:layout_constraintTop_toTopOf="@+id/tv_device_name_title"
+                    tools:text="1111" />
+
+                <!-- 编号-->
+                <TextView
+                    android:id="@+id/tv_device_code_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dp_22"
+                    android:text="@string/device_code"
+                    android:textColor="@color/c_909399"
+                    android:textSize="@dimen/sp_14"
+                    app:layout_constraintLeft_toLeftOf="@+id/tv_device_name_title"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_device_name_title" />
+
+                <TextView
+                    android:id="@+id/tv_device_code"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/c_303133"
+                    android:textSize="@dimen/sp_14"
+                    app:layout_constraintBottom_toBottomOf="@+id/tv_device_code_title"
+                    app:layout_constraintLeft_toLeftOf="@+id/tv_device_name"
+                    app:layout_constraintTop_toTopOf="@+id/tv_device_code_title"
+                    tools:text="222" />
+
+                <!-- 装置类型-->
+                <TextView
+                    android:id="@+id/tv_device_type_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dp_22"
+                    android:text="@string/device_type1"
+                    android:textColor="@color/c_909399"
+                    android:textSize="@dimen/sp_14"
+                    app:layout_constraintLeft_toLeftOf="@+id/tv_device_code_title"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_device_code_title" />
+
+                <TextView
+                    android:id="@+id/tv_device_type"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/c_303133"
+                    android:textSize="@dimen/sp_14"
+                    app:layout_constraintBottom_toBottomOf="@+id/tv_device_type_title"
+                    app:layout_constraintLeft_toLeftOf="@+id/tv_device_code"
+                    app:layout_constraintTop_toTopOf="@+id/tv_device_type_title"
+                    tools:text="3333" />
+
+
+                <!-- 部门-->
+                <TextView
+                    android:id="@+id/tv_department_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dp_22"
+                    android:text="@string/department1"
+                    android:textColor="@color/c_909399"
+                    android:textSize="@dimen/sp_14"
+                    app:layout_constraintLeft_toLeftOf="@+id/tv_device_type_title"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_device_type_title" />
+
+                <TextView
+                    android:id="@+id/tv_department"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/c_303133"
+                    android:textSize="@dimen/sp_14"
+                    app:layout_constraintBottom_toBottomOf="@+id/tv_department_title"
+                    app:layout_constraintLeft_toLeftOf="@+id/tv_device_type"
+                    app:layout_constraintTop_toTopOf="@+id/tv_department_title"
+                    tools:text="4444" />
+
+                <!-- 产能-->
+                <TextView
+                    android:id="@+id/tv_capacity_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dp_22"
+                    android:text="@string/capacity"
+                    android:textColor="@color/c_909399"
+                    android:textSize="@dimen/sp_14"
+                    app:layout_constraintLeft_toLeftOf="@+id/tv_department_title"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_department_title" />
+
+                <TextView
+                    android:id="@+id/tv_capacity"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/c_303133"
+                    android:textSize="@dimen/sp_14"
+                    app:layout_constraintBottom_toBottomOf="@+id/tv_capacity_title"
+                    app:layout_constraintLeft_toLeftOf="@+id/tv_department"
+                    app:layout_constraintTop_toTopOf="@+id/tv_capacity_title"
+                    tools:text="5555" />
+
+                <!-- 投产日期-->
+                <TextView
+                    android:id="@+id/tv_put_into_production_date_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dp_22"
+                    android:text="@string/put_into_production_date"
+                    android:textColor="@color/c_909399"
+                    android:textSize="@dimen/sp_14"
+                    app:layout_constraintLeft_toLeftOf="@+id/tv_capacity_title"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_capacity_title" />
+
+                <TextView
+                    android:id="@+id/tv_put_into_production_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/c_303133"
+                    android:textSize="@dimen/sp_14"
+                    app:layout_constraintBottom_toBottomOf="@+id/tv_put_into_production_date_title"
+                    app:layout_constraintLeft_toLeftOf="@+id/tv_capacity"
+                    app:layout_constraintTop_toTopOf="@+id/tv_put_into_production_date_title"
+                    tools:text="6666" />
+
+                <!-- 开始检测日期-->
+                <TextView
+                    android:id="@+id/tv_test_start_date_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dp_22"
+                    android:text="@string/test_start_date"
+                    android:textColor="@color/c_909399"
+                    android:textSize="@dimen/sp_14"
+                    app:layout_constraintLeft_toLeftOf="@+id/tv_put_into_production_date_title"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_put_into_production_date_title" />
+
+                <TextView
+                    android:id="@+id/tv_test_start_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/c_303133"
+                    android:textSize="@dimen/sp_14"
+                    app:layout_constraintBottom_toBottomOf="@+id/tv_test_start_date_title"
+                    app:layout_constraintLeft_toLeftOf="@+id/tv_put_into_production_date"
+                    app:layout_constraintTop_toTopOf="@+id/tv_test_start_date_title"
+                    tools:text="777" />
+
+                <!-- 是否可用-->
+                <TextView
+                    android:id="@+id/tv_enabled_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dp_22"
+                    android:text="@string/enabled"
+                    android:textColor="@color/c_909399"
+                    android:textSize="@dimen/sp_14"
+                    app:layout_constraintLeft_toLeftOf="@+id/tv_test_start_date_title"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_test_start_date_title" />
+
+                <TextView
+                    android:id="@+id/tv_enabled"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/c_303133"
+                    android:textSize="@dimen/sp_14"
+                    app:layout_constraintBottom_toBottomOf="@+id/tv_enabled_title"
+                    app:layout_constraintLeft_toLeftOf="@+id/tv_test_start_date"
+                    app:layout_constraintTop_toTopOf="@+id/tv_enabled_title"
+                    tools:text="888" />
+
+                <!-- 顺序-->
+                <TextView
+                    android:id="@+id/tv_order_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dp_22"
+                    android:text="@string/order"
+                    android:textColor="@color/c_909399"
+                    android:textSize="@dimen/sp_14"
+                    app:layout_constraintLeft_toLeftOf="@+id/tv_enabled_title"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_enabled_title" />
+
+                <TextView
+                    android:id="@+id/tv_order"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/c_303133"
+                    android:textSize="@dimen/sp_14"
+                    app:layout_constraintBottom_toBottomOf="@+id/tv_order_title"
+                    app:layout_constraintLeft_toLeftOf="@+id/tv_enabled"
+                    app:layout_constraintTop_toTopOf="@+id/tv_order_title"
+                    tools:text="999" />
+
+                <!-- 泄露提报邮箱-->
+                <TextView
+                    android:id="@+id/tv_divulge_submit_mailbox_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dp_22"
+                    android:text="@string/divulge_submit_mailbox"
+                    android:textColor="@color/c_909399"
+                    android:textSize="@dimen/sp_14"
+                    app:layout_constraintLeft_toLeftOf="@+id/tv_order_title"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_order_title" />
+
+                <TextView
+                    android:id="@+id/tv_divulge_submit_mailbox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/c_303133"
+                    android:textSize="@dimen/sp_14"
+                    app:layout_constraintBottom_toBottomOf="@+id/tv_divulge_submit_mailbox_title"
+                    app:layout_constraintLeft_toLeftOf="@+id/tv_order"
+                    app:layout_constraintTop_toTopOf="@+id/tv_divulge_submit_mailbox_title"
+                    tools:text="101010" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:paddingLeft="@dimen/dp_16"
+                android:paddingTop="@dimen/dp_10"
+                android:paddingBottom="@dimen/dp_10"
+                android:text="@string/chemical_details"
+                android:textColor="@color/c_909399"
+                android:textSize="@dimen/sp_14" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="@dimen/dp_16"
+                android:background="@color/white"/>
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+</LinearLayout>

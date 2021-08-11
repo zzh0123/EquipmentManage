@@ -33,8 +33,8 @@ public interface HttpApi {
 //    @GET("user/getUserList")
 //    Observable<ResponseBody> getUserList();
 
-    @GET("api/Authorize/PubOwner")
-    Observable<ResponseBody> getDeviceList();
+    @GET("weather_mini")
+    Observable<ResponseBody> getDeviceList(@QueryMap Map<String, Object> map);
 
     @GET("api/Authorize/PubOwner")
     Observable<ResponseBody> getUserList();

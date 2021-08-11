@@ -1,11 +1,31 @@
 <resources>
     <string name="app_name">EquipmentManage</string>
+    <string name="device_manage">装置管理</string>
+    <string name="device_detail">装置详情</string>
     <string name="search_hint">搜索</string>
     <string name="department">部门:</string>
+    <string name="department1">部门</string>
     <string name="device_type">装置类型:</string>
+    <string name="device_type1">装置类型</string>
     <string name="test_start_date">开始检测日期:</string>
-    <string name="not_data">暂无数据，点击刷新</string>
+    <string name="device_info">装置信息</string>
+    <string name="chemical_details">化学品明细</string>
 
+    <string name="device_name">名称</string>
+    <string name="device_code">编号</string>
+    <string name="capacity">产能</string>
+    <string name="put_into_production_date">投产日期</string>
+    <string name="enabled">是否可用</string>
+    <string name="order">顺序</string>
+    <string name="divulge_submit_mailbox">泄露提报邮箱</string>
+    <string name="enabled_0">不可用</string>
+    <string name="enabled_1">可用</string>
+
+    <string name="belong_device">所属装置:</string>
+
+
+
+    <string name="not_data">暂无数据，点击刷新</string>
     <string name="search_success">查询成功！</string>
     <string name="search_fail">查询失败！</string>
     <string name="parse_fail">解析失败！</string>
