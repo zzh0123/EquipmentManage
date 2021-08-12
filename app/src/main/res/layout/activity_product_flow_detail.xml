@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <com.xuexiang.xui.widget.actionbar.TitleBar
+        android:id="@+id/titleBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/c_409EFF"
+        app:tb_barHeight="@dimen/dp_45"
+        app:tb_leftImageResource="@mipmap/ic_arrow_left"
+        app:tb_leftText=""
+        app:tb_sideTextPadding="20dp"
+        app:tb_actionPadding="20dp"
+        app:tb_titleText="@string/product_flow_detail"
+        app:tb_useThemeColor="false"
+        app:tb_titleTextSize="@dimen/sp_16"
+        app:tb_immersive="true"/>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="@color/c_F5F5F5">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:paddingLeft="@dimen/dp_16"
+                android:paddingTop="@dimen/dp_10"
+                android:paddingBottom="@dimen/dp_10"
+                android:text="@string/equipment_info"
+                android:textColor="@color/c_909399"
+                android:textSize="@dimen/sp_14" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:paddingTop="@dimen/dp_10"
+                android:paddingBottom="@dimen/dp_10">
+
+                <!-- 名称-->
+                <TextView
+                    android:id="@+id/tv_device_name_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dp_10"
+                    android:text="@string/device_name"
+                    android:textColor="@color/c_909399"
+                    android:textSize="@dimen/sp_14"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:paddingLeft="@dimen/dp_16"/>
+
+                <TextView
+                    android:id="@+id/tv_device_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dp_80"
+                    android:textColor="@color/c_303133"
+                    android:textSize="@dimen/sp_14"
+                    app:layout_constraintBottom_toBottomOf="@+id/tv_device_name_title"
+                    app:layout_constraintLeft_toRightOf="@+id/tv_device_name_title"
+                    app:layout_constraintTop_toTopOf="@+id/tv_device_name_title"
+                    tools:text="1111" />
+
+                <!-- 编号-->
+                <TextView
+                    android:id="@+id/tv_device_code_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dp_22"
+                    android:text="@string/device_code"
+                    android:textColor="@color/c_909399"
+                    android:textSize="@dimen/sp_14"
+                    android:paddingLeft="@dimen/dp_16"
+                    app:layout_constraintLeft_toLeftOf="@+id/tv_device_name_title"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_device_name_title" />
+
+                <TextView
+                    android:id="@+id/tv_device_code"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/c_303133"
+                    android:textSize="@dimen/sp_14"
+                    app:layout_constraintBottom_toBottomOf="@+id/tv_device_code_title"
+                    app:layout_constraintLeft_toLeftOf="@+id/tv_device_name"
+                    app:layout_constraintTop_toTopOf="@+id/tv_device_code_title"
+                    tools:text="222" />
+
+                <!-- 所属装置 -->
+                <TextView
+                    android:id="@+id/tv_belong_device_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dp_22"
+                    android:text="@string/belong_device1"
+                    android:textColor="@color/c_909399"
+                    android:textSize="@dimen/sp_14"
+                    android:paddingLeft="@dimen/dp_16"
+                    app:layout_constraintLeft_toLeftOf="@+id/tv_device_code_title"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_device_code_title" />
+
+                <TextView
+                    android:id="@+id/tv_belong_device"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/c_303133"
+                    android:textSize="@dimen/sp_14"
+                    app:layout_constraintBottom_toBottomOf="@+id/tv_belong_device_title"
+                    app:layout_constraintLeft_toLeftOf="@+id/tv_device_code"
+                    app:layout_constraintTop_toTopOf="@+id/tv_belong_device_title"
+                    tools:text="3333" />
+
+                <!-- 介质状态 -->
+                <TextView
+                    android:id="@+id/tv_medium_status_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dp_22"
+                    android:text="@string/medium_status1"
+                    android:textColor="@color/c_909399"
+                    android:textSize="@dimen/sp_14"
+                    android:paddingLeft="@dimen/dp_16"
+                    app:layout_constraintLeft_toLeftOf="@+id/tv_belong_device_title"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_belong_device_title" />
+
+                <TextView
+                    android:id="@+id/tv_medium_status"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/c_303133"
+                    android:textSize="@dimen/sp_14"
+                    app:layout_constraintBottom_toBottomOf="@+id/tv_medium_status_title"
+                    app:layout_constraintLeft_toLeftOf="@+id/tv_belong_device"
+                    app:layout_constraintTop_toTopOf="@+id/tv_medium_status_title"
+                    tools:text="4444" />
+
+                <!-- 是否有效-->
+                <TextView
+                    android:id="@+id/tv_if_effective_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dp_22"
+                    android:text="@string/if_effective"
+                    android:textColor="@color/c_909399"
+                    android:textSize="@dimen/sp_14"
+                    android:paddingLeft="@dimen/dp_16"
+                    app:layout_constraintLeft_toLeftOf="@+id/tv_medium_status_title"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_medium_status_title" />
+
+                <TextView
+                    android:id="@+id/tv_if_effective"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/c_303133"
+                    android:textSize="@dimen/sp_14"
+                    app:layout_constraintBottom_toBottomOf="@+id/tv_if_effective_title"
+                    app:layout_constraintLeft_toLeftOf="@+id/tv_medium_status"
+                    app:layout_constraintTop_toTopOf="@+id/tv_if_effective_title"
+                    tools:text="888" />
+
+                <!-- 顺序-->
+                <TextView
+                    android:id="@+id/tv_order_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dp_22"
+                    android:text="@string/order"
+                    android:textColor="@color/c_909399"
+                    android:textSize="@dimen/sp_14"
+                    android:paddingLeft="@dimen/dp_16"
+                    app:layout_constraintLeft_toLeftOf="@+id/tv_if_effective_title"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_if_effective_title" />
+
+                <TextView
+                    android:id="@+id/tv_order"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/c_303133"
+                    android:textSize="@dimen/sp_14"
+                    app:layout_constraintBottom_toBottomOf="@+id/tv_order_title"
+                    app:layout_constraintLeft_toLeftOf="@+id/tv_if_effective"
+                    app:layout_constraintTop_toTopOf="@+id/tv_order_title"
+                    tools:text="999" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+</LinearLayout>

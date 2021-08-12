@@ -30,9 +30,9 @@
             android:name="notch.config"
             android:value="portrait|landscape" />
 
-        <!-- DeviceManageActivity   MainActivity-->
+        <!-- DeviceManageActivity   MainActivity AreaManageActivity -->
         <activity
-            android:name=".activity.DeviceManageActivity"
+            android:name=".activity.ProductFlowActivity"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -44,6 +44,9 @@
         <!-- 装置管理 -->
         <activity android:name=".activity.MainActivity"
             android:screenOrientation="portrait"/>
+
+        <activity android:name=".activity.DeviceManageActivity"
+            android:screenOrientation="portrait"/>
         <!-- 装置管理详情 -->
         <activity android:name=".activity.DeviceManageDetailActivity"
             android:screenOrientation="portrait"/>
@@ -51,8 +54,23 @@
         <activity android:name=".activity.AreaManageActivity"
             android:screenOrientation="portrait"/>
         <!-- 区域管理详情 -->
-<!--        <activity android:name=".activity.DeviceManageDetailActivity"-->
+        <activity android:name=".activity.AreaManageDetailActivity"
+            android:screenOrientation="portrait"/>
+
+        <!-- 设备管理 -->
+                <activity android:name=".activity.EquipmentManageActivity"
+                    android:screenOrientation="portrait"/>
+        <!-- 设备管理详情 -->
+        <activity android:name=".activity.EquipmentManageDetailActivity"
+            android:screenOrientation="portrait"/>
+
+        <!-- 设备管理 -->
+<!--        <activity android:name=".activity.ProductFlowActivity"-->
 <!--            android:screenOrientation="portrait"/>-->
+        <!-- 设备管理详情 -->
+        <activity android:name=".activity.ProductFlowDetailActivity"
+            android:screenOrientation="portrait"/>
+
 
     </application>
 

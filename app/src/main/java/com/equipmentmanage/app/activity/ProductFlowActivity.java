@@ -24,14 +24,14 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.listener.OnItemClickListener;
 import com.equipmentmanage.app.R;
-import com.equipmentmanage.app.adapter.AreaAdapter;
 import com.equipmentmanage.app.adapter.DepartmentAdapter;
-import com.equipmentmanage.app.adapter.DeviceAdapter;
+import com.equipmentmanage.app.adapter.EquipmentAdapter;
+import com.equipmentmanage.app.adapter.ProductFlowAdapter;
 import com.equipmentmanage.app.base.BaseActivity;
-import com.equipmentmanage.app.bean.AreaManageBean;
 import com.equipmentmanage.app.bean.BaseBean;
 import com.equipmentmanage.app.bean.DepartmentBean;
-import com.equipmentmanage.app.bean.DeviceManageBean;
+import com.equipmentmanage.app.bean.EquipmentManageBean;
+import com.equipmentmanage.app.bean.ProductFlowBean;
 import com.equipmentmanage.app.netapi.Constant;
 import com.equipmentmanage.app.netsubscribe.Subscribe;
 import com.equipmentmanage.app.utils.L;
@@ -59,11 +59,11 @@ import butterknife.OnClick;
 import es.dmoral.toasty.Toasty;
 
 /**
- * @Description: 区域管理
+ * @Description: 产品流
  * @Author: zzh
- * @CreateDate: 2021/8/11
+ * @CreateDate: 2021/8/12
  */
-public class AreaManageActivity extends BaseActivity {
+public class ProductFlowActivity extends BaseActivity {
     @BindView(R.id.titleBar)
     TitleBar titleBar; //标题栏
 
@@ -76,11 +76,17 @@ public class AreaManageActivity extends BaseActivity {
     @BindView(R.id.imb_clear)
     ImageButton imbClear; //清除
 
-    @BindView(R.id.ll_device_name)
-    LinearLayout llDeviceName; //全部装置
+    @BindView(R.id.ll_device)
+    LinearLayout llDevice; //装置
 
-    @BindView(R.id.tv_device_name)
-    TextView tvDeviceName; //全部装置
+    @BindView(R.id.tv_device)
+    TextView tvDevice; //装置
+
+    @BindView(R.id.ll_status)
+    LinearLayout llStatus; //状态
+
+    @BindView(R.id.tv_status)
+    TextView tvStatus; //状态
 
     //选择部门
     private ListPopupWindow departmentPopupWindow;
@@ -93,8 +99,8 @@ public class AreaManageActivity extends BaseActivity {
     SmartRefreshLayout srl;
     @BindView(R.id.rv_list)
     RecyclerView rvList;
-    private AreaAdapter adapter;
-    private List<AreaManageBean> mList = new ArrayList<>();
+    private ProductFlowAdapter adapter;
+    private List<ProductFlowBean> mList = new ArrayList<>();
 
     private int pageIndex = 1, pageSize = 10;
 
@@ -108,7 +114,7 @@ public class AreaManageActivity extends BaseActivity {
 
     @Override
     protected int initLayout() {
-        return R.layout.activity_area_manage;
+        return R.layout.activity_product_flow;
     }
 
     @Override
@@ -123,11 +129,11 @@ public class AreaManageActivity extends BaseActivity {
         });
 
 
-        AreaManageBean bean = new AreaManageBean();
-        bean.setAreaName("111");
+        ProductFlowBean bean = new ProductFlowBean();
+        bean.setName("111");
         bean.setStatus("1");
-        AreaManageBean bean1 = new AreaManageBean();
-        bean1.setAreaName("2222");
+        ProductFlowBean bean1 = new ProductFlowBean();
+        bean1.setName("2222");
         bean1.setStatus("2");
         mList.add(bean);
         mList.add(bean1);
@@ -160,14 +166,14 @@ public class AreaManageActivity extends BaseActivity {
 
         LinearLayoutManager manager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         rvList.setLayoutManager(manager);
-        adapter = new AreaAdapter(mList);
+        adapter = new ProductFlowAdapter(mList);
         adapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(@NonNull BaseQuickAdapter<?, ?> adapter, @NonNull View view, int position) {
-                AreaManageBean bean = mList.get(position);
+                ProductFlowBean bean = mList.get(position);
                 if (bean != null) {
-                    String name = bean.getAreaName();
-                    AreaManageDetailActivity.open(AreaManageActivity.this, name);
+                    String name = bean.getName();
+                    ProductFlowDetailActivity.open(ProductFlowActivity.this, name);
                 }
 
             }
@@ -181,7 +187,7 @@ public class AreaManageActivity extends BaseActivity {
         departmentPopupWindow.setPromptPosition(ListPopupWindow.POSITION_PROMPT_BELOW);
         departmentPopupWindow.setWidth(ViewGroup.LayoutParams.WRAP_CONTENT);
         departmentPopupWindow.setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
-        departmentPopupWindow.setAnchorView(llDeviceName);
+        departmentPopupWindow.setAnchorView(llDevice);
         departmentPopupWindow.setVerticalOffset(ThemeUtils.resolveDimension(this, R.attr.ms_dropdown_offset));
         departmentPopupWindow.setListSelector(ResUtils.getDrawable(this, R.drawable.xui_config_list_item_selector));
         departmentPopupWindow.setBackgroundDrawable(ResUtils.getDrawable(this, R.drawable.ms_drop_down_bg_radius));
@@ -238,20 +244,23 @@ public class AreaManageActivity extends BaseActivity {
                 DepartmentBean bean = departmentBeanList.get(position);
                 if (bean != null) {
                     departmentValue = bean.getValue();
-                    tvDeviceName.setText(StringUtils.nullStrToEmpty(bean.getName()));
+                    tvDevice.setText(StringUtils.nullStrToEmpty(bean.getName()));
                 }
                 departmentPopupWindow.dismiss();
             }
         });
     }
 
-    @OnClick({R.id.imb_clear, R.id.ll_device_name})
+    @OnClick({R.id.imb_clear, R.id.ll_device, R.id.ll_status})
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.imb_clear:
                 etSearch.getText().clear();
                 break;
-            case R.id.ll_device_name:
+            case R.id.ll_device:
+                departmentPopupWindow.show();
+                break;
+            case R.id.ll_status:
                 departmentPopupWindow.show();
                 break;
         }
@@ -300,7 +309,7 @@ public class AreaManageActivity extends BaseActivity {
             public void onSuccess(String result) {
                 //成功
                 try {
-                    BaseBean<List<AreaManageBean>> baseBean = GsonUtils.fromJson(result, new TypeToken<BaseBean<List<AreaManageBean>>>() {
+                    BaseBean<List<ProductFlowBean>> baseBean = GsonUtils.fromJson(result, new TypeToken<BaseBean<List<ProductFlowBean>>>() {
                     }.getType());
 
                     if (null != baseBean) {
@@ -308,7 +317,7 @@ public class AreaManageActivity extends BaseActivity {
                             if (pageIndex == 1) {
                                 mList.clear();
                             }
-                            List<AreaManageBean> dataList = baseBean.getData();
+                            List<ProductFlowBean> dataList = baseBean.getData();
                             if (dataList != null && dataList.size() > 0) {
                                 mList.addAll(dataList);
                                 srl.finishRefresh();
@@ -319,19 +328,19 @@ public class AreaManageActivity extends BaseActivity {
                             }
                             adapter.notifyDataSetChanged();
                         } else {
-                            Toasty.error(AreaManageActivity.this, R.string.search_fail, Toast.LENGTH_SHORT, true).show();
+                            Toasty.error(ProductFlowActivity.this, R.string.search_fail, Toast.LENGTH_SHORT, true).show();
                             srl.finishRefresh();
                             srl.finishLoadMore();
                         }
                     } else {
-                        Toasty.error(AreaManageActivity.this, R.string.return_empty, Toast.LENGTH_SHORT, true).show();
+                        Toasty.error(ProductFlowActivity.this, R.string.return_empty, Toast.LENGTH_SHORT, true).show();
                         srl.finishRefresh();
                         srl.finishLoadMore();
 
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
-                    Toasty.error(AreaManageActivity.this, R.string.parse_fail, Toast.LENGTH_SHORT, true).show();
+                    Toasty.error(ProductFlowActivity.this, R.string.parse_fail, Toast.LENGTH_SHORT, true).show();
                     srl.finishRefresh();
                     srl.finishLoadMore();
 
@@ -343,11 +352,11 @@ public class AreaManageActivity extends BaseActivity {
             @Override
             public void onFault(String errorMsg) {
                 //失败
-                Toasty.error(AreaManageActivity.this, R.string.search_fail, Toast.LENGTH_SHORT, true).show();
+                Toasty.error(ProductFlowActivity.this, R.string.search_fail, Toast.LENGTH_SHORT, true).show();
                 srl.finishRefresh();
                 srl.finishLoadMore();
             }
-        }, AreaManageActivity.this), params);
+        }, ProductFlowActivity.this), params);
     }
 
 }

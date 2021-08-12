@@ -2,6 +2,10 @@
     <string name="app_name">EquipmentManage</string>
     <string name="device_manage">装置管理</string>
     <string name="device_detail">装置详情</string>
+    <string name="equipment_manage">设备管理</string>
+    <string name="equipment_detail">设备详情</string>
+    <string name="equipment_info">设备信息</string>
+    <string name="area_detail">区域详情</string>
     <string name="search_hint">搜索</string>
     <string name="department">部门:</string>
     <string name="department1">部门</string>
@@ -10,19 +14,28 @@
     <string name="test_start_date">开始检测日期:</string>
     <string name="device_info">装置信息</string>
     <string name="chemical_details">化学品明细</string>
+    <string name="product_flow_info">产品流信息</string>
+    <string name="product_flow">产品流</string>
+    <string name="product_flow_detail">产品流详情</string>
+    <string name="pid_drawing_no">PID图号</string>
 
     <string name="device_name">名称</string>
     <string name="device_code">编号</string>
     <string name="capacity">产能</string>
     <string name="put_into_production_date">投产日期</string>
     <string name="enabled">是否可用</string>
+    <string name="if_effective">是否有效</string>
     <string name="order">顺序</string>
     <string name="divulge_submit_mailbox">泄露提报邮箱</string>
     <string name="enabled_0">不可用</string>
     <string name="enabled_1">可用</string>
 
     <string name="belong_device">所属装置:</string>
-
+    <string name="belong_device1">所属装置</string>
+    <string name="belong_area">所属区域</string>
+    <string name="belong_area1">所属区域:</string>
+    <string name="medium_status">介质状态:</string>
+    <string name="medium_status1">介质状态</string>
 
 
     <string name="not_data">暂无数据，点击刷新</string>

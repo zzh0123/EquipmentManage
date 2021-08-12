@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".activity.DeviceManageActivity"
+    android:background="@color/c_F5F5F5">
+
+    <com.xuexiang.xui.widget.actionbar.TitleBar
+        android:id="@+id/titleBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/c_409EFF"
+        app:tb_barHeight="@dimen/dp_45"
+        app:tb_leftImageResource="@mipmap/ic_arrow_left"
+        app:tb_leftText=""
+        app:tb_sideTextPadding="20dp"
+        app:tb_actionPadding="20dp"
+        app:tb_titleText="@string/equipment_manage"
+        app:tb_useThemeColor="false"
+        app:tb_titleTextSize="@dimen/sp_16"
+        app:tb_immersive="true"/>
+
+    <!--搜索框, 部门，类型筛选-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:orientation="vertical"
+        android:paddingTop="@dimen/dp_6"
+        android:paddingLeft="@dimen/dp_8"
+        android:paddingRight="@dimen/dp_8"
+        android:paddingBottom="@dimen/dp_6">
+        <!--搜索框-->
+        <LinearLayout
+            android:id="@+id/ll_search"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_search"
+            android:orientation="horizontal"
+            android:paddingTop="@dimen/dp_6"
+            android:paddingBottom="@dimen/dp_6"
+            android:paddingLeft="@dimen/dp_10"
+            android:paddingRight="@dimen/dp_10">
+
+            <ImageView
+                android:id="@+id/iv_search"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:background="@mipmap/ic_search"
+                android:contentDescription="@null"
+                android:scaleType="fitXY"/>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="@dimen/dp_3">
+
+                <EditText
+                    android:id="@+id/et_search"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:background="@null"
+                    android:hint="@string/search_hint"
+                    android:singleLine="true"
+                    android:textColor="@color/c_606266"
+                    android:textColorHint="@color/c_C0C4CC"
+                    android:textSize="@dimen/sp_14" />
+
+                <ImageButton
+                    android:id="@+id/imb_clear"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="@dimen/dp_3"
+                    android:layout_marginRight="@dimen/dp_3"
+                    android:background="@android:color/transparent"
+                    android:contentDescription="@null"
+                    android:src="@mipmap/ic_clear"
+                    android:visibility="invisible"
+                    android:padding="@dimen/dp_5"/>
+            </RelativeLayout>
+
+        </LinearLayout>
+
+        <!-- 部门，类型筛选-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_12"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:id="@+id/ll_equipment"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_gravity="center_vertical"
+                android:background="@drawable/bg_pop_down"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingTop="@dimen/dp_8"
+                android:paddingBottom="@dimen/dp_8"
+                android:paddingLeft="@dimen/dp_12"
+                android:paddingRight="@dimen/dp_8">
+
+                <TextView
+                    android:id="@+id/tv_equipment"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="@dimen/dp_3"
+                    android:layout_weight="1"
+                    android:textColor="@color/c_606266"
+                    android:textSize="@dimen/sp_14"
+                    tools:text="全部设备" />
+
+                <com.xuexiang.xui.widget.imageview.RadiusImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:src="@mipmap/ic_arrow_down" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_area"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="@dimen/dp_10"
+                android:background="@drawable/bg_pop_down"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingTop="@dimen/dp_8"
+                android:paddingBottom="@dimen/dp_8"
+                android:paddingLeft="@dimen/dp_12"
+                android:paddingRight="@dimen/dp_8">
+
+                <TextView
+                    android:id="@+id/tv_area"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="@dimen/dp_3"
+                    android:layout_weight="1"
+                    android:textColor="@color/c_606266"
+                    android:textSize="@dimen/sp_14"
+                    tools:text="全部区域" />
+
+                <com.xuexiang.xui.widget.imageview.RadiusImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:src="@mipmap/ic_arrow_down" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <com.scwang.smart.refresh.layout.SmartRefreshLayout
+        android:id="@+id/srl"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_0"
+        android:layout_weight="1"
+        android:layout_margin="@dimen/dp_8">
+
+        <com.scwang.smart.refresh.footer.ClassicsFooter
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_50" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        </androidx.recyclerview.widget.RecyclerView>
+
+        <com.scwang.smart.refresh.footer.ClassicsFooter
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_50" />
+
+    </com.scwang.smart.refresh.layout.SmartRefreshLayout>
+
+</LinearLayout>
