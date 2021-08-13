@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/task"
+        android:icon="@mipmap/ic_task"
+        android:title="@string/task" />
+
+    <item
+        android:id="@+id/put_on_record"
+        android:icon="@mipmap/ic_put_on_record"
+        android:title="@string/put_on_record" />
+
+    <item
+        android:id="@+id/search"
+        android:icon="@mipmap/ic_search_menu"
+        android:title="@string/search" />
+
+    <item android:id="@+id/user"
+        android:icon="@mipmap/ic_user"
+        android:title="@string/user"
+        />
+</menu>

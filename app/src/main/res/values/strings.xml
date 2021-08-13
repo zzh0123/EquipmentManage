@@ -43,4 +43,20 @@
     <string name="search_fail">查询失败！</string>
     <string name="parse_fail">解析失败！</string>
     <string name="return_empty">查询数据为空！</string>
+
+    <string name="account">账号</string>
+    <string name="account_hint">请输入账号</string>
+    <string name="account_tip">请先输入账号！</string>
+    <string name="password">密码</string>
+    <string name="password_hint">请输入密码</string>
+    <string name="password_tip">请先输入密码！</string>
+    <string name="login">登录</string>
+
+
+    <string name="task">任务</string>
+    <string name="put_on_record">建档</string>
+    <string name="search">查询</string>
+    <string name="user">用户</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

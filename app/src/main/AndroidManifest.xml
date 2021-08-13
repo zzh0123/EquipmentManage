@@ -11,28 +11,25 @@
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        android:maxAspectRatio="2.4"
+        android:resizeableActivity="true"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.EquipmentManage"
-        android:usesCleartextTraffic="true"
-        android:resizeableActivity="true"
-        android:maxAspectRatio="2.4">
+        android:usesCleartextTraffic="true">
 
         <meta-data
             android:name="android.max_aspect"
-            android:value="2.4" />
-        <!--适配华为（huawei）刘海屏-->
+            android:value="2.4" /> <!-- 适配华为（huawei）刘海屏 -->
         <meta-data
             android:name="android.notch_support"
-            android:value="true"/>
-        <!--适配小米（xiaomi）刘海屏-->
+            android:value="true" /> <!-- 适配小米（xiaomi）刘海屏 -->
         <meta-data
             android:name="notch.config"
             android:value="portrait|landscape" />
-
         <!-- DeviceManageActivity   MainActivity AreaManageActivity -->
         <activity
-            android:name=".activity.ProductFlowActivity"
+            android:name=".activity.MainActivity"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -40,38 +37,38 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <!-- 登录页 -->
+        <activity android:name=".activity.LoginActivity"
+            android:screenOrientation="portrait" />
 
         <!-- 装置管理 -->
-        <activity android:name=".activity.MainActivity"
-            android:screenOrientation="portrait"/>
-
-        <activity android:name=".activity.DeviceManageActivity"
-            android:screenOrientation="portrait"/>
-        <!-- 装置管理详情 -->
-        <activity android:name=".activity.DeviceManageDetailActivity"
-            android:screenOrientation="portrait"/>
-        <!-- 区域管理 -->
-        <activity android:name=".activity.AreaManageActivity"
-            android:screenOrientation="portrait"/>
-        <!-- 区域管理详情 -->
-        <activity android:name=".activity.AreaManageDetailActivity"
-            android:screenOrientation="portrait"/>
-
-        <!-- 设备管理 -->
-                <activity android:name=".activity.EquipmentManageActivity"
-                    android:screenOrientation="portrait"/>
+<!--        <activity-->
+<!--            android:name=".activity.MainActivity"-->
+<!--            android:screenOrientation="portrait" />-->
+        <activity
+            android:name=".activity.DeviceManageActivity"
+            android:screenOrientation="portrait" /> <!-- 装置管理详情 -->
+        <activity
+            android:name=".activity.DeviceManageDetailActivity"
+            android:screenOrientation="portrait" /> <!-- 区域管理 -->
+        <activity
+            android:name=".activity.AreaManageActivity"
+            android:screenOrientation="portrait" /> <!-- 区域管理详情 -->
+        <activity
+            android:name=".activity.AreaManageDetailActivity"
+            android:screenOrientation="portrait" /> <!-- 设备管理 -->
+        <activity
+            android:name=".activity.EquipmentManageActivity"
+            android:screenOrientation="portrait" /> <!-- 设备管理详情 -->
+        <activity
+            android:name=".activity.EquipmentManageDetailActivity"
+            android:screenOrientation="portrait" /> <!-- 设备管理 -->
+         <activity android:name=".activity.ProductFlowActivity"
+         android:screenOrientation="portrait"/>
         <!-- 设备管理详情 -->
-        <activity android:name=".activity.EquipmentManageDetailActivity"
-            android:screenOrientation="portrait"/>
-
-        <!-- 设备管理 -->
-<!--        <activity android:name=".activity.ProductFlowActivity"-->
-<!--            android:screenOrientation="portrait"/>-->
-        <!-- 设备管理详情 -->
-        <activity android:name=".activity.ProductFlowDetailActivity"
-            android:screenOrientation="portrait"/>
-
-
+        <activity
+            android:name=".activity.ProductFlowDetailActivity"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>
