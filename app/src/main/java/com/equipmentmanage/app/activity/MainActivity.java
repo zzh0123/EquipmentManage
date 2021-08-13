@@ -106,7 +106,7 @@ public class MainActivity extends BaseActivity implements NavigationBarView.OnIt
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        viewPager2.setCurrentItem(menuItem.getOrder());
+        viewPager2.setCurrentItem(item.getOrder());
         return false;
     }
 
