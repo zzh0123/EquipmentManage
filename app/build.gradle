@@ -103,5 +103,9 @@ dependencies {
     implementation 'com.gyf.immersionbar:immersionbar:3.0.0'
     // AOP
     implementation 'com.github.xuexiangjys.XAOP:xaop-runtime:1.0.1'
+    // 分页
+//    implementation 'com.github.mtjsoft:GridPager:v3.7.0'
+    //mmkv
+    implementation 'com.tencent:mmkv-static:1.2.10'
 
 }

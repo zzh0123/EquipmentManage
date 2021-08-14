@@ -1,7 +1,10 @@
 package com.equipmentmanage.app.utils.netutils;
 import com.equipmentmanage.app.base.MyApplication;
+import com.equipmentmanage.app.netapi.Constant;
 import com.equipmentmanage.app.netapi.HttpApi;
 import com.equipmentmanage.app.netapi.URLConstant;
+import com.equipmentmanage.app.utils.L;
+import com.tencent.mmkv.MMKV;
 
 import java.io.File;
 import java.io.IOException;
@@ -41,17 +44,16 @@ public class RetrofitFactory {
     /**
      * 请求失败重连次数
      */
-    private int RETRY_COUNT = 3;
+    private int RETRY_COUNT = 0;
     private OkHttpClient.Builder okHttpBuilder;
-
+    private MMKV kv = MMKV.defaultMMKV();
+    private String token = "";
     //构造方法私有
     private RetrofitFactory() {
         //手动创建一个OkHttpClient并设置超时时间
         okHttpBuilder = new OkHttpClient.Builder();
 
-//        SharedPreferences sps = ActivityUtils.selSharedPreferencesData(MyApplication.getContext(), MyApplication.USER_INFO_NAME);
-//        final String token = sps.getString("token", "");
-//        LogUtil.i("zzz1", "rtro token: " + token);
+        L.i("zzz1", "rtro token1: " + token);
         /**
          * 设置头信息
          */
@@ -63,6 +65,8 @@ public class RetrofitFactory {
 //                        .addHeader("Accept-Encoding", "gzip")
                         .addHeader("Accept", "application/json")
                         .addHeader("Content-Type", "application/json; charset=utf-8")
+                        .addHeader("X-Access-Token", token)
+//                        .addHeader("tenant-id", "")
                         .method(originalRequest.method(), originalRequest.body());
 //                requestBuilder.addHeader("Authorization", token);//添加请求头信息，服务器进行token有效性验证
                 Request request = requestBuilder.build();
@@ -173,6 +177,8 @@ public class RetrofitFactory {
      * @return
      */
     public RetrofitFactory defaultBaseUrl(){
+        token =  kv.decodeString(Constant.token, "");
+        L.i("zzz1", "rtro token2: " + token);
         retrofit = new Retrofit.Builder()
                 .client(okHttpBuilder.build())
                 .addConverterFactory(GsonConverterFactory.create())

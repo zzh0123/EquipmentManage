@@ -1,5 +1,7 @@
 package com.equipmentmanage.app.activity;
 
+import android.content.Context;
+import android.content.Intent;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.KeyEvent;
@@ -64,6 +66,13 @@ import es.dmoral.toasty.Toasty;
  * @CreateDate: 2021/8/11
  */
 public class AreaManageActivity extends BaseActivity {
+
+    public static void open(Context c){
+        Intent i = new Intent(c, AreaManageActivity.class);
+        c.startActivity(i);
+    }
+
+
     @BindView(R.id.titleBar)
     TitleBar titleBar; //标题栏
 
@@ -295,7 +304,7 @@ public class AreaManageActivity extends BaseActivity {
         params.put(Constant.city, "北京"); // 部门
 //        params.put(Constant.department, department); // 部门
 //        params.put(Constant.deviceType, deviceType); // 装置类型
-        Subscribe.getDeviceList(new OnSuccessAndFaultSub(new OnSuccessAndFaultListener() {
+        Subscribe.getDeviceList(params, new OnSuccessAndFaultSub(new OnSuccessAndFaultListener() {
             @Override
             public void onSuccess(String result) {
                 //成功
@@ -304,25 +313,25 @@ public class AreaManageActivity extends BaseActivity {
                     }.getType());
 
                     if (null != baseBean) {
-                        if (baseBean.isSuccess()) {
-                            if (pageIndex == 1) {
-                                mList.clear();
-                            }
-                            List<AreaManageBean> dataList = baseBean.getData();
-                            if (dataList != null && dataList.size() > 0) {
-                                mList.addAll(dataList);
-                                srl.finishRefresh();
-                                srl.finishLoadMore();
-                            } else {
-                                srl.finishRefresh();
-                                srl.finishLoadMoreWithNoMoreData();
-                            }
-                            adapter.notifyDataSetChanged();
-                        } else {
-                            Toasty.error(AreaManageActivity.this, R.string.search_fail, Toast.LENGTH_SHORT, true).show();
-                            srl.finishRefresh();
-                            srl.finishLoadMore();
-                        }
+//                        if (baseBean.isSuccess()) {
+//                            if (pageIndex == 1) {
+//                                mList.clear();
+//                            }
+//                            List<AreaManageBean> dataList = baseBean.getData();
+//                            if (dataList != null && dataList.size() > 0) {
+//                                mList.addAll(dataList);
+//                                srl.finishRefresh();
+//                                srl.finishLoadMore();
+//                            } else {
+//                                srl.finishRefresh();
+//                                srl.finishLoadMoreWithNoMoreData();
+//                            }
+//                            adapter.notifyDataSetChanged();
+//                        } else {
+//                            Toasty.error(AreaManageActivity.this, R.string.search_fail, Toast.LENGTH_SHORT, true).show();
+//                            srl.finishRefresh();
+//                            srl.finishLoadMore();
+//                        }
                     } else {
                         Toasty.error(AreaManageActivity.this, R.string.return_empty, Toast.LENGTH_SHORT, true).show();
                         srl.finishRefresh();
@@ -347,7 +356,7 @@ public class AreaManageActivity extends BaseActivity {
                 srl.finishRefresh();
                 srl.finishLoadMore();
             }
-        }, AreaManageActivity.this), params);
+        }, AreaManageActivity.this));
     }
 
 }

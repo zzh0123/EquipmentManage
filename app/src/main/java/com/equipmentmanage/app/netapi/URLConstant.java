@@ -7,7 +7,8 @@ package com.equipmentmanage.app.netapi;
  */
 public class URLConstant {
 
-    public static String BASE_URL = "http://wthrcdn.etouch.cn/"; // win 正式ip
+//    public static String BASE_URL = "http://wthrcdn.etouch.cn/"; // win 正式ip
+    public static String BASE_URL = "http://47.100.136.34:9999"; // win 正式ip
 
 //    public static String BASE_URL = "http://192.168.1.223:4000"; // win 正式ip
 

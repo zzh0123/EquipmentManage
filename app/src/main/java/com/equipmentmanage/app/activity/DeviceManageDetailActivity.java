@@ -15,8 +15,10 @@ import com.equipmentmanage.app.adapter.ChemicalDetailAdapter;
 import com.equipmentmanage.app.base.BaseActivity;
 import com.equipmentmanage.app.bean.BaseBean;
 import com.equipmentmanage.app.bean.ChemicalDetailBean;
+import com.equipmentmanage.app.bean.DeviceManageResultBean;
 import com.equipmentmanage.app.netapi.Constant;
 import com.equipmentmanage.app.netsubscribe.Subscribe;
+import com.equipmentmanage.app.utils.StringUtils;
 import com.equipmentmanage.app.utils.gson.GsonUtils;
 import com.equipmentmanage.app.utils.netutils.OnSuccessAndFaultListener;
 import com.equipmentmanage.app.utils.netutils.OnSuccessAndFaultSub;
@@ -39,8 +41,9 @@ import es.dmoral.toasty.Toasty;
  */
 public class DeviceManageDetailActivity extends BaseActivity {
 
-    public static void open(Context c, String id){
+    public static void open(Context c, DeviceManageResultBean.Records bean){
         Intent i = new Intent(c, DeviceManageDetailActivity.class);
+        i.putExtra(Constant.deviceBean, bean);
         c.startActivity(i);
     }
 
@@ -87,6 +90,8 @@ public class DeviceManageDetailActivity extends BaseActivity {
 
     private String department, deviceType;
 
+    private DeviceManageResultBean.Records bean;
+
     @Override
     protected int initLayout() {
         return R.layout.activity_device_manage_detail;
@@ -95,6 +100,8 @@ public class DeviceManageDetailActivity extends BaseActivity {
     @Override
     protected void initView() {
 
+        bean = (DeviceManageResultBean.Records) getIntent().getSerializableExtra(Constant.deviceBean);
+
         titleBar.setLeftClickListener(new View.OnClickListener() {
             @SingleClick
             @Override
@@ -102,6 +109,20 @@ public class DeviceManageDetailActivity extends BaseActivity {
                 finish();
             }
         });
+
+        if (bean != null){
+            tvDeviceName.setText(StringUtils.nullStrToEmpty(bean.getDeviceName())); //名称
+            tvDeviceCode.setText(StringUtils.nullStrToEmpty(bean.getDeviceCode())); //编号
+            tvDeviceType.setText(StringUtils.nullStrToEmpty(bean.getDeviceType_dictText())); //装置类型
+//            tvDepartment.setText(StringUtils.nullStrToEmpty(bean.getDeviceName())); //部门
+            tvCapacity.setText(StringUtils.nullStrToEmpty(bean.getDeviceCapacity())); //产能
+
+            tvPutIntoProductionDate.setText(StringUtils.nullStrToEmpty(bean.getUseDate())); //投产日期
+            tvTestStartDate.setText(StringUtils.nullStrToEmpty(bean.getTestSdate())); //开始检测日期
+//            tvEnabled.setText(StringUtils.nullStrToEmpty(bean.getDeviceName())); //是否可用
+            tvOrder.setText(StringUtils.nullStrToEmpty(bean.getUseDate())); //顺序
+            tvMailbox.setText(StringUtils.nullStrToEmpty(bean.getLeakingDate())); //泄露提报邮箱
+        }
 
 
         ChemicalDetailBean bean = new ChemicalDetailBean();
@@ -162,7 +183,7 @@ public class DeviceManageDetailActivity extends BaseActivity {
                 params.put(Constant.city, "北京"); // 部门
 //        params.put(Constant.department, department); // 部门
 //        params.put(Constant.deviceType, deviceType); // 装置类型
-        Subscribe.getDeviceList(new OnSuccessAndFaultSub(new OnSuccessAndFaultListener() {
+        Subscribe.getDeviceList(params, new OnSuccessAndFaultSub(new OnSuccessAndFaultListener() {
             @Override
             public void onSuccess(String result) {
                 //成功
@@ -171,23 +192,23 @@ public class DeviceManageDetailActivity extends BaseActivity {
                     }.getType());
 
                     if (null != baseBean) {
-                        if (baseBean.isSuccess()) {
-//                            if (pageIndex == 1) {
-//                                mList.clear();
+//                        if (baseBean.isSuccess()) {
+////                            if (pageIndex == 1) {
+////                                mList.clear();
+////                            }
+//                            List<ChemicalDetailBean> dataList = baseBean.getData();
+//                            if (dataList != null && dataList.size() > 0) {
+//                                mList.addAll(dataList);
+//                            } else {
+//                                Toasty.error(DeviceManageDetailActivity.this, R.string.return_empty, Toast.LENGTH_SHORT, true).show();
+//
 //                            }
-                            List<ChemicalDetailBean> dataList = baseBean.getData();
-                            if (dataList != null && dataList.size() > 0) {
-                                mList.addAll(dataList);
-                            } else {
-                                Toasty.error(DeviceManageDetailActivity.this, R.string.return_empty, Toast.LENGTH_SHORT, true).show();
-
-                            }
-                            adapter.notifyDataSetChanged();
-                        } else {
-                            Toasty.error(DeviceManageDetailActivity.this, R.string.search_fail, Toast.LENGTH_SHORT, true).show();
-//                            srl.finishRefresh();
-//                            srl.finishLoadMore();
-                        }
+//                            adapter.notifyDataSetChanged();
+//                        } else {
+//                            Toasty.error(DeviceManageDetailActivity.this, R.string.search_fail, Toast.LENGTH_SHORT, true).show();
+////                            srl.finishRefresh();
+////                            srl.finishLoadMore();
+//                        }
                     } else {
                         Toasty.error(DeviceManageDetailActivity.this, R.string.return_empty, Toast.LENGTH_SHORT, true).show();
 //                        srl.finishRefresh();
@@ -212,7 +233,7 @@ public class DeviceManageDetailActivity extends BaseActivity {
 //                srl.finishRefresh();
 //                srl.finishLoadMore();
             }
-        }, DeviceManageDetailActivity.this), params);
+        }, DeviceManageDetailActivity.this));
     }
 
 }

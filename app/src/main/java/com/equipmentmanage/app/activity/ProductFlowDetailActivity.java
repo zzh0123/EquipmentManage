@@ -98,7 +98,7 @@ public class ProductFlowDetailActivity extends BaseActivity {
                 params.put(Constant.city, "北京"); // 部门
 //        params.put(Constant.department, department); // 部门
 //        params.put(Constant.deviceType, deviceType); // 装置类型
-        Subscribe.getDeviceList(new OnSuccessAndFaultSub(new OnSuccessAndFaultListener() {
+        Subscribe.getDeviceList(params, new OnSuccessAndFaultSub(new OnSuccessAndFaultListener() {
             @Override
             public void onSuccess(String result) {
                 //成功
@@ -111,13 +111,13 @@ public class ProductFlowDetailActivity extends BaseActivity {
 //                            if (pageIndex == 1) {
 //                                mList.clear();
 //                            }
-                            List<ChemicalDetailBean> dataList = baseBean.getData();
-                            if (dataList != null && dataList.size() > 0) {
-//                                mList.addAll(dataList);
-                            } else {
-                                Toasty.error(ProductFlowDetailActivity.this, R.string.return_empty, Toast.LENGTH_SHORT, true).show();
-
-                            }
+//                            List<ChemicalDetailBean> dataList = baseBean.getData();
+//                            if (dataList != null && dataList.size() > 0) {
+////                                mList.addAll(dataList);
+//                            } else {
+//                                Toasty.error(ProductFlowDetailActivity.this, R.string.return_empty, Toast.LENGTH_SHORT, true).show();
+//
+//                            }
 //                            adapter.notifyDataSetChanged();
                         } else {
                             Toasty.error(ProductFlowDetailActivity.this, R.string.search_fail, Toast.LENGTH_SHORT, true).show();
@@ -148,7 +148,7 @@ public class ProductFlowDetailActivity extends BaseActivity {
 //                srl.finishRefresh();
 //                srl.finishLoadMore();
             }
-        }, ProductFlowDetailActivity.this), params);
+        }, ProductFlowDetailActivity.this));
     }
 
 }

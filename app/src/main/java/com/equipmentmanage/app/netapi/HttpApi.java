@@ -1,5 +1,6 @@
 package com.equipmentmanage.app.netapi;
 
+import com.equipmentmanage.app.bean.LoginPostBean;
 import com.equipmentmanage.app.bean.User;
 
 import java.util.List;
@@ -18,6 +19,7 @@ import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
 import retrofit2.http.PartMap;
+import retrofit2.http.Path;
 import retrofit2.http.Query;
 import retrofit2.http.QueryMap;
 import retrofit2.http.Streaming;
@@ -29,12 +31,25 @@ import retrofit2.http.Url;
  * Description: 网络接口地址 Api
  */
 public interface HttpApi {
+
+    // post请求
+    @POST("/jeecg-boot/sys/mLogin")
+    Observable<ResponseBody> login(@Body LoginPostBean loginPostBean);
+
     // get请求
 //    @GET("user/getUserList")
 //    Observable<ResponseBody> getUserList();
+    // /sys/dict/getDictItems/${code}   下拉框通过这个接口，获取字典值
+    @GET("/jeecg-boot/sys/dict/getDictItems/{code}")
+    Observable<ResponseBody> getDeviceTypeList(@Path("code") String code);
+
+    @GET("/jeecg-boot/ldar/ldarBaseDevice/list")
+    Observable<ResponseBody> getDeviceList(@QueryMap Map<String, Object> map);
+
+
 
     @GET("weather_mini")
-    Observable<ResponseBody> getDeviceList(@QueryMap Map<String, Object> map);
+    Observable<ResponseBody> getDeviceList1(@QueryMap Map<String, Object> map);
 
     @GET("api/Authorize/PubOwner")
     Observable<ResponseBody> getUserList();

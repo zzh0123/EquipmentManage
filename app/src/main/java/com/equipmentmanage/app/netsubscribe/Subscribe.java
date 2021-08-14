@@ -1,4 +1,5 @@
 package com.equipmentmanage.app.netsubscribe;
+import com.equipmentmanage.app.bean.LoginPostBean;
 import com.equipmentmanage.app.bean.User;
 import com.equipmentmanage.app.utils.netutils.RetrofitFactory;
 
@@ -19,12 +20,35 @@ import okhttp3.ResponseBody;
 public class Subscribe {
 
     /**
-     * getUserList
+     * 登录
      */
-    public static void getDeviceList(DisposableObserver<ResponseBody> subscriber, Map<String, Object> map) {
+    public static void login(LoginPostBean loginPostBean, DisposableObserver<ResponseBody> subscriber) {
+        Observable<ResponseBody> observable =  RetrofitFactory.getInstance().defaultBaseUrl().getHttpApi().login(loginPostBean);
+        RetrofitFactory.getInstance().toSubscribe(observable, subscriber);
+    }
+
+    /**
+     * getDeviceTypeList
+     */
+    public static void getDeviceTypeList(String code, DisposableObserver<ResponseBody> subscriber) {
+        Observable<ResponseBody> observable =  RetrofitFactory.getInstance().defaultBaseUrl().getHttpApi().getDeviceTypeList(code);
+        RetrofitFactory.getInstance().defaultBaseUrl().toSubscribe(observable, subscriber);
+    }
+
+    /**
+     * getDeviceList
+     */
+    public static void getDeviceList(Map<String, Object> map, DisposableObserver<ResponseBody> subscriber) {
         Observable<ResponseBody> observable =  RetrofitFactory.getInstance().defaultBaseUrl().getHttpApi().getDeviceList(map);
         RetrofitFactory.getInstance().defaultBaseUrl().toSubscribe(observable, subscriber);
     }
+
+
+
+
+
+
+
 
     /**
      * getUserList

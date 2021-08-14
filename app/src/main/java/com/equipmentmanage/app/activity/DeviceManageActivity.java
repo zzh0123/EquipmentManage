@@ -1,5 +1,7 @@
 package com.equipmentmanage.app.activity;
 
+import android.content.Context;
+import android.content.Intent;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.KeyEvent;
@@ -26,11 +28,15 @@ import com.chad.library.adapter.base.listener.OnItemClickListener;
 import com.equipmentmanage.app.R;
 import com.equipmentmanage.app.adapter.DepartmentAdapter;
 import com.equipmentmanage.app.adapter.DeviceAdapter;
+import com.equipmentmanage.app.adapter.DeviceTypeAdapter;
 import com.equipmentmanage.app.base.BaseActivity;
 import com.equipmentmanage.app.bean.BaseBean;
 import com.equipmentmanage.app.bean.DepartmentBean;
 import com.equipmentmanage.app.bean.DeviceManageBean;
+import com.equipmentmanage.app.bean.DeviceManageResultBean;
+import com.equipmentmanage.app.bean.DeviceTypeBean;
 import com.equipmentmanage.app.netapi.Constant;
+import com.equipmentmanage.app.netapi.ConstantValue;
 import com.equipmentmanage.app.netsubscribe.Subscribe;
 import com.equipmentmanage.app.utils.L;
 import com.equipmentmanage.app.utils.StringUtils;
@@ -62,6 +68,12 @@ import es.dmoral.toasty.Toasty;
  * @CreateDate: 2021/8/10
  */
 public class DeviceManageActivity extends BaseActivity {
+
+    public static void open(Context c) {
+        Intent i = new Intent(c, DeviceManageActivity.class);
+        c.startActivity(i);
+    }
+
     @BindView(R.id.titleBar)
     TitleBar titleBar; //标题栏
 
@@ -86,21 +98,28 @@ public class DeviceManageActivity extends BaseActivity {
     @BindView(R.id.tv_device_type)
     TextView tvDeviceType; //装置类型
 
-    //选择部门
+    //选择装置类型
     private ListPopupWindow departmentPopupWindow;
-    private String departmentName;
-    private String departmentValue;
+    private String departmentName = "";
+    private String departmentValue = "";
     private List<DepartmentBean> departmentBeanList = new ArrayList<>();
     private DepartmentAdapter departmentAdapter;
+
+    //选择装置类型
+    private ListPopupWindow devicePopupWindow;
+    private String deviceTypeName = "";;
+    private String deviceTypeValue = "";;
+    private List<DeviceTypeBean> deviceTypeBeanList = new ArrayList<>();
+    private DeviceTypeAdapter deviceTypeAdapter;
 
     @BindView(R.id.srl)
     SmartRefreshLayout srl;
     @BindView(R.id.rv_list)
     RecyclerView rvList;
     private DeviceAdapter adapter;
-    private List<DeviceManageBean> mList = new ArrayList<>();
+    private List<DeviceManageResultBean.Records> mList = new ArrayList<>();
 
-    private int pageIndex = 1, pageSize = 10;
+    private int pageNo = 1, pageSize = 10;
 
     private String department, deviceType;
 
@@ -126,25 +145,6 @@ public class DeviceManageActivity extends BaseActivity {
             }
         });
 
-
-        DeviceManageBean bean = new DeviceManageBean();
-        bean.setName("111");
-        bean.setStatus("1");
-        DeviceManageBean bean1 = new DeviceManageBean();
-        bean1.setName("2222");
-        bean1.setStatus("2");
-        mList.add(bean);
-        mList.add(bean1);
-
-        DepartmentBean departmentBean = new DepartmentBean();
-        departmentBean.setName("部门1");
-        departmentBean.setValue("1");
-        DepartmentBean departmentBean1 = new DepartmentBean();
-        departmentBean1.setName("部门2");
-        departmentBean1.setValue("2");
-        departmentBeanList.add(departmentBean);
-        departmentBeanList.add(departmentBean1);
-
         srl.setEnableRefresh(true);
         srl.setEnableLoadMore(true);
         srl.setEnableFooterFollowWhenNoMoreData(true);
@@ -168,10 +168,9 @@ public class DeviceManageActivity extends BaseActivity {
         adapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(@NonNull BaseQuickAdapter<?, ?> adapter, @NonNull View view, int position) {
-                DeviceManageBean bean = mList.get(position);
+                DeviceManageResultBean.Records bean = mList.get(position);
                 if (bean != null) {
-                    String name = bean.getName();
-                    DeviceManageDetailActivity.open(DeviceManageActivity.this, name);
+                    DeviceManageDetailActivity.open(DeviceManageActivity.this, bean);
                 }
 
             }
@@ -192,6 +191,20 @@ public class DeviceManageActivity extends BaseActivity {
         departmentAdapter = new DepartmentAdapter(this, departmentBeanList);
         departmentPopupWindow.setAdapter(departmentAdapter);
 
+
+        devicePopupWindow = new ListPopupWindow(this);
+        devicePopupWindow.setInputMethodMode(PopupWindow.INPUT_METHOD_NOT_NEEDED);
+        devicePopupWindow.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING);
+        devicePopupWindow.setPromptPosition(ListPopupWindow.POSITION_PROMPT_BELOW);
+        devicePopupWindow.setWidth(ViewGroup.LayoutParams.WRAP_CONTENT);
+        devicePopupWindow.setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
+        devicePopupWindow.setAnchorView(llDeviceType);
+        devicePopupWindow.setVerticalOffset(ThemeUtils.resolveDimension(this, R.attr.ms_dropdown_offset));
+        devicePopupWindow.setListSelector(ResUtils.getDrawable(this, R.drawable.xui_config_list_item_selector));
+        devicePopupWindow.setBackgroundDrawable(ResUtils.getDrawable(this, R.drawable.ms_drop_down_bg_radius));
+        deviceTypeAdapter = new DeviceTypeAdapter(this, deviceTypeBeanList);
+        devicePopupWindow.setAdapter(deviceTypeAdapter);
+
     }
 
     @Override
@@ -209,7 +222,7 @@ public class DeviceManageActivity extends BaseActivity {
                         || (event != null && KeyEvent.KEYCODE_ENTER == event.getKeyCode() && KeyEvent.ACTION_DOWN == event.getAction())) {
                     //处理事件
                     L.i("zzz1--->etSearch");
-//                    search();
+                    refresh();
                 }
                 return false;
             }
@@ -247,6 +260,19 @@ public class DeviceManageActivity extends BaseActivity {
                 departmentPopupWindow.dismiss();
             }
         });
+
+        devicePopupWindow.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                DeviceTypeBean bean = deviceTypeBeanList.get(position);
+                if (bean != null) {
+                    deviceTypeValue = bean.getValue();
+                    tvDeviceType.setText(StringUtils.nullStrToEmpty(bean.getText()));
+                    refresh();
+                }
+                devicePopupWindow.dismiss();
+            }
+        });
     }
 
     @OnClick({R.id.imb_clear, R.id.ll_department, R.id.ll_device_type})
@@ -259,7 +285,7 @@ public class DeviceManageActivity extends BaseActivity {
                 departmentPopupWindow.show();
                 break;
             case R.id.ll_device_type:
-                departmentPopupWindow.show();
+                devicePopupWindow.show();
                 break;
         }
     }
@@ -281,49 +307,135 @@ public class DeviceManageActivity extends BaseActivity {
 
     @Override
     protected void initData() {
+        DeviceTypeBean deviceTypeBean = new DeviceTypeBean();
+        deviceTypeBean.setTitle(ConstantValue.all_device_type);
+        deviceTypeBean.setText(ConstantValue.all_device_type);
+        deviceTypeBean.setValue(ConstantValue.all_device_type_value);
+        deviceTypeBeanList.add(deviceTypeBean);
+        devicePopupWindow.setSelection(0);
+
         refresh();
+        getDeviceTypeList();
     }
 
     private void refresh() {
-        pageIndex = 1;
+        pageNo = 1;
         getDeviceList();
     }
 
     private void loadMore() {
-        pageIndex++;
+        pageNo++;
         getDeviceList();
+    }
+
+    /**
+     * 获取装置类型列表
+     */
+    private void getDeviceTypeList() {
+        String code = "ldar_deviceType";
+        //部门也是字典接口，传这个： 这样： sys_depart,depart_name,id
+//        String code = "sys_depart";
+        Subscribe.getDeviceTypeList(code, new OnSuccessAndFaultSub(new OnSuccessAndFaultListener() {
+            @Override
+            public void onSuccess(String result) {
+                //成功
+                try {
+                    BaseBean<List<DeviceTypeBean>> baseBean = GsonUtils.fromJson(result, new TypeToken<BaseBean<List<DeviceTypeBean>>>() {
+                    }.getType());
+
+                    if (null != baseBean) {
+                        if (baseBean.isSuccess()) {
+//                            deviceTypeBeanList.clear();
+                            List<DeviceTypeBean> dataList = baseBean.getResult();
+                            if (dataList != null && dataList.size() > 0) {
+                                deviceTypeBeanList.addAll(dataList);
+                                devicePopupWindow.setSelection(0);
+                                deviceTypeValue = deviceTypeBeanList.get(0).getValue();
+                                tvDeviceType.setText(StringUtils.nullStrToEmpty(deviceTypeBeanList.get(0).getText()));
+                            } else {
+                                Toasty.error(DeviceManageActivity.this, R.string.return_empty, Toast.LENGTH_SHORT, true).show();
+                            }
+
+//                            deviceTypeAdapter.notifyDataSetChanged();
+
+                        } else {
+                            Toasty.error(DeviceManageActivity.this, R.string.search_fail, Toast.LENGTH_SHORT, true).show();
+                        }
+                    } else {
+                        Toasty.error(DeviceManageActivity.this, R.string.return_empty, Toast.LENGTH_SHORT, true).show();
+
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    Toasty.error(DeviceManageActivity.this, R.string.parse_fail, Toast.LENGTH_SHORT, true).show();
+
+                }
+
+            }
+
+            @Override
+            public void onFault(String errorMsg) {
+                Toasty.error(DeviceManageActivity.this, R.string.request_fail, Toast.LENGTH_SHORT, true).show();
+            }
+        }, DeviceManageActivity.this));
     }
 
     /**
      * 获取装置列表
      */
     private void getDeviceList() {
+
         Map<String, Object> params = new HashMap<>();
-        params.put(Constant.city, "北京"); // 部门
-//        params.put(Constant.department, department); // 部门
-//        params.put(Constant.deviceType, deviceType); // 装置类型
-        Subscribe.getDeviceList(new OnSuccessAndFaultSub(new OnSuccessAndFaultListener() {
+        params.put(Constant.belongCompany, ""); // 	归属公司
+        params.put(Constant.chemicalName, ""); // 化学品名称
+        params.put(Constant.createBy, ""); // 	创建人
+        params.put(Constant.createTime, ""); // 创建日期
+        params.put(Constant.deviceCapacity, ""); // 	产能
+
+        params.put(Constant.deviceCode, ""); // 	编号
+        params.put(Constant.deviceName, StringUtils.nullStrToEmpty(etSearch.getText().toString().trim())); // 	名称
+        params.put(Constant.deviceType, StringUtils.nullStrToEmpty(deviceTypeValue)); // 装置类型 value值
+        params.put(Constant.id, ""); // 主键
+        params.put(Constant.leakingDate, ""); // 	泄露提报邮箱
+
+        params.put(Constant.pageNo, "" + pageNo); // pageNo
+        params.put(Constant.pageSize, "" + pageSize); // pageSize
+        params.put(Constant.sysOrgCode, ""); // 所属部门
+        params.put(Constant.testSdate, ""); // 开始检测日期
+        params.put(Constant.updateBy, ""); // 更新人
+
+        params.put(Constant.updateTime, ""); // 更新日期
+        params.put(Constant.useDate, ""); // 投产日期
+
+        Subscribe.getDeviceList(params, new OnSuccessAndFaultSub(new OnSuccessAndFaultListener() {
             @Override
             public void onSuccess(String result) {
                 //成功
                 try {
-                    BaseBean<List<DeviceManageBean>> baseBean = GsonUtils.fromJson(result, new TypeToken<BaseBean<List<DeviceManageBean>>>() {
+                    BaseBean<DeviceManageResultBean> baseBean = GsonUtils.fromJson(result, new TypeToken<BaseBean<DeviceManageResultBean>>() {
                     }.getType());
 
                     if (null != baseBean) {
                         if (baseBean.isSuccess()) {
-                            if (pageIndex == 1) {
+                            if (pageNo == 1) {
                                 mList.clear();
                             }
-                            List<DeviceManageBean> dataList = baseBean.getData();
-                            if (dataList != null && dataList.size() > 0) {
-                                mList.addAll(dataList);
-                                srl.finishRefresh();
-                                srl.finishLoadMore();
+                            DeviceManageResultBean resultBean = baseBean.getResult();
+                            if (resultBean != null) {
+                                List<DeviceManageResultBean.Records> dataList = resultBean.getRecords();
+                                if (dataList != null && dataList.size() > 0) {
+                                    mList.addAll(dataList);
+                                    srl.finishRefresh();
+                                    srl.finishLoadMore();
+                                } else {
+                                    srl.finishRefresh();
+                                    srl.finishLoadMoreWithNoMoreData();
+                                }
                             } else {
                                 srl.finishRefresh();
                                 srl.finishLoadMoreWithNoMoreData();
                             }
+
                             adapter.notifyDataSetChanged();
                         } else {
                             Toasty.error(DeviceManageActivity.this, R.string.search_fail, Toast.LENGTH_SHORT, true).show();
@@ -344,17 +456,16 @@ public class DeviceManageActivity extends BaseActivity {
 
                 }
 
-
             }
 
             @Override
             public void onFault(String errorMsg) {
                 //失败
-                Toasty.error(DeviceManageActivity.this, R.string.search_fail, Toast.LENGTH_SHORT, true).show();
+                Toasty.error(DeviceManageActivity.this, R.string.request_fail, Toast.LENGTH_SHORT, true).show();
                 srl.finishRefresh();
                 srl.finishLoadMore();
             }
-        }, DeviceManageActivity.this), params);
+        }, DeviceManageActivity.this));
     }
 
 }

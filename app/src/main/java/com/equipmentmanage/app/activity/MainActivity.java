@@ -1,5 +1,7 @@
 package com.equipmentmanage.app.activity;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
@@ -9,6 +11,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.Lifecycle;
 import androidx.viewpager.widget.ViewPager;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
@@ -23,6 +26,7 @@ import com.equipmentmanage.app.fragment.TaskFragment;
 import com.equipmentmanage.app.fragment.UserFragment;
 import com.equipmentmanage.app.netsubscribe.Subscribe;
 import com.equipmentmanage.app.utils.GsonUtils1;
+import com.equipmentmanage.app.utils.L;
 import com.equipmentmanage.app.utils.netutils.OnSuccessAndFaultListener;
 import com.equipmentmanage.app.utils.netutils.OnSuccessAndFaultSub;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -34,6 +38,11 @@ import java.util.List;
 import butterknife.BindView;
 
 public class MainActivity extends BaseActivity implements NavigationBarView.OnItemSelectedListener {
+
+    public static void open(Context c){
+        Intent i = new Intent(c, MainActivity.class);
+        c.startActivity(i);
+    }
 
     @BindView(R.id.viewPager2) //viewPager2
     public ViewPager2 viewPager2;
@@ -94,7 +103,7 @@ public class MainActivity extends BaseActivity implements NavigationBarView.OnIt
             }
         });
         viewPager2.setOffscreenPageLimit(1);
-
+        bottomNavigationView.setSelectedItemId(0);
 
 
     }
@@ -106,9 +115,27 @@ public class MainActivity extends BaseActivity implements NavigationBarView.OnIt
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        viewPager2.setCurrentItem(item.getOrder());
+        L.i("zzz1--getItemId->" + item.getItemId());
+
+        switch (item.getItemId()) {
+            case R.id.task:
+                viewPager2.setCurrentItem(0);
+                break;
+            case R.id.put_on_record:
+                viewPager2.setCurrentItem(1);
+                break;
+            case R.id.search:
+                viewPager2.setCurrentItem(2);
+                break;
+            case R.id.user:
+                viewPager2.setCurrentItem(3);
+                break;
+            default:
+                break;
+        }
         return false;
     }
+
 
     private void getUserList() {
         Subscribe.getUserList(new OnSuccessAndFaultSub(new OnSuccessAndFaultListener() {
@@ -130,30 +157,4 @@ public class MainActivity extends BaseActivity implements NavigationBarView.OnIt
         }, MainActivity.this));
     }
 
-    private class ViewPageAdapter extends FragmentStateAdapter {
-        public ViewPageAdapter(@NonNull FragmentManager fragmentManager, @NonNull Lifecycle lifecycle) {
-            super(fragmentManager, lifecycle);
-        }
-
-        @Override
-        public int getItemCount() {
-            return 0;
-        }
-
-        @Override
-        public int getItemViewType(int position) {
-            return super.getItemViewType(position);
-        }
-
-        @NonNull
-        @Override
-        public Fragment createFragment(int position) {
-            return null;
-        }
-
-        @Override
-        public long getItemId(int position) {
-            return super.getItemId(position);
-        }
-    }
 }

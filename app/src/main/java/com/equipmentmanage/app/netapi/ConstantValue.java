@@ -2,12 +2,14 @@ package com.equipmentmanage.app.netapi;
 
 /**
  * Author: zzh
- * Date: 2021/8/10 19:22
+ * Date: 2021/8/14
  * Description:
  */
-public class Constant {
+public class ConstantValue {
 
-    public static String token = "token";
+    public static String all_device_type = "全部装置类型";
+    public static String all_device_type_value = "";
+
     public static String userId = "userId";
     public static String username = "username";
     public static String realname = "realname";
@@ -40,8 +42,5 @@ public class Constant {
 
     public static String updateTime = "updateTime";
     public static String useDate = "useDate";
-
-    // 装置实体
-    public static String deviceBean = "deviceBean";
 
 }

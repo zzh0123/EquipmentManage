@@ -109,7 +109,8 @@
                 android:paddingTop="@dimen/dp_8"
                 android:paddingBottom="@dimen/dp_8"
                 android:paddingLeft="@dimen/dp_12"
-                android:paddingRight="@dimen/dp_8">
+                android:paddingRight="@dimen/dp_8"
+                android:visibility="gone">
 
                 <TextView
                     android:id="@+id/tv_department"
@@ -135,7 +136,6 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:layout_gravity="center_vertical"
-                android:layout_marginLeft="@dimen/dp_10"
                 android:background="@drawable/bg_pop_down"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"

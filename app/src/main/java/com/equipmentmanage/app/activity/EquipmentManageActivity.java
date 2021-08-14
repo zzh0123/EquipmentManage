@@ -304,7 +304,7 @@ public class EquipmentManageActivity extends BaseActivity {
         params.put(Constant.city, "北京"); // 部门
 //        params.put(Constant.department, department); // 部门
 //        params.put(Constant.deviceType, deviceType); // 装置类型
-        Subscribe.getDeviceList(new OnSuccessAndFaultSub(new OnSuccessAndFaultListener() {
+        Subscribe.getDeviceList(params, new OnSuccessAndFaultSub(new OnSuccessAndFaultListener() {
             @Override
             public void onSuccess(String result) {
                 //成功
@@ -317,15 +317,15 @@ public class EquipmentManageActivity extends BaseActivity {
                             if (pageIndex == 1) {
                                 mList.clear();
                             }
-                            List<EquipmentManageBean> dataList = baseBean.getData();
-                            if (dataList != null && dataList.size() > 0) {
-                                mList.addAll(dataList);
-                                srl.finishRefresh();
-                                srl.finishLoadMore();
-                            } else {
-                                srl.finishRefresh();
-                                srl.finishLoadMoreWithNoMoreData();
-                            }
+//                            List<EquipmentManageBean> dataList = baseBean.getData();
+//                            if (dataList != null && dataList.size() > 0) {
+//                                mList.addAll(dataList);
+//                                srl.finishRefresh();
+//                                srl.finishLoadMore();
+//                            } else {
+//                                srl.finishRefresh();
+//                                srl.finishLoadMoreWithNoMoreData();
+//                            }
                             adapter.notifyDataSetChanged();
                         } else {
                             Toasty.error(EquipmentManageActivity.this, R.string.search_fail, Toast.LENGTH_SHORT, true).show();
@@ -356,7 +356,7 @@ public class EquipmentManageActivity extends BaseActivity {
                 srl.finishRefresh();
                 srl.finishLoadMore();
             }
-        }, EquipmentManageActivity.this), params);
+        }, EquipmentManageActivity.this));
     }
 
 }

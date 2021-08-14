@@ -8,6 +8,7 @@ import android.util.Log;
 import androidx.multidex.MultiDex;
 
 import com.equipmentmanage.app.utils.AppUtils;
+import com.tencent.mmkv.MMKV;
 import com.xuexiang.xaop.XAOP;
 import com.xuexiang.xaop.checker.IThrowableHandler;
 import com.xuexiang.xaop.logger.XLogger;
@@ -30,6 +31,8 @@ public class MyApplication extends Application {
         appContext = getApplicationContext();
         app = this;
 
+        String rootDir = MMKV.initialize(this);
+        System.out.println("mmkv root: " + rootDir);
         initAOP();
     }
 

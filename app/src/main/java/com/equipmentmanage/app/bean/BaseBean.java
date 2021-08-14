@@ -6,56 +6,54 @@ package com.equipmentmanage.app.bean;
  * @CreateDate: 2021/8/10
  */
 public class BaseBean<T> {
-    /**
-     * error : false
-     */
-    public boolean Success;
 
-    public int Count;
+    private boolean success;
 
-    public int Code;
+    private String message;
 
-    public String Message;
+    private int code;
 
-    public T Data;
+    private T result;
+
+    private int timestamp;
 
     public boolean isSuccess() {
-        return Success;
+        return success;
     }
 
     public void setSuccess(boolean success) {
-        Success = success;
-    }
-
-    public int getCount() {
-        return Count;
-    }
-
-    public void setCount(int count) {
-        Count = count;
-    }
-
-    public int getCode() {
-        return Code;
-    }
-
-    public void setCode(int code) {
-        Code = code;
+        this.success = success;
     }
 
     public String getMessage() {
-        return Message;
+        return message;
     }
 
     public void setMessage(String message) {
-        Message = message;
+        this.message = message;
     }
 
-    public T getData() {
-        return Data;
+    public int getCode() {
+        return code;
     }
 
-    public void setData(T data) {
-        Data = data;
+    public void setCode(int code) {
+        this.code = code;
+    }
+
+    public T getResult() {
+        return result;
+    }
+
+    public void setResult(T result) {
+        this.result = result;
+    }
+
+    public int getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(int timestamp) {
+        this.timestamp = timestamp;
     }
 }

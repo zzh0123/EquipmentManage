@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -14,11 +15,29 @@ import android.widget.Toast;
 
 import com.equipmentmanage.app.R;
 import com.equipmentmanage.app.base.BaseActivity;
+import com.equipmentmanage.app.bean.BaseBean;
+import com.equipmentmanage.app.bean.DeviceManageBean;
+import com.equipmentmanage.app.bean.LoginPostBean;
+import com.equipmentmanage.app.bean.LoginResultBean;
+import com.equipmentmanage.app.bean.ResultInfo;
+import com.equipmentmanage.app.bean.UserInfoBean;
+import com.equipmentmanage.app.netapi.Constant;
+import com.equipmentmanage.app.netsubscribe.Subscribe;
+import com.equipmentmanage.app.utils.GsonUtils1;
+import com.equipmentmanage.app.utils.L;
 import com.equipmentmanage.app.utils.StringUtils;
+import com.equipmentmanage.app.utils.gson.GsonUtils;
+import com.equipmentmanage.app.utils.netutils.OnSuccessAndFaultListener;
+import com.equipmentmanage.app.utils.netutils.OnSuccessAndFaultSub;
+import com.google.gson.reflect.TypeToken;
+import com.tencent.mmkv.MMKV;
 import com.xuexiang.xaop.annotation.SingleClick;
 import com.xuexiang.xui.widget.actionbar.TitleBar;
 
 import java.io.File;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -46,6 +65,8 @@ public class LoginActivity extends BaseActivity {
     @BindView(R.id.tv_login)
     TextView tvLogin; //登录
 
+    private MMKV kv = MMKV.defaultMMKV();
+
 
     @Override
     protected int initLayout() {
@@ -54,7 +75,9 @@ public class LoginActivity extends BaseActivity {
 
     @Override
     protected void initView() {
-
+        // 20001 123456 taorui1     Aa123456!
+        etAccount.setText("taorui1");
+        etPassword.setText("Aa123456!");
     }
 
     @Override
@@ -139,6 +162,61 @@ public class LoginActivity extends BaseActivity {
     }
 
     private void login(){
+        LoginPostBean loginPostBean = new LoginPostBean();
+//        loginPostBean.captcha ="";
+//        loginPostBean.checkKey ="";
+        loginPostBean.setUsername(etAccount.getText().toString().trim());
+        loginPostBean.setPassword(etPassword.getText().toString().trim());
 
+        kv.removeValuesForKeys(new String[]{Constant.token, Constant.userId, Constant.username,
+                Constant.realname, Constant.orgCode, Constant.orgCodeTxt, Constant.telephone});
+
+        Subscribe.login(loginPostBean, new OnSuccessAndFaultSub(new OnSuccessAndFaultListener() {
+            @Override
+            public void onSuccess(String result) {
+                try {
+                    BaseBean<LoginResultBean> baseBean = GsonUtils.fromJson(result, new TypeToken<BaseBean<LoginResultBean>>() {
+                    }.getType());
+
+                    if (baseBean != null) {
+                        if (baseBean.isSuccess()) {
+                            LoginResultBean loginResultBean = baseBean.getResult();
+                            if (loginResultBean != null){
+                                String token = loginResultBean.getToken();
+                                kv.encode(Constant.token, token);
+                                L.i("zzz1", "rtro token0: " + kv.decodeString(Constant.token, ""));
+                                UserInfoBean userInfoBean = loginResultBean.getUserInfo();
+                                if (userInfoBean != null){
+                                    kv.encode(Constant.userId, userInfoBean.getId());
+                                    kv.encode(Constant.username, StringUtils.nullStrToEmpty(userInfoBean.getUsername()));
+                                    kv.encode(Constant.realname, StringUtils.nullStrToEmpty(userInfoBean.getRealname()));
+                                    kv.encode(Constant.orgCode, StringUtils.nullStrToEmpty(userInfoBean.getOrgCode()));
+                                    kv.encode(Constant.orgCodeTxt, StringUtils.nullStrToEmpty(userInfoBean.getOrgCodeTxt()));
+                                    kv.encode(Constant.telephone, StringUtils.nullStrToEmpty(userInfoBean.getTelephone()));
+                                }
+
+                            }
+                            Toasty.success(LoginActivity.this, R.string.login_success, Toast.LENGTH_SHORT, true).show();
+
+//                            MainActivity.open(LoginActivity.this);
+                            DeviceManageActivity.open(LoginActivity.this);
+                        } else {
+                            Toasty.error(LoginActivity.this, R.string.login_fail, Toast.LENGTH_SHORT, true).show();
+                        }
+                    } else {
+                        Toasty.error(LoginActivity.this, R.string.return_empty, Toast.LENGTH_SHORT, true).show();
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    Toasty.error(LoginActivity.this, R.string.parse_fail, Toast.LENGTH_SHORT, true).show();
+                }
+            }
+
+            @Override
+            public void onFault(String errorMsg) {
+                Toasty.error(LoginActivity.this, R.string.request_fail, Toast.LENGTH_SHORT, true).show();
+
+            }
+        }, LoginActivity.this));
     }
 }
