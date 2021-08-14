@@ -16,6 +16,7 @@ import com.equipmentmanage.app.base.BaseActivity;
 import com.equipmentmanage.app.bean.BaseBean;
 import com.equipmentmanage.app.bean.ChemicalDetailBean;
 import com.equipmentmanage.app.bean.DeviceManageResultBean;
+import com.equipmentmanage.app.bean.DeviceTypeBean;
 import com.equipmentmanage.app.netapi.Constant;
 import com.equipmentmanage.app.netsubscribe.Subscribe;
 import com.equipmentmanage.app.utils.StringUtils;
@@ -41,7 +42,7 @@ import es.dmoral.toasty.Toasty;
  */
 public class DeviceManageDetailActivity extends BaseActivity {
 
-    public static void open(Context c, DeviceManageResultBean.Records bean){
+    public static void open(Context c, DeviceManageResultBean.Records bean) {
         Intent i = new Intent(c, DeviceManageDetailActivity.class);
         i.putExtra(Constant.deviceBean, bean);
         c.startActivity(i);
@@ -86,8 +87,6 @@ public class DeviceManageDetailActivity extends BaseActivity {
     private ChemicalDetailAdapter adapter;
     private List<ChemicalDetailBean> mList = new ArrayList<>();
 
-    private int pageIndex = 1, pageSize = 10;
-
     private String department, deviceType;
 
     private DeviceManageResultBean.Records bean;
@@ -110,7 +109,7 @@ public class DeviceManageDetailActivity extends BaseActivity {
             }
         });
 
-        if (bean != null){
+        if (bean != null) {
             tvDeviceName.setText(StringUtils.nullStrToEmpty(bean.getDeviceName())); //名称
             tvDeviceCode.setText(StringUtils.nullStrToEmpty(bean.getDeviceCode())); //编号
             tvDeviceType.setText(StringUtils.nullStrToEmpty(bean.getDeviceType_dictText())); //装置类型
@@ -123,14 +122,6 @@ public class DeviceManageDetailActivity extends BaseActivity {
             tvOrder.setText(StringUtils.nullStrToEmpty(bean.getUseDate())); //顺序
             tvMailbox.setText(StringUtils.nullStrToEmpty(bean.getLeakingDate())); //泄露提报邮箱
         }
-
-
-        ChemicalDetailBean bean = new ChemicalDetailBean();
-        bean.setName("111");
-        ChemicalDetailBean bean1 = new ChemicalDetailBean();
-        bean1.setName("2222");
-        mList.add(bean);
-        mList.add(bean1);
 
         LinearLayoutManager manager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         rvList.setLayoutManager(manager);
@@ -151,10 +142,7 @@ public class DeviceManageDetailActivity extends BaseActivity {
         llNoData.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                wahId = -999;
-//                ownerId = -999;
-//                getDeptList();
-                refresh();
+                getChemicalDetailList();
             }
         });
         return notDataView;
@@ -162,76 +150,58 @@ public class DeviceManageDetailActivity extends BaseActivity {
 
     @Override
     protected void initData() {
-//        refresh();
+        getChemicalDetailList();
     }
 
-    private void refresh() {
-        pageIndex = 1;
-        getDeviceList();
-    }
-
-    private void loadMore() {
-        pageIndex++;
-        getDeviceList();
-    }
 
     /**
-     * 获取装置列表
+     * 获取化学品明细列表
      */
-    private void getDeviceList() {
-        Map<String, Object> params = new HashMap<>();
-                params.put(Constant.city, "北京"); // 部门
-//        params.put(Constant.department, department); // 部门
-//        params.put(Constant.deviceType, deviceType); // 装置类型
-        Subscribe.getDeviceList(params, new OnSuccessAndFaultSub(new OnSuccessAndFaultListener() {
+    private void getChemicalDetailList() {
+        String code = "ldar_chemicalsType";
+        //部门也是字典接口，传这个： 这样： sys_depart,depart_name,id
+//        String code = "sys_depart";
+        Subscribe.getChemicalDetailList(code, new OnSuccessAndFaultSub(new OnSuccessAndFaultListener() {
             @Override
             public void onSuccess(String result) {
                 //成功
                 try {
-                    BaseBean<List<ChemicalDetailBean>> baseBean = GsonUtils.fromJson(result, new TypeToken<BaseBean<List<ChemicalDetailBean>>>() {
+                    BaseBean<List<DeviceTypeBean>> baseBean = GsonUtils.fromJson(result, new TypeToken<BaseBean<List<DeviceTypeBean>>>() {
                     }.getType());
 
                     if (null != baseBean) {
-//                        if (baseBean.isSuccess()) {
-////                            if (pageIndex == 1) {
-////                                mList.clear();
-////                            }
-//                            List<ChemicalDetailBean> dataList = baseBean.getData();
-//                            if (dataList != null && dataList.size() > 0) {
-//                                mList.addAll(dataList);
-//                            } else {
-//                                Toasty.error(DeviceManageDetailActivity.this, R.string.return_empty, Toast.LENGTH_SHORT, true).show();
-//
-//                            }
-//                            adapter.notifyDataSetChanged();
-//                        } else {
-//                            Toasty.error(DeviceManageDetailActivity.this, R.string.search_fail, Toast.LENGTH_SHORT, true).show();
-////                            srl.finishRefresh();
-////                            srl.finishLoadMore();
-//                        }
+                        if (baseBean.isSuccess()) {
+//                            deviceTypeBeanList.clear();
+                            List<DeviceTypeBean> dataList = baseBean.getResult();
+                            if (dataList != null && dataList.size() > 0) {
+//                                deviceTypeBeanList.addAll(dataList);
+//                                devicePopupWindow.setSelection(0);
+//                                deviceTypeValue = deviceTypeBeanList.get(0).getValue();
+//                                tvDeviceType.setText(StringUtils.nullStrToEmpty(deviceTypeBeanList.get(0).getText()));
+                            } else {
+                                Toasty.error(DeviceManageDetailActivity.this, R.string.return_empty, Toast.LENGTH_SHORT, true).show();
+                            }
+
+//                            deviceTypeAdapter.notifyDataSetChanged();
+
+                        } else {
+                            Toasty.error(DeviceManageDetailActivity.this, R.string.search_fail, Toast.LENGTH_SHORT, true).show();
+                        }
                     } else {
                         Toasty.error(DeviceManageDetailActivity.this, R.string.return_empty, Toast.LENGTH_SHORT, true).show();
-//                        srl.finishRefresh();
-//                        srl.finishLoadMore();
 
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
                     Toasty.error(DeviceManageDetailActivity.this, R.string.parse_fail, Toast.LENGTH_SHORT, true).show();
-//                    srl.finishRefresh();
-//                    srl.finishLoadMore();
 
                 }
-
 
             }
 
             @Override
             public void onFault(String errorMsg) {
-                //失败
-                Toasty.error(DeviceManageDetailActivity.this, R.string.search_fail, Toast.LENGTH_SHORT, true).show();
-//                srl.finishRefresh();
-//                srl.finishLoadMore();
+                Toasty.error(DeviceManageDetailActivity.this, R.string.request_fail, Toast.LENGTH_SHORT, true).show();
             }
         }, DeviceManageDetailActivity.this));
     }

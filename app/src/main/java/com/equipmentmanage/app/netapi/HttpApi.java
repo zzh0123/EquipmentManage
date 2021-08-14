@@ -46,6 +46,10 @@ public interface HttpApi {
     @GET("/jeecg-boot/ldar/ldarBaseDevice/list")
     Observable<ResponseBody> getDeviceList(@QueryMap Map<String, Object> map);
 
+    // getChemicalDetailList
+    @GET("/jeecg-boot/sys/dict/getDictItems/{code}")
+    Observable<ResponseBody> getChemicalDetailList(@Path("code") String code);
+
 
 
     @GET("weather_mini")

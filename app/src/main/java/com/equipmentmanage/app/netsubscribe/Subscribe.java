@@ -36,6 +36,14 @@ public class Subscribe {
     }
 
     /**
+     * getChemicalDetailList
+     */
+    public static void getChemicalDetailList(String code, DisposableObserver<ResponseBody> subscriber) {
+        Observable<ResponseBody> observable =  RetrofitFactory.getInstance().defaultBaseUrl().getHttpApi().getChemicalDetailList(code);
+        RetrofitFactory.getInstance().defaultBaseUrl().toSubscribe(observable, subscriber);
+    }
+
+    /**
      * getDeviceList
      */
     public static void getDeviceList(Map<String, Object> map, DisposableObserver<ResponseBody> subscriber) {

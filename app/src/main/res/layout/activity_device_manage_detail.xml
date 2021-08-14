@@ -133,7 +133,8 @@
                     android:textColor="@color/c_909399"
                     android:textSize="@dimen/sp_14"
                     app:layout_constraintLeft_toLeftOf="@+id/tv_device_type_title"
-                    app:layout_constraintTop_toBottomOf="@+id/tv_device_type_title" />
+                    app:layout_constraintTop_toBottomOf="@+id/tv_device_type_title"
+                    android:visibility="gone"/>
 
                 <TextView
                     android:id="@+id/tv_department"
@@ -144,7 +145,8 @@
                     app:layout_constraintBottom_toBottomOf="@+id/tv_department_title"
                     app:layout_constraintLeft_toLeftOf="@+id/tv_device_type"
                     app:layout_constraintTop_toTopOf="@+id/tv_department_title"
-                    tools:text="4444" />
+                    tools:text="4444"
+                    android:visibility="gone"/>
 
                 <!-- 产能-->
                 <TextView
@@ -225,7 +227,8 @@
                     android:textColor="@color/c_909399"
                     android:textSize="@dimen/sp_14"
                     app:layout_constraintLeft_toLeftOf="@+id/tv_test_start_date_title"
-                    app:layout_constraintTop_toBottomOf="@+id/tv_test_start_date_title" />
+                    app:layout_constraintTop_toBottomOf="@+id/tv_test_start_date_title"
+                    android:visibility="gone"/>
 
                 <TextView
                     android:id="@+id/tv_enabled"
@@ -236,7 +239,8 @@
                     app:layout_constraintBottom_toBottomOf="@+id/tv_enabled_title"
                     app:layout_constraintLeft_toLeftOf="@+id/tv_test_start_date"
                     app:layout_constraintTop_toTopOf="@+id/tv_enabled_title"
-                    tools:text="888" />
+                    tools:text="888"
+                    android:visibility="gone"/>
 
                 <!-- 顺序-->
                 <TextView
@@ -248,7 +252,8 @@
                     android:textColor="@color/c_909399"
                     android:textSize="@dimen/sp_14"
                     app:layout_constraintLeft_toLeftOf="@+id/tv_enabled_title"
-                    app:layout_constraintTop_toBottomOf="@+id/tv_enabled_title" />
+                    app:layout_constraintTop_toBottomOf="@+id/tv_enabled_title"
+                    android:visibility="gone"/>
 
                 <TextView
                     android:id="@+id/tv_order"
@@ -259,7 +264,8 @@
                     app:layout_constraintBottom_toBottomOf="@+id/tv_order_title"
                     app:layout_constraintLeft_toLeftOf="@+id/tv_enabled"
                     app:layout_constraintTop_toTopOf="@+id/tv_order_title"
-                    tools:text="999" />
+                    tools:text="999"
+                    android:visibility="gone"/>
 
                 <!-- 泄露提报邮箱-->
                 <TextView
