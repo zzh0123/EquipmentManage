@@ -18,6 +18,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.EquipmentManage"
         android:usesCleartextTraffic="true">
+        <activity android:name=".activity.PartDetailActivity"></activity>
 
         <meta-data
             android:name="android.max_aspect"
@@ -27,8 +28,7 @@
             android:value="true" /> <!-- 适配小米（xiaomi）刘海屏 -->
         <meta-data
             android:name="notch.config"
-            android:value="portrait|landscape" />
-        <!-- DeviceManageActivity   MainActivity AreaManageActivity -->
+            android:value="portrait|landscape" /> <!-- DeviceManageActivity   MainActivity AreaManageActivity -->
         <activity
             android:name=".activity.LoginActivity"
             android:screenOrientation="portrait">
@@ -37,11 +37,9 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-        <!-- 登录页 -->
-<!--        <activity android:name=".activity.LoginActivity"-->
-<!--            android:screenOrientation="portrait" />-->
-
+        </activity> <!-- 登录页 -->
+        <!-- <activity android:name=".activity.LoginActivity" -->
+        <!-- android:screenOrientation="portrait" /> -->
         <!-- 装置管理 -->
         <activity
             android:name=".activity.MainActivity"
@@ -64,9 +62,9 @@
         <activity
             android:name=".activity.EquipmentManageDetailActivity"
             android:screenOrientation="portrait" /> <!-- 设备管理 -->
-         <activity android:name=".activity.ProductFlowActivity"
-         android:screenOrientation="portrait"/>
-        <!-- 设备管理详情 -->
+        <activity
+            android:name=".activity.ProductFlowActivity"
+            android:screenOrientation="portrait" /> <!-- 设备管理详情 -->
         <activity
             android:name=".activity.ProductFlowDetailActivity"
             android:screenOrientation="portrait" />
