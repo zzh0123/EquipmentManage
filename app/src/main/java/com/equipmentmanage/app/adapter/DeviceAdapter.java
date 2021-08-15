@@ -36,9 +36,9 @@ public class DeviceAdapter extends BaseQuickAdapter<DeviceManageResultBean.Recor
         TextView tvStatus = holder.getView(R.id.tv_status);
 //        String status = bean.getStatus();
 //        if (status.equals("1")){
-//            tvStatus.setText(R.string.enabled_1);
-//            tvStatus.setTextColor(getContext().getResources().getColor(R.color.c_67C23A));
-//            tvStatus.setBackgroundResource(R.drawable.bg_rec_green);
+            tvStatus.setText(R.string.enabled_1);
+            tvStatus.setTextColor(getContext().getResources().getColor(R.color.c_67C23A));
+            tvStatus.setBackgroundResource(R.drawable.bg_rec_green);
 //        } else {
 //            tvStatus.setText(R.string.enabled_0);
 //            tvStatus.setTextColor(getContext().getResources().getColor(R.color.c_FFC0C4CC));

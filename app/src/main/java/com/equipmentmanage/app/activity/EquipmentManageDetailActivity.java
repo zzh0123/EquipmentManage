@@ -10,8 +10,11 @@ import com.equipmentmanage.app.R;
 import com.equipmentmanage.app.base.BaseActivity;
 import com.equipmentmanage.app.bean.BaseBean;
 import com.equipmentmanage.app.bean.ChemicalDetailBean;
+import com.equipmentmanage.app.bean.DeviceManageResultBean;
+import com.equipmentmanage.app.bean.EquipmentManageResultBean;
 import com.equipmentmanage.app.netapi.Constant;
 import com.equipmentmanage.app.netsubscribe.Subscribe;
+import com.equipmentmanage.app.utils.StringUtils;
 import com.equipmentmanage.app.utils.gson.GsonUtils;
 import com.equipmentmanage.app.utils.netutils.OnSuccessAndFaultListener;
 import com.equipmentmanage.app.utils.netutils.OnSuccessAndFaultSub;
@@ -33,19 +36,20 @@ import es.dmoral.toasty.Toasty;
  */
 public class EquipmentManageDetailActivity extends BaseActivity {
 
-    public static void open(Context c, String id){
+    public static void open(Context c, EquipmentManageResultBean.Records bean){
         Intent i = new Intent(c, EquipmentManageDetailActivity.class);
+        i.putExtra(Constant.equipmentBean, bean);
         c.startActivity(i);
     }
 
     @BindView(R.id.titleBar)
     TitleBar titleBar; //标题栏
 
-    @BindView(R.id.tv_device_name)
-    TextView tvDeviceName; //名称
+    @BindView(R.id.tv_equipment_name)
+    TextView tvEquipmentName; //名称
 
-    @BindView(R.id.tv_device_code)
-    TextView tvDeviceCode; //编号
+    @BindView(R.id.tv_equipment_code)
+    TextView tvEquipmentCode; //编号
 
     @BindView(R.id.tv_belong_device)
     TextView tvBelongDevice; //所属装置
@@ -61,6 +65,8 @@ public class EquipmentManageDetailActivity extends BaseActivity {
 
     private String department, deviceType;
 
+    private EquipmentManageResultBean.Records bean;
+
     @Override
     protected int initLayout() {
         return R.layout.activity_equipment_manage_detail;
@@ -68,6 +74,8 @@ public class EquipmentManageDetailActivity extends BaseActivity {
 
     @Override
     protected void initView() {
+
+        bean = (EquipmentManageResultBean.Records) getIntent().getSerializableExtra(Constant.equipmentBean);
 
         titleBar.setLeftClickListener(new View.OnClickListener() {
             @SingleClick
@@ -77,6 +85,15 @@ public class EquipmentManageDetailActivity extends BaseActivity {
             }
         });
 
+        if (bean != null) {
+            tvEquipmentName.setText(StringUtils.nullStrToEmpty(bean.getEquipmentName())); //名称
+            tvEquipmentCode.setText(StringUtils.nullStrToEmpty(bean.getEquipmentCode())); //编号
+            tvBelongDevice.setText(StringUtils.nullStrToEmpty(bean.getDeviceId_dictText())); //所属装置
+            tvBelongArea.setText(StringUtils.nullStrToEmpty(bean.getAreaId_dictText())); //所属区域
+//            tvEnabled.setText(StringUtils.nullStrToEmpty(bean.getDeviceCapacity())); //是否可用
+//            tvOrder.setText(StringUtils.nullStrToEmpty(bean.getUseDate())); //顺序
+
+        }
 
     }
 
@@ -87,68 +104,7 @@ public class EquipmentManageDetailActivity extends BaseActivity {
 
     @Override
     protected void initData() {
-//        refresh();
-    }
 
-    /**
-     * 获取装置列表
-     */
-    private void getDeviceList() {
-        Map<String, Object> params = new HashMap<>();
-                params.put(Constant.city, "北京"); // 部门
-//        params.put(Constant.department, department); // 部门
-//        params.put(Constant.deviceType, deviceType); // 装置类型
-        Subscribe.getDeviceList(params, new OnSuccessAndFaultSub(new OnSuccessAndFaultListener() {
-            @Override
-            public void onSuccess(String result) {
-                //成功
-                try {
-                    BaseBean<List<ChemicalDetailBean>> baseBean = GsonUtils.fromJson(result, new TypeToken<BaseBean<List<ChemicalDetailBean>>>() {
-                    }.getType());
-
-                    if (null != baseBean) {
-                        if (baseBean.isSuccess()) {
-//                            if (pageIndex == 1) {
-//                                mList.clear();
-//                            }
-//                            List<ChemicalDetailBean> dataList = baseBean.getData();
-//                            if (dataList != null && dataList.size() > 0) {
-////                                mList.addAll(dataList);
-//                            } else {
-//                                Toasty.error(EquipmentManageDetailActivity.this, R.string.return_empty, Toast.LENGTH_SHORT, true).show();
-//
-//                            }
-//                            adapter.notifyDataSetChanged();
-                        } else {
-                            Toasty.error(EquipmentManageDetailActivity.this, R.string.search_fail, Toast.LENGTH_SHORT, true).show();
-//                            srl.finishRefresh();
-//                            srl.finishLoadMore();
-                        }
-                    } else {
-                        Toasty.error(EquipmentManageDetailActivity.this, R.string.return_empty, Toast.LENGTH_SHORT, true).show();
-//                        srl.finishRefresh();
-//                        srl.finishLoadMore();
-
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    Toasty.error(EquipmentManageDetailActivity.this, R.string.parse_fail, Toast.LENGTH_SHORT, true).show();
-//                    srl.finishRefresh();
-//                    srl.finishLoadMore();
-
-                }
-
-
-            }
-
-            @Override
-            public void onFault(String errorMsg) {
-                //失败
-                Toasty.error(EquipmentManageDetailActivity.this, R.string.search_fail, Toast.LENGTH_SHORT, true).show();
-//                srl.finishRefresh();
-//                srl.finishLoadMore();
-            }
-        }, EquipmentManageDetailActivity.this));
     }
 
 }

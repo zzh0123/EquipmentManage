@@ -1,5 +1,7 @@
 package com.equipmentmanage.app.activity;
 
+import android.content.Context;
+import android.content.Intent;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.KeyEvent;
@@ -31,7 +33,9 @@ import com.equipmentmanage.app.base.BaseActivity;
 import com.equipmentmanage.app.bean.BaseBean;
 import com.equipmentmanage.app.bean.DepartmentBean;
 import com.equipmentmanage.app.bean.DeviceManageBean;
+import com.equipmentmanage.app.bean.DeviceManageResultBean;
 import com.equipmentmanage.app.bean.EquipmentManageBean;
+import com.equipmentmanage.app.bean.EquipmentManageResultBean;
 import com.equipmentmanage.app.netapi.Constant;
 import com.equipmentmanage.app.netsubscribe.Subscribe;
 import com.equipmentmanage.app.utils.L;
@@ -64,6 +68,11 @@ import es.dmoral.toasty.Toasty;
  * @CreateDate: 2021/8/12
  */
 public class EquipmentManageActivity extends BaseActivity {
+    public static void open(Context c) {
+        Intent i = new Intent(c, EquipmentManageActivity.class);
+        c.startActivity(i);
+    }
+
     @BindView(R.id.titleBar)
     TitleBar titleBar; //标题栏
 
@@ -100,9 +109,9 @@ public class EquipmentManageActivity extends BaseActivity {
     @BindView(R.id.rv_list)
     RecyclerView rvList;
     private EquipmentAdapter adapter;
-    private List<EquipmentManageBean> mList = new ArrayList<>();
+    private List<EquipmentManageResultBean.Records> mList = new ArrayList<>();
 
-    private int pageIndex = 1, pageSize = 10;
+    private int pageNo = 1, pageSize = 10;
 
     private String department, deviceType;
 
@@ -128,15 +137,6 @@ public class EquipmentManageActivity extends BaseActivity {
             }
         });
 
-
-        EquipmentManageBean bean = new EquipmentManageBean();
-        bean.setName("111");
-        bean.setStatus("1");
-        EquipmentManageBean bean1 = new EquipmentManageBean();
-        bean1.setName("2222");
-        bean1.setStatus("2");
-        mList.add(bean);
-        mList.add(bean1);
 
         DepartmentBean departmentBean = new DepartmentBean();
         departmentBean.setName("部门1");
@@ -170,10 +170,9 @@ public class EquipmentManageActivity extends BaseActivity {
         adapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(@NonNull BaseQuickAdapter<?, ?> adapter, @NonNull View view, int position) {
-                EquipmentManageBean bean = mList.get(position);
+                EquipmentManageResultBean.Records bean = mList.get(position);
                 if (bean != null) {
-                    String name = bean.getName();
-                    EquipmentManageDetailActivity.open(EquipmentManageActivity.this, name);
+                    EquipmentManageDetailActivity.open(EquipmentManageActivity.this, bean);
                 }
 
             }
@@ -211,7 +210,7 @@ public class EquipmentManageActivity extends BaseActivity {
                         || (event != null && KeyEvent.KEYCODE_ENTER == event.getKeyCode() && KeyEvent.ACTION_DOWN == event.getAction())) {
                     //处理事件
                     L.i("zzz1--->etSearch");
-//                    search();
+                    refresh();
                 }
                 return false;
             }
@@ -287,45 +286,67 @@ public class EquipmentManageActivity extends BaseActivity {
     }
 
     private void refresh() {
-        pageIndex = 1;
-        getDeviceList();
+        pageNo = 1;
+        getEquipmentList();
     }
 
     private void loadMore() {
-        pageIndex++;
-        getDeviceList();
+        pageNo++;
+        getEquipmentList();
     }
 
     /**
-     * 获取装置列表
+     * 获取设备列表
      */
-    private void getDeviceList() {
+    private void getEquipmentList() {
+
         Map<String, Object> params = new HashMap<>();
-        params.put(Constant.city, "北京"); // 部门
-//        params.put(Constant.department, department); // 部门
-//        params.put(Constant.deviceType, deviceType); // 装置类型
-        Subscribe.getDeviceList(params, new OnSuccessAndFaultSub(new OnSuccessAndFaultListener() {
+        params.put(Constant.areaId, ""); // 		所属区域
+        params.put(Constant.belongCompany, ""); // 	归属公司
+        params.put(Constant.createBy, ""); // 	创建人
+        params.put(Constant.createTime, ""); // 创建日期
+        params.put(Constant.deviceId, ""); // 	所属装置
+
+        params.put(Constant.eftflag, ""); // 	有效状态
+        params.put(Constant.equipmentCode, ""); // 	编号 value值
+        params.put(Constant.equipmentName, StringUtils.nullStrToEmpty(etSearch.getText().toString().trim())); // 名称
+        params.put(Constant.id, ""); // 主键
+
+        params.put(Constant.pageNo, "" + pageNo); // pageNo
+        params.put(Constant.pageSize, "" + pageSize); // pageSize
+        params.put(Constant.sysOrgCode, ""); // 	所属部门
+        params.put(Constant.updateBy, ""); // 更新人
+        params.put(Constant.updateTime, ""); // 更新日期
+
+        Subscribe.getEquipmentList(params, new OnSuccessAndFaultSub(new OnSuccessAndFaultListener() {
             @Override
             public void onSuccess(String result) {
                 //成功
                 try {
-                    BaseBean<List<EquipmentManageBean>> baseBean = GsonUtils.fromJson(result, new TypeToken<BaseBean<List<EquipmentManageBean>>>() {
+                    BaseBean<EquipmentManageResultBean> baseBean = GsonUtils.fromJson(result, new TypeToken<BaseBean<EquipmentManageResultBean>>() {
                     }.getType());
 
                     if (null != baseBean) {
                         if (baseBean.isSuccess()) {
-                            if (pageIndex == 1) {
+                            if (pageNo == 1) {
                                 mList.clear();
                             }
-//                            List<EquipmentManageBean> dataList = baseBean.getData();
-//                            if (dataList != null && dataList.size() > 0) {
-//                                mList.addAll(dataList);
-//                                srl.finishRefresh();
-//                                srl.finishLoadMore();
-//                            } else {
-//                                srl.finishRefresh();
-//                                srl.finishLoadMoreWithNoMoreData();
-//                            }
+                            EquipmentManageResultBean resultBean = baseBean.getResult();
+                            if (resultBean != null) {
+                                List<EquipmentManageResultBean.Records> dataList = resultBean.getRecords();
+                                if (dataList != null && dataList.size() > 0) {
+                                    mList.addAll(dataList);
+                                    srl.finishRefresh();
+                                    srl.finishLoadMore();
+                                } else {
+                                    srl.finishRefresh();
+                                    srl.finishLoadMoreWithNoMoreData();
+                                }
+                            } else {
+                                srl.finishRefresh();
+                                srl.finishLoadMoreWithNoMoreData();
+                            }
+
                             adapter.notifyDataSetChanged();
                         } else {
                             Toasty.error(EquipmentManageActivity.this, R.string.search_fail, Toast.LENGTH_SHORT, true).show();
@@ -346,13 +367,12 @@ public class EquipmentManageActivity extends BaseActivity {
 
                 }
 
-
             }
 
             @Override
             public void onFault(String errorMsg) {
                 //失败
-                Toasty.error(EquipmentManageActivity.this, R.string.search_fail, Toast.LENGTH_SHORT, true).show();
+                Toasty.error(EquipmentManageActivity.this, R.string.request_fail, Toast.LENGTH_SHORT, true).show();
                 srl.finishRefresh();
                 srl.finishLoadMore();
             }

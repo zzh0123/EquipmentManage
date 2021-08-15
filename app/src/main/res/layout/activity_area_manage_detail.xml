@@ -53,7 +53,7 @@
 
                 <!-- 名称-->
                 <TextView
-                    android:id="@+id/tv_device_name_title"
+                    android:id="@+id/tv_area_name_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/dp_10"
@@ -65,20 +65,20 @@
                     android:paddingLeft="@dimen/dp_16"/>
 
                 <TextView
-                    android:id="@+id/tv_device_name"
+                    android:id="@+id/tv_area_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/dp_80"
                     android:textColor="@color/c_303133"
                     android:textSize="@dimen/sp_14"
-                    app:layout_constraintBottom_toBottomOf="@+id/tv_device_name_title"
-                    app:layout_constraintLeft_toRightOf="@+id/tv_device_name_title"
-                    app:layout_constraintTop_toTopOf="@+id/tv_device_name_title"
+                    app:layout_constraintBottom_toBottomOf="@+id/tv_area_name_title"
+                    app:layout_constraintLeft_toRightOf="@+id/tv_area_name_title"
+                    app:layout_constraintTop_toTopOf="@+id/tv_area_name_title"
                     tools:text="1111" />
 
                 <!-- 编号-->
                 <TextView
-                    android:id="@+id/tv_device_code_title"
+                    android:id="@+id/tv_area_code_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/dp_22"
@@ -86,18 +86,18 @@
                     android:textColor="@color/c_909399"
                     android:textSize="@dimen/sp_14"
                     android:paddingLeft="@dimen/dp_16"
-                    app:layout_constraintLeft_toLeftOf="@+id/tv_device_name_title"
-                    app:layout_constraintTop_toBottomOf="@+id/tv_device_name_title" />
+                    app:layout_constraintLeft_toLeftOf="@+id/tv_area_name_title"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_area_name_title" />
 
                 <TextView
-                    android:id="@+id/tv_device_code"
+                    android:id="@+id/tv_area_code"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/c_303133"
                     android:textSize="@dimen/sp_14"
-                    app:layout_constraintBottom_toBottomOf="@+id/tv_device_code_title"
-                    app:layout_constraintLeft_toLeftOf="@+id/tv_device_name"
-                    app:layout_constraintTop_toTopOf="@+id/tv_device_code_title"
+                    app:layout_constraintBottom_toBottomOf="@+id/tv_area_code_title"
+                    app:layout_constraintLeft_toLeftOf="@+id/tv_area_name"
+                    app:layout_constraintTop_toTopOf="@+id/tv_area_code_title"
                     tools:text="222" />
 
                 <!-- 所属装置 -->
@@ -110,8 +110,8 @@
                     android:textColor="@color/c_909399"
                     android:textSize="@dimen/sp_14"
                     android:paddingLeft="@dimen/dp_16"
-                    app:layout_constraintLeft_toLeftOf="@+id/tv_device_code_title"
-                    app:layout_constraintTop_toBottomOf="@+id/tv_device_code_title" />
+                    app:layout_constraintLeft_toLeftOf="@+id/tv_area_code_title"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_area_code_title" />
 
                 <TextView
                     android:id="@+id/tv_belong_device"
@@ -120,7 +120,7 @@
                     android:textColor="@color/c_303133"
                     android:textSize="@dimen/sp_14"
                     app:layout_constraintBottom_toBottomOf="@+id/tv_belong_device_title"
-                    app:layout_constraintLeft_toLeftOf="@+id/tv_device_code"
+                    app:layout_constraintLeft_toLeftOf="@+id/tv_area_code"
                     app:layout_constraintTop_toTopOf="@+id/tv_belong_device_title"
                     tools:text="3333" />
 
@@ -146,7 +146,7 @@
                     app:layout_constraintBottom_toBottomOf="@+id/tv_enabled_title"
                     app:layout_constraintLeft_toLeftOf="@+id/tv_belong_device"
                     app:layout_constraintTop_toTopOf="@+id/tv_enabled_title"
-                    tools:text="888" />
+                    android:text="@string/enabled_1" />
 
                 <!-- 顺序-->
                 <TextView
@@ -159,7 +159,8 @@
                     android:textSize="@dimen/sp_14"
                     android:paddingLeft="@dimen/dp_16"
                     app:layout_constraintLeft_toLeftOf="@+id/tv_enabled_title"
-                    app:layout_constraintTop_toBottomOf="@+id/tv_enabled_title" />
+                    app:layout_constraintTop_toBottomOf="@+id/tv_enabled_title"
+                    android:visibility="gone"/>
 
                 <TextView
                     android:id="@+id/tv_order"
@@ -170,7 +171,8 @@
                     app:layout_constraintBottom_toBottomOf="@+id/tv_order_title"
                     app:layout_constraintLeft_toLeftOf="@+id/tv_enabled"
                     app:layout_constraintTop_toTopOf="@+id/tv_order_title"
-                    tools:text="999" />
+                    tools:text="999"
+                    android:visibility="gone"/>
 
                 <!-- 产品流信息-->
                 <TextView

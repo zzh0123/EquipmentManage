@@ -30,18 +30,12 @@ public class Subscribe {
     /**
      * getDeviceTypeList
      */
-    public static void getDeviceTypeList(String code, DisposableObserver<ResponseBody> subscriber) {
-        Observable<ResponseBody> observable =  RetrofitFactory.getInstance().defaultBaseUrl().getHttpApi().getDeviceTypeList(code);
+    public static void getDictList(String code, DisposableObserver<ResponseBody> subscriber) {
+        Observable<ResponseBody> observable =  RetrofitFactory.getInstance().defaultBaseUrl().getHttpApi().getDictList(code);
         RetrofitFactory.getInstance().defaultBaseUrl().toSubscribe(observable, subscriber);
     }
 
-    /**
-     * getChemicalDetailList
-     */
-    public static void getChemicalDetailList(String code, DisposableObserver<ResponseBody> subscriber) {
-        Observable<ResponseBody> observable =  RetrofitFactory.getInstance().defaultBaseUrl().getHttpApi().getChemicalDetailList(code);
-        RetrofitFactory.getInstance().defaultBaseUrl().toSubscribe(observable, subscriber);
-    }
+
 
     /**
      * getDeviceList
@@ -51,6 +45,29 @@ public class Subscribe {
         RetrofitFactory.getInstance().defaultBaseUrl().toSubscribe(observable, subscriber);
     }
 
+    /**
+     * 获取设备管理列表
+     */
+    public static void getEquipmentList(Map<String, Object> map, DisposableObserver<ResponseBody> subscriber) {
+        Observable<ResponseBody> observable =  RetrofitFactory.getInstance().defaultBaseUrl().getHttpApi().getEquipmentList(map);
+        RetrofitFactory.getInstance().defaultBaseUrl().toSubscribe(observable, subscriber);
+    }
+
+    /**
+     * 获取区域管理列表
+     */
+    public static void getAreaList(Map<String, Object> map, DisposableObserver<ResponseBody> subscriber) {
+        Observable<ResponseBody> observable =  RetrofitFactory.getInstance().defaultBaseUrl().getHttpApi().getAreaList(map);
+        RetrofitFactory.getInstance().defaultBaseUrl().toSubscribe(observable, subscriber);
+    }
+
+    /**
+     * 获取产品流列表
+     */
+    public static void getProductFlowist(Map<String, Object> map, DisposableObserver<ResponseBody> subscriber) {
+        Observable<ResponseBody> observable =  RetrofitFactory.getInstance().defaultBaseUrl().getHttpApi().getProductFlowist(map);
+        RetrofitFactory.getInstance().defaultBaseUrl().toSubscribe(observable, subscriber);
+    }
 
 
 

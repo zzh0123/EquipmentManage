@@ -31,9 +31,11 @@ import com.equipmentmanage.app.adapter.DepartmentAdapter;
 import com.equipmentmanage.app.adapter.DeviceAdapter;
 import com.equipmentmanage.app.base.BaseActivity;
 import com.equipmentmanage.app.bean.AreaManageBean;
+import com.equipmentmanage.app.bean.AreaManageResultBean;
 import com.equipmentmanage.app.bean.BaseBean;
 import com.equipmentmanage.app.bean.DepartmentBean;
 import com.equipmentmanage.app.bean.DeviceManageBean;
+import com.equipmentmanage.app.bean.EquipmentManageResultBean;
 import com.equipmentmanage.app.netapi.Constant;
 import com.equipmentmanage.app.netsubscribe.Subscribe;
 import com.equipmentmanage.app.utils.L;
@@ -103,9 +105,9 @@ public class AreaManageActivity extends BaseActivity {
     @BindView(R.id.rv_list)
     RecyclerView rvList;
     private AreaAdapter adapter;
-    private List<AreaManageBean> mList = new ArrayList<>();
+    private List<AreaManageResultBean.Records> mList = new ArrayList<>();
 
-    private int pageIndex = 1, pageSize = 10;
+    private int pageNo = 1, pageSize = 10;
 
     private String department, deviceType;
 
@@ -131,15 +133,6 @@ public class AreaManageActivity extends BaseActivity {
             }
         });
 
-
-        AreaManageBean bean = new AreaManageBean();
-        bean.setAreaName("111");
-        bean.setStatus("1");
-        AreaManageBean bean1 = new AreaManageBean();
-        bean1.setAreaName("2222");
-        bean1.setStatus("2");
-        mList.add(bean);
-        mList.add(bean1);
 
         DepartmentBean departmentBean = new DepartmentBean();
         departmentBean.setName("部门1");
@@ -173,10 +166,9 @@ public class AreaManageActivity extends BaseActivity {
         adapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(@NonNull BaseQuickAdapter<?, ?> adapter, @NonNull View view, int position) {
-                AreaManageBean bean = mList.get(position);
+                AreaManageResultBean.Records bean = mList.get(position);
                 if (bean != null) {
-                    String name = bean.getAreaName();
-                    AreaManageDetailActivity.open(AreaManageActivity.this, name);
+                    AreaManageDetailActivity.open(AreaManageActivity.this, bean);
                 }
 
             }
@@ -214,7 +206,7 @@ public class AreaManageActivity extends BaseActivity {
                         || (event != null && KeyEvent.KEYCODE_ENTER == event.getKeyCode() && KeyEvent.ACTION_DOWN == event.getAction())) {
                     //处理事件
                     L.i("zzz1--->etSearch");
-//                    search();
+                    refresh();
                 }
                 return false;
             }
@@ -272,9 +264,6 @@ public class AreaManageActivity extends BaseActivity {
         llNoData.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                wahId = -999;
-//                ownerId = -999;
-//                getDeptList();
                 refresh();
             }
         });
@@ -287,51 +276,72 @@ public class AreaManageActivity extends BaseActivity {
     }
 
     private void refresh() {
-        pageIndex = 1;
-        getDeviceList();
+        pageNo = 1;
+        getAreaList();
     }
 
     private void loadMore() {
-        pageIndex++;
-        getDeviceList();
+        pageNo++;
+        getAreaList();
     }
 
     /**
-     * 获取装置列表
+     * 获取区域列表
      */
-    private void getDeviceList() {
+    private void getAreaList() {
+
         Map<String, Object> params = new HashMap<>();
-        params.put(Constant.city, "北京"); // 部门
-//        params.put(Constant.department, department); // 部门
-//        params.put(Constant.deviceType, deviceType); // 装置类型
-        Subscribe.getDeviceList(params, new OnSuccessAndFaultSub(new OnSuccessAndFaultListener() {
+        params.put(Constant.areaCode, ""); // 		编号
+        params.put(Constant.areaName, StringUtils.nullStrToEmpty(etSearch.getText().toString().trim())); // 	名称
+        params.put(Constant.belongCompany, ""); // 	归属公司
+        params.put(Constant.belongDevice, ""); // 所属装置
+        params.put(Constant.createBy, ""); // 		创建人
+
+        params.put(Constant.createTime, ""); // 	创建日期
+        params.put(Constant.eftflag, ""); // 	有效状态
+        params.put(Constant.id, ""); // 主键
+        params.put(Constant.pageNo, "" + pageNo); // pageNo
+        params.put(Constant.pageSize, "" + pageSize); // pageSize
+
+        params.put(Constant.sysOrgCode, ""); // 	所属部门
+        params.put(Constant.updateBy, ""); // 更新人
+        params.put(Constant.updateTime, ""); // 更新日期
+
+        Subscribe.getAreaList(params, new OnSuccessAndFaultSub(new OnSuccessAndFaultListener() {
             @Override
             public void onSuccess(String result) {
                 //成功
                 try {
-                    BaseBean<List<AreaManageBean>> baseBean = GsonUtils.fromJson(result, new TypeToken<BaseBean<List<AreaManageBean>>>() {
+                    BaseBean<AreaManageResultBean> baseBean = GsonUtils.fromJson(result, new TypeToken<BaseBean<AreaManageResultBean>>() {
                     }.getType());
 
                     if (null != baseBean) {
-//                        if (baseBean.isSuccess()) {
-//                            if (pageIndex == 1) {
-//                                mList.clear();
-//                            }
-//                            List<AreaManageBean> dataList = baseBean.getData();
-//                            if (dataList != null && dataList.size() > 0) {
-//                                mList.addAll(dataList);
-//                                srl.finishRefresh();
-//                                srl.finishLoadMore();
-//                            } else {
-//                                srl.finishRefresh();
-//                                srl.finishLoadMoreWithNoMoreData();
-//                            }
-//                            adapter.notifyDataSetChanged();
-//                        } else {
-//                            Toasty.error(AreaManageActivity.this, R.string.search_fail, Toast.LENGTH_SHORT, true).show();
-//                            srl.finishRefresh();
-//                            srl.finishLoadMore();
-//                        }
+                        if (baseBean.isSuccess()) {
+                            if (pageNo == 1) {
+                                mList.clear();
+                            }
+                            AreaManageResultBean resultBean = baseBean.getResult();
+                            if (resultBean != null) {
+                                List<AreaManageResultBean.Records> dataList = resultBean.getRecords();
+                                if (dataList != null && dataList.size() > 0) {
+                                    mList.addAll(dataList);
+                                    srl.finishRefresh();
+                                    srl.finishLoadMore();
+                                } else {
+                                    srl.finishRefresh();
+                                    srl.finishLoadMoreWithNoMoreData();
+                                }
+                            } else {
+                                srl.finishRefresh();
+                                srl.finishLoadMoreWithNoMoreData();
+                            }
+
+                            adapter.notifyDataSetChanged();
+                        } else {
+                            Toasty.error(AreaManageActivity.this, R.string.search_fail, Toast.LENGTH_SHORT, true).show();
+                            srl.finishRefresh();
+                            srl.finishLoadMore();
+                        }
                     } else {
                         Toasty.error(AreaManageActivity.this, R.string.return_empty, Toast.LENGTH_SHORT, true).show();
                         srl.finishRefresh();
@@ -346,13 +356,12 @@ public class AreaManageActivity extends BaseActivity {
 
                 }
 
-
             }
 
             @Override
             public void onFault(String errorMsg) {
                 //失败
-                Toasty.error(AreaManageActivity.this, R.string.search_fail, Toast.LENGTH_SHORT, true).show();
+                Toasty.error(AreaManageActivity.this, R.string.request_fail, Toast.LENGTH_SHORT, true).show();
                 srl.finishRefresh();
                 srl.finishLoadMore();
             }

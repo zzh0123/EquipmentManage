@@ -7,8 +7,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.equipmentmanage.app.R;
-import com.equipmentmanage.app.bean.DepartmentBean;
-import com.equipmentmanage.app.bean.DeviceTypeBean;
+import com.equipmentmanage.app.bean.DictItemBean;
 import com.equipmentmanage.app.utils.StringUtils;
 import com.xuexiang.xui.widget.spinner.editspinner.BaseEditSpinnerAdapter;
 import com.xuexiang.xui.widget.spinner.editspinner.EditSpinnerFilter;
@@ -23,9 +22,9 @@ import java.util.List;
 public class DeviceTypeAdapter extends BaseEditSpinnerAdapter implements EditSpinnerFilter {
 
     private Context mContext;
-    private List<DeviceTypeBean> mList;
+    private List<DictItemBean> mList;
 
-    public DeviceTypeAdapter(Context context, List<DeviceTypeBean> list) {
+    public DeviceTypeAdapter(Context context, List<DictItemBean> list) {
         super(list);
         this.mContext = context;
         this.mList = list;

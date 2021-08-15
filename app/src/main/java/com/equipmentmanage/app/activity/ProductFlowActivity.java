@@ -1,5 +1,7 @@
 package com.equipmentmanage.app.activity;
 
+import android.content.Context;
+import android.content.Intent;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.KeyEvent;
@@ -28,10 +30,12 @@ import com.equipmentmanage.app.adapter.DepartmentAdapter;
 import com.equipmentmanage.app.adapter.EquipmentAdapter;
 import com.equipmentmanage.app.adapter.ProductFlowAdapter;
 import com.equipmentmanage.app.base.BaseActivity;
+import com.equipmentmanage.app.bean.AreaManageResultBean;
 import com.equipmentmanage.app.bean.BaseBean;
 import com.equipmentmanage.app.bean.DepartmentBean;
 import com.equipmentmanage.app.bean.EquipmentManageBean;
 import com.equipmentmanage.app.bean.ProductFlowBean;
+import com.equipmentmanage.app.bean.ProductFlowResultBean;
 import com.equipmentmanage.app.netapi.Constant;
 import com.equipmentmanage.app.netsubscribe.Subscribe;
 import com.equipmentmanage.app.utils.L;
@@ -64,6 +68,12 @@ import es.dmoral.toasty.Toasty;
  * @CreateDate: 2021/8/12
  */
 public class ProductFlowActivity extends BaseActivity {
+
+    public static void open(Context c){
+        Intent i = new Intent(c, ProductFlowActivity.class);
+        c.startActivity(i);
+    }
+
     @BindView(R.id.titleBar)
     TitleBar titleBar; //标题栏
 
@@ -100,9 +110,9 @@ public class ProductFlowActivity extends BaseActivity {
     @BindView(R.id.rv_list)
     RecyclerView rvList;
     private ProductFlowAdapter adapter;
-    private List<ProductFlowBean> mList = new ArrayList<>();
+    private List<ProductFlowResultBean.Records> mList = new ArrayList<>();
 
-    private int pageIndex = 1, pageSize = 10;
+    private int pageNo = 1, pageSize = 10;
 
     private String department, deviceType;
 
@@ -129,14 +139,6 @@ public class ProductFlowActivity extends BaseActivity {
         });
 
 
-        ProductFlowBean bean = new ProductFlowBean();
-        bean.setName("111");
-        bean.setStatus("1");
-        ProductFlowBean bean1 = new ProductFlowBean();
-        bean1.setName("2222");
-        bean1.setStatus("2");
-        mList.add(bean);
-        mList.add(bean1);
 
         DepartmentBean departmentBean = new DepartmentBean();
         departmentBean.setName("部门1");
@@ -170,10 +172,9 @@ public class ProductFlowActivity extends BaseActivity {
         adapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(@NonNull BaseQuickAdapter<?, ?> adapter, @NonNull View view, int position) {
-                ProductFlowBean bean = mList.get(position);
+                ProductFlowResultBean.Records bean = mList.get(position);
                 if (bean != null) {
-                    String name = bean.getName();
-                    ProductFlowDetailActivity.open(ProductFlowActivity.this, name);
+                    ProductFlowDetailActivity.open(ProductFlowActivity.this, bean);
                 }
 
             }
@@ -211,7 +212,7 @@ public class ProductFlowActivity extends BaseActivity {
                         || (event != null && KeyEvent.KEYCODE_ENTER == event.getKeyCode() && KeyEvent.ACTION_DOWN == event.getAction())) {
                     //处理事件
                     L.i("zzz1--->etSearch");
-//                    search();
+                    refresh();
                 }
                 return false;
             }
@@ -272,9 +273,6 @@ public class ProductFlowActivity extends BaseActivity {
         llNoData.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                wahId = -999;
-//                ownerId = -999;
-//                getDeptList();
                 refresh();
             }
         });
@@ -287,45 +285,67 @@ public class ProductFlowActivity extends BaseActivity {
     }
 
     private void refresh() {
-        pageIndex = 1;
-        getDeviceList();
+        pageNo = 1;
+        getProductFlowist();
     }
 
     private void loadMore() {
-        pageIndex++;
-        getDeviceList();
+        pageNo++;
+        getProductFlowist();
     }
 
     /**
-     * 获取装置列表
+     * 获取产品流列表
      */
-    private void getDeviceList() {
+    private void getProductFlowist() {
         Map<String, Object> params = new HashMap<>();
-        params.put(Constant.city, "北京"); // 部门
-//        params.put(Constant.department, department); // 部门
-//        params.put(Constant.deviceType, deviceType); // 装置类型
-        Subscribe.getDeviceList(params, new OnSuccessAndFaultSub(new OnSuccessAndFaultListener() {
+        params.put(Constant.belongCompany, ""); // 		归属公司
+        params.put(Constant.createBy, ""); // 		创建人
+        params.put(Constant.createTime, ""); // 	创建日期
+        params.put(Constant.deviceId, ""); // 所属装置
+        params.put(Constant.eftflag, ""); // 		有效状态
+
+        params.put(Constant.id, ""); // 	主键
+        params.put(Constant.mediumState, ""); // 	介质状态
+        params.put(Constant.pageNo, "" + pageNo); // pageNo
+        params.put(Constant.pageSize, "" + pageSize); // pageSize
+        params.put(Constant.prodStreamCode, ""); // 编号
+
+
+        params.put(Constant.prodStreamName, StringUtils.nullStrToEmpty(etSearch.getText().toString().trim())); // 	名称
+        params.put(Constant.sysOrgCode, ""); // 	所属部门
+        params.put(Constant.updateBy, ""); // 更新人
+        params.put(Constant.updateTime, ""); // 更新日期
+
+        Subscribe.getProductFlowist(params, new OnSuccessAndFaultSub(new OnSuccessAndFaultListener() {
             @Override
             public void onSuccess(String result) {
                 //成功
                 try {
-                    BaseBean<List<ProductFlowBean>> baseBean = GsonUtils.fromJson(result, new TypeToken<BaseBean<List<ProductFlowBean>>>() {
+                    BaseBean<ProductFlowResultBean> baseBean = GsonUtils.fromJson(result, new TypeToken<BaseBean<ProductFlowResultBean>>() {
                     }.getType());
 
                     if (null != baseBean) {
                         if (baseBean.isSuccess()) {
-                            if (pageIndex == 1) {
+                            if (pageNo == 1) {
                                 mList.clear();
                             }
-//                            List<ProductFlowBean> dataList = baseBean.getData();
-//                            if (dataList != null && dataList.size() > 0) {
-//                                mList.addAll(dataList);
-//                                srl.finishRefresh();
-//                                srl.finishLoadMore();
-//                            } else {
-//                                srl.finishRefresh();
-//                                srl.finishLoadMoreWithNoMoreData();
-//                            }
+                            ProductFlowResultBean resultBean = baseBean.getResult();
+                            if (resultBean != null) {
+                                List<ProductFlowResultBean.Records> dataList = resultBean.getRecords();
+                                if (dataList != null && dataList.size() > 0) {
+                                    mList.addAll(dataList);
+                                    srl.finishRefresh();
+                                    srl.finishLoadMore();
+                                } else {
+                                    srl.finishRefresh();
+                                    srl.finishLoadMoreWithNoMoreData();
+                                }
+                            } else {
+                                srl.finishRefresh();
+                                srl.finishLoadMoreWithNoMoreData();
+                            }
+
                             adapter.notifyDataSetChanged();
                         } else {
                             Toasty.error(ProductFlowActivity.this, R.string.search_fail, Toast.LENGTH_SHORT, true).show();
@@ -346,13 +366,12 @@ public class ProductFlowActivity extends BaseActivity {
 
                 }
 
-
             }
 
             @Override
             public void onFault(String errorMsg) {
                 //失败
-                Toasty.error(ProductFlowActivity.this, R.string.search_fail, Toast.LENGTH_SHORT, true).show();
+                Toasty.error(ProductFlowActivity.this, R.string.request_fail, Toast.LENGTH_SHORT, true).show();
                 srl.finishRefresh();
                 srl.finishLoadMore();
             }

@@ -8,10 +8,13 @@ import android.widget.Toast;
 
 import com.equipmentmanage.app.R;
 import com.equipmentmanage.app.base.BaseActivity;
+import com.equipmentmanage.app.bean.AreaManageResultBean;
 import com.equipmentmanage.app.bean.BaseBean;
 import com.equipmentmanage.app.bean.ChemicalDetailBean;
+import com.equipmentmanage.app.bean.ProductFlowResultBean;
 import com.equipmentmanage.app.netapi.Constant;
 import com.equipmentmanage.app.netsubscribe.Subscribe;
+import com.equipmentmanage.app.utils.StringUtils;
 import com.equipmentmanage.app.utils.gson.GsonUtils;
 import com.equipmentmanage.app.utils.netutils.OnSuccessAndFaultListener;
 import com.equipmentmanage.app.utils.netutils.OnSuccessAndFaultSub;
@@ -33,19 +36,20 @@ import es.dmoral.toasty.Toasty;
  */
 public class ProductFlowDetailActivity extends BaseActivity {
 
-    public static void open(Context c, String id){
+    public static void open(Context c, ProductFlowResultBean.Records bean){
         Intent i = new Intent(c, ProductFlowDetailActivity.class);
+        i.putExtra(Constant.productFlowBean, bean);
         c.startActivity(i);
     }
 
     @BindView(R.id.titleBar)
     TitleBar titleBar; //标题栏
 
-    @BindView(R.id.tv_device_name)
-    TextView tvDeviceName; //名称
+    @BindView(R.id.tv_pro_name)
+    TextView tvProName; //名称
 
-    @BindView(R.id.tv_device_code)
-    TextView tvDeviceCode; //编号
+    @BindView(R.id.tv_pro_code)
+    TextView tvProCode; //编号
 
     @BindView(R.id.tv_belong_device)
     TextView tvBelongDevice; //所属装置
@@ -61,6 +65,8 @@ public class ProductFlowDetailActivity extends BaseActivity {
 
     private String department, deviceType;
 
+    private ProductFlowResultBean.Records bean;
+
     @Override
     protected int initLayout() {
         return R.layout.activity_product_flow_detail;
@@ -68,6 +74,8 @@ public class ProductFlowDetailActivity extends BaseActivity {
 
     @Override
     protected void initView() {
+
+        bean = (ProductFlowResultBean.Records) getIntent().getSerializableExtra(Constant.productFlowBean);
 
         titleBar.setLeftClickListener(new View.OnClickListener() {
             @SingleClick
@@ -77,7 +85,13 @@ public class ProductFlowDetailActivity extends BaseActivity {
             }
         });
 
-
+        if (bean != null) {
+            tvProName.setText(StringUtils.nullStrToEmpty(bean.getProdStreamName())); //名称
+            tvProCode.setText(StringUtils.nullStrToEmpty(bean.getProdStreamCode())); //编号
+            tvBelongDevice.setText(StringUtils.nullStrToEmpty(bean.getDeviceId_dictText())); //所属装置
+            tvMediumStatus.setText(StringUtils.nullStrToEmpty(bean.getMediumState_dictText())); //介质状态
+//            tvIfEffective.setText(StringUtils.nullStrToEmpty(bean.getBelongDevice_dictText())); //是否有效
+        }
     }
 
     @Override

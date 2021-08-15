@@ -43,13 +43,25 @@ public interface HttpApi {
     @GET("/jeecg-boot/sys/dict/getDictItems/{code}")
     Observable<ResponseBody> getDeviceTypeList(@Path("code") String code);
 
+    // 装置管理
     @GET("/jeecg-boot/ldar/ldarBaseDevice/list")
     Observable<ResponseBody> getDeviceList(@QueryMap Map<String, Object> map);
 
     // getChemicalDetailList
     @GET("/jeecg-boot/sys/dict/getDictItems/{code}")
-    Observable<ResponseBody> getChemicalDetailList(@Path("code") String code);
+    Observable<ResponseBody> getDictList(@Path("code") String code);
 
+    // 获取设备管理列表
+    @GET("/jeecg-boot/ldar/baseEquipment/list")
+    Observable<ResponseBody> getEquipmentList(@QueryMap Map<String, Object> map);
+
+    // 获取区域管理列表
+    @GET("/jeecg-boot/ldar/baseArea/list")
+    Observable<ResponseBody> getAreaList(@QueryMap Map<String, Object> map);
+
+    // 获取产品流列表
+    @GET("/jeecg-boot/ldar/baseProdStream/list")
+    Observable<ResponseBody> getProductFlowist(@QueryMap Map<String, Object> map);
 
 
     @GET("weather_mini")

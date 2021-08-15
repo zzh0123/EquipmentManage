@@ -11,12 +11,12 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.equipmentmanage.app.R;
-import com.equipmentmanage.app.adapter.ChemicalDetailAdapter;
+import com.equipmentmanage.app.adapter.DictItemAdapter;
 import com.equipmentmanage.app.base.BaseActivity;
 import com.equipmentmanage.app.bean.BaseBean;
 import com.equipmentmanage.app.bean.ChemicalDetailBean;
 import com.equipmentmanage.app.bean.DeviceManageResultBean;
-import com.equipmentmanage.app.bean.DeviceTypeBean;
+import com.equipmentmanage.app.bean.DictItemBean;
 import com.equipmentmanage.app.netapi.Constant;
 import com.equipmentmanage.app.netsubscribe.Subscribe;
 import com.equipmentmanage.app.utils.StringUtils;
@@ -28,9 +28,7 @@ import com.xuexiang.xaop.annotation.SingleClick;
 import com.xuexiang.xui.widget.actionbar.TitleBar;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import butterknife.BindView;
 import es.dmoral.toasty.Toasty;
@@ -84,8 +82,8 @@ public class DeviceManageDetailActivity extends BaseActivity {
 
     @BindView(R.id.rv_list)
     RecyclerView rvList; //化学品明细
-    private ChemicalDetailAdapter adapter;
-    private List<ChemicalDetailBean> mList = new ArrayList<>();
+    private DictItemAdapter adapter;
+    private List<DictItemBean> mList = new ArrayList<>();
 
     private String department, deviceType;
 
@@ -125,7 +123,7 @@ public class DeviceManageDetailActivity extends BaseActivity {
 
         LinearLayoutManager manager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         rvList.setLayoutManager(manager);
-        adapter = new ChemicalDetailAdapter(mList);
+        adapter = new DictItemAdapter(mList);
         adapter.setEmptyView(getEmptyDataView());
         rvList.setAdapter(adapter);
 
@@ -142,7 +140,7 @@ public class DeviceManageDetailActivity extends BaseActivity {
         llNoData.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getChemicalDetailList();
+                getDictList();
             }
         });
         return notDataView;
@@ -150,39 +148,36 @@ public class DeviceManageDetailActivity extends BaseActivity {
 
     @Override
     protected void initData() {
-        getChemicalDetailList();
+        getDictList();
     }
 
 
     /**
      * 获取化学品明细列表
      */
-    private void getChemicalDetailList() {
+    private void getDictList() {
         String code = "ldar_chemicalsType";
         //部门也是字典接口，传这个： 这样： sys_depart,depart_name,id
 //        String code = "sys_depart";
-        Subscribe.getChemicalDetailList(code, new OnSuccessAndFaultSub(new OnSuccessAndFaultListener() {
+        Subscribe.getDictList(code, new OnSuccessAndFaultSub(new OnSuccessAndFaultListener() {
             @Override
             public void onSuccess(String result) {
                 //成功
                 try {
-                    BaseBean<List<DeviceTypeBean>> baseBean = GsonUtils.fromJson(result, new TypeToken<BaseBean<List<DeviceTypeBean>>>() {
+                    BaseBean<List<DictItemBean>> baseBean = GsonUtils.fromJson(result, new TypeToken<BaseBean<List<DictItemBean>>>() {
                     }.getType());
 
                     if (null != baseBean) {
                         if (baseBean.isSuccess()) {
-//                            deviceTypeBeanList.clear();
-                            List<DeviceTypeBean> dataList = baseBean.getResult();
+//                            mList.clear();
+                            List<DictItemBean> dataList = baseBean.getResult();
                             if (dataList != null && dataList.size() > 0) {
-//                                deviceTypeBeanList.addAll(dataList);
-//                                devicePopupWindow.setSelection(0);
-//                                deviceTypeValue = deviceTypeBeanList.get(0).getValue();
-//                                tvDeviceType.setText(StringUtils.nullStrToEmpty(deviceTypeBeanList.get(0).getText()));
+                                mList.addAll(dataList);
                             } else {
                                 Toasty.error(DeviceManageDetailActivity.this, R.string.return_empty, Toast.LENGTH_SHORT, true).show();
                             }
 
-//                            deviceTypeAdapter.notifyDataSetChanged();
+                            adapter.notifyDataSetChanged();
 
                         } else {
                             Toasty.error(DeviceManageDetailActivity.this, R.string.search_fail, Toast.LENGTH_SHORT, true).show();

@@ -3,6 +3,7 @@ package com.equipmentmanage.app.fragment;
 import android.view.View;
 
 import com.equipmentmanage.app.R;
+import com.equipmentmanage.app.base.LazyFragment;
 
 /**
  * @Description: 查询Fragment

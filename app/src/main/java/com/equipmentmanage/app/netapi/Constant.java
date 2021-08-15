@@ -43,5 +43,65 @@ public class Constant {
 
     // 装置实体
     public static String deviceBean = "deviceBean";
+    // 装备实体
+    public static String equipmentBean = "equipmentBean";
+    // 区域实体
+    public static String areaBean = "areaBean";
+    // 产品流实体
+    public static String productFlowBean = "productFlowBean";
+
+    // 设备列表参数
+    public static String areaId = "areaId";
+//    public static String belongCompany = "belongCompany";
+//    public static String createBy = "createBy";
+//    public static String createTime = "createTime";
+    public static String deviceId = "deviceId";
+
+    public static String eftflag = "eftflag";
+    public static String equipmentCode = "equipmentCode";
+    public static String equipmentName = "equipmentName";
+//    public static String id = "id";
+//    public static String pageNo = "pageNo";
+
+//    public static String pageSize = "pageSize";
+//    public static String sysOrgCode = "sysOrgCode";
+//    public static String updateBy = "updateBy";
+//    public static String updateTime = "updateTime";
+
+    // 区域列表参数
+    public static String areaCode = "areaCode";
+    public static String areaName = "areaName";
+//    public static String belongCompany = "belongCompany";
+    public static String belongDevice = "belongDevice";
+//    public static String createBy = "createBy";
+//
+//    public static String createTime = "createTime";
+//    public static String eftflag = "eftflag";
+//    public static String id = "id";
+//    public static String pageNo = "pageNo";
+//    public static String pageSize = "pageSize";
+//
+//    public static String sysOrgCode = "sysOrgCode";
+//    public static String updateBy = "updateBy";
+//    public static String updateTime = "updateTime";
+
+    // 产品流列表参数
+//    public static String belongCompany = "belongCompany";
+//    public static String createBy = "createBy";
+//        public static String createTime = "createTime";
+//    public static String deviceId = "deviceId";
+//    public static String eftflag = "eftflag";
+
+//    public static String id = "id";
+    public static String mediumState = "mediumState";
+//    public static String pageNo = "pageNo";
+//    public static String pageSize = "pageSize";
+    public static String prodStreamCode = "prodStreamCode";
+
+    public static String prodStreamName = "prodStreamName";
+//    public static String sysOrgCode = "sysOrgCode";
+//    public static String updateBy = "updateBy";
+//    public static String updateTime = "updateTime";
+
 
 }

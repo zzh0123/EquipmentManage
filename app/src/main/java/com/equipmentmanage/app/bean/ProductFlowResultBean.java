@@ -7,11 +7,11 @@ import lombok.Data;
 
 /**
  * Author: zzh
- * Date: 2021/8/14 14:41
- * Description: 装置管理列表实体
+ * Date: 2021/8/15
+ * Description: 产品流列表实体
  */
 @Data
-public class DeviceManageResultBean implements Serializable {
+public class ProductFlowResultBean implements Serializable {
     private List<Records> records;
 
     private int total;
@@ -36,39 +36,34 @@ public class DeviceManageResultBean implements Serializable {
 
     @Data
     public static class Records implements Serializable{
-        private String deviceType;
 
-        private String chemicalName;
-
-        private String deviceType_dictText;
-
-        private int deviceCapacity;
+        private String eftflag;
 
         private String updateTime;
 
-        private String deviceCode;
-
         private String belongCompany;
 
-        private String deviceName;
+        private String deviceId;
+
+        private String mediumState;
 
         private String createBy;
 
-        private String useDate;
+        private String mediumState_dictText;
 
         private String createTime;
 
         private String updateBy;
 
-        private String testSdate;
+        private String prodStreamCode;
 
-        private String chemicalName_dictText;
+        private String prodStreamName;
 
         private String sysOrgCode;
 
         private String id;
 
-        private String leakingDate;
+        private String deviceId_dictText;
 
     }
 

@@ -32,9 +32,8 @@ import com.equipmentmanage.app.adapter.DeviceTypeAdapter;
 import com.equipmentmanage.app.base.BaseActivity;
 import com.equipmentmanage.app.bean.BaseBean;
 import com.equipmentmanage.app.bean.DepartmentBean;
-import com.equipmentmanage.app.bean.DeviceManageBean;
 import com.equipmentmanage.app.bean.DeviceManageResultBean;
-import com.equipmentmanage.app.bean.DeviceTypeBean;
+import com.equipmentmanage.app.bean.DictItemBean;
 import com.equipmentmanage.app.netapi.Constant;
 import com.equipmentmanage.app.netapi.ConstantValue;
 import com.equipmentmanage.app.netsubscribe.Subscribe;
@@ -109,7 +108,7 @@ public class DeviceManageActivity extends BaseActivity {
     private ListPopupWindow devicePopupWindow;
     private String deviceTypeName = "";;
     private String deviceTypeValue = "";;
-    private List<DeviceTypeBean> deviceTypeBeanList = new ArrayList<>();
+    private List<DictItemBean> deviceTypeBeanList = new ArrayList<>();
     private DeviceTypeAdapter deviceTypeAdapter;
 
     @BindView(R.id.srl)
@@ -264,7 +263,7 @@ public class DeviceManageActivity extends BaseActivity {
         devicePopupWindow.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                DeviceTypeBean bean = deviceTypeBeanList.get(position);
+                DictItemBean bean = deviceTypeBeanList.get(position);
                 if (bean != null) {
                     deviceTypeValue = bean.getValue();
                     tvDeviceType.setText(StringUtils.nullStrToEmpty(bean.getText()));
@@ -307,15 +306,15 @@ public class DeviceManageActivity extends BaseActivity {
 
     @Override
     protected void initData() {
-        DeviceTypeBean deviceTypeBean = new DeviceTypeBean();
-        deviceTypeBean.setTitle(ConstantValue.all_device_type);
-        deviceTypeBean.setText(ConstantValue.all_device_type);
-        deviceTypeBean.setValue(ConstantValue.all_device_type_value);
-        deviceTypeBeanList.add(deviceTypeBean);
+        DictItemBean dictItemBean = new DictItemBean();
+        dictItemBean.setTitle(ConstantValue.all_device_type);
+        dictItemBean.setText(ConstantValue.all_device_type);
+        dictItemBean.setValue(ConstantValue.all_device_type_value);
+        deviceTypeBeanList.add(dictItemBean);
         devicePopupWindow.setSelection(0);
 
         refresh();
-        getDeviceTypeList();
+        getDictList();
     }
 
     private void refresh() {
@@ -331,22 +330,22 @@ public class DeviceManageActivity extends BaseActivity {
     /**
      * 获取装置类型列表
      */
-    private void getDeviceTypeList() {
+    private void getDictList() {
         String code = "ldar_deviceType";
         //部门也是字典接口，传这个： 这样： sys_depart,depart_name,id
 //        String code = "sys_depart";
-        Subscribe.getDeviceTypeList(code, new OnSuccessAndFaultSub(new OnSuccessAndFaultListener() {
+        Subscribe.getDictList(code, new OnSuccessAndFaultSub(new OnSuccessAndFaultListener() {
             @Override
             public void onSuccess(String result) {
                 //成功
                 try {
-                    BaseBean<List<DeviceTypeBean>> baseBean = GsonUtils.fromJson(result, new TypeToken<BaseBean<List<DeviceTypeBean>>>() {
+                    BaseBean<List<DictItemBean>> baseBean = GsonUtils.fromJson(result, new TypeToken<BaseBean<List<DictItemBean>>>() {
                     }.getType());
 
                     if (null != baseBean) {
                         if (baseBean.isSuccess()) {
 //                            deviceTypeBeanList.clear();
-                            List<DeviceTypeBean> dataList = baseBean.getResult();
+                            List<DictItemBean> dataList = baseBean.getResult();
                             if (dataList != null && dataList.size() > 0) {
                                 deviceTypeBeanList.addAll(dataList);
                                 devicePopupWindow.setSelection(0);

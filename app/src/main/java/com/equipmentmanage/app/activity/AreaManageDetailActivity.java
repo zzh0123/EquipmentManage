@@ -3,20 +3,18 @@ package com.equipmentmanage.app.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.view.View;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import com.equipmentmanage.app.R;
-import com.equipmentmanage.app.adapter.ChemicalDetailAdapter;
 import com.equipmentmanage.app.base.BaseActivity;
+import com.equipmentmanage.app.bean.AreaManageResultBean;
 import com.equipmentmanage.app.bean.BaseBean;
 import com.equipmentmanage.app.bean.ChemicalDetailBean;
+import com.equipmentmanage.app.bean.DeviceManageResultBean;
 import com.equipmentmanage.app.netapi.Constant;
 import com.equipmentmanage.app.netsubscribe.Subscribe;
+import com.equipmentmanage.app.utils.StringUtils;
 import com.equipmentmanage.app.utils.gson.GsonUtils;
 import com.equipmentmanage.app.utils.netutils.OnSuccessAndFaultListener;
 import com.equipmentmanage.app.utils.netutils.OnSuccessAndFaultSub;
@@ -24,7 +22,6 @@ import com.google.gson.reflect.TypeToken;
 import com.xuexiang.xaop.annotation.SingleClick;
 import com.xuexiang.xui.widget.actionbar.TitleBar;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -39,19 +36,20 @@ import es.dmoral.toasty.Toasty;
  */
 public class AreaManageDetailActivity extends BaseActivity {
 
-    public static void open(Context c, String id){
+    public static void open(Context c, AreaManageResultBean.Records bean){
         Intent i = new Intent(c, AreaManageDetailActivity.class);
+        i.putExtra(Constant.areaBean, bean);
         c.startActivity(i);
     }
 
     @BindView(R.id.titleBar)
     TitleBar titleBar; //标题栏
 
-    @BindView(R.id.tv_device_name)
-    TextView tvDeviceName; //名称
+    @BindView(R.id.tv_area_name)
+    TextView tvAreaName; //名称
 
-    @BindView(R.id.tv_device_code)
-    TextView tvDeviceCode; //编号
+    @BindView(R.id.tv_area_code)
+    TextView tvAreaCode; //编号
 
     @BindView(R.id.tv_belong_device)
     TextView tvBelongDevice; //所属装置
@@ -70,6 +68,8 @@ public class AreaManageDetailActivity extends BaseActivity {
 
     private String department, deviceType;
 
+    private AreaManageResultBean.Records bean;
+
     @Override
     protected int initLayout() {
         return R.layout.activity_area_manage_detail;
@@ -77,6 +77,8 @@ public class AreaManageDetailActivity extends BaseActivity {
 
     @Override
     protected void initView() {
+
+        bean = (AreaManageResultBean.Records) getIntent().getSerializableExtra(Constant.areaBean);
 
         titleBar.setLeftClickListener(new View.OnClickListener() {
             @SingleClick
@@ -86,6 +88,12 @@ public class AreaManageDetailActivity extends BaseActivity {
             }
         });
 
+        if (bean != null) {
+            tvAreaName.setText(StringUtils.nullStrToEmpty(bean.getAreaName())); //名称
+            tvAreaCode.setText(StringUtils.nullStrToEmpty(bean.getAreaCode())); //编号
+            tvBelongDevice.setText(StringUtils.nullStrToEmpty(bean.getBelongDevice_dictText())); //所属装置
+//            tvEnabled.setText(StringUtils.nullStrToEmpty(bean.getDeviceName())); //是否可用
+        }
 
     }
 

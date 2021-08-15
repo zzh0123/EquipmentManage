@@ -76,8 +76,11 @@ public class LoginActivity extends BaseActivity {
     @Override
     protected void initView() {
         // 20001 123456 taorui1     Aa123456!
-        etAccount.setText("taorui1");
-        etPassword.setText("Aa123456!");
+//        etAccount.setText("20001");
+//        etPassword.setText("123456");
+
+//        etAccount.setText("taorui1");
+//        etPassword.setText("Aa123456!");
     }
 
     @Override
@@ -198,8 +201,9 @@ public class LoginActivity extends BaseActivity {
                             }
                             Toasty.success(LoginActivity.this, R.string.login_success, Toast.LENGTH_SHORT, true).show();
 
-//                            MainActivity.open(LoginActivity.this);
-                            DeviceManageActivity.open(LoginActivity.this);
+                            MainActivity.open(LoginActivity.this);
+//                            DeviceManageActivity.open(LoginActivity.this);
+//                            EquipmentManageActivity.open(LoginActivity.this);
                         } else {
                             Toasty.error(LoginActivity.this, R.string.login_fail, Toast.LENGTH_SHORT, true).show();
                         }

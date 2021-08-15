@@ -1,4 +1,4 @@
-package com.equipmentmanage.app.fragment;
+package com.equipmentmanage.app.base;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -10,6 +10,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import butterknife.ButterKnife;
+
 /**
  * @Description: 懒加载androidx viewpager2
  * @Author: zzh
@@ -19,7 +21,6 @@ public abstract class LazyFragment extends Fragment {
 
     private Context mContext;
     private boolean isFirstLoad = true; // 是否第一次加载
-
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,9 +31,11 @@ public abstract class LazyFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = LayoutInflater.from(mContext).inflate(getContentViewId(), null);
+        ButterKnife.bind(this, view);
         initView(view);
         return view;
     }
+
 
     @Override
     public void onResume() {

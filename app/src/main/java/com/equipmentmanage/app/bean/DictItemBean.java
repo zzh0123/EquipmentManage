@@ -8,7 +8,7 @@ import lombok.Data;
  * Description: 装置类型实体
  */
 @Data
-public class DeviceTypeBean {
+public class DictItemBean {
     private String value;
 
     private String text;
