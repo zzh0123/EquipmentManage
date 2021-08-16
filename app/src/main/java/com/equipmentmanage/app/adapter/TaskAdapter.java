@@ -36,7 +36,7 @@ public class TaskAdapter extends BaseQuickAdapter<TaskBean, BaseViewHolder> {
 
         TextView tvStatus = holder.getView(R.id.tv_status);
         String status = bean.getTaskEnd();
-        if (status.equals("0")){
+        if (!StringUtils.isNullString(status) && status.equals("0")){
             tvStatus.setText(R.string.progress_0);
             tvStatus.setTextColor(getContext().getResources().getColor(R.color.c_FFC0C4CC));
             tvStatus.setBackgroundResource(R.drawable.bg_rec_grey);
