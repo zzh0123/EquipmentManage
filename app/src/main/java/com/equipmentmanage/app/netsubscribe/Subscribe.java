@@ -69,6 +69,13 @@ public class Subscribe {
         RetrofitFactory.getInstance().defaultBaseUrl().toSubscribe(observable, subscriber);
     }
 
+    /**
+     * 获取任务清单列表
+     */
+    public static void getTaskList(Map<String, Object> map, DisposableObserver<ResponseBody> subscriber) {
+        Observable<ResponseBody> observable =  RetrofitFactory.getInstance().defaultBaseUrl().getHttpApi().getTaskList(map);
+        RetrofitFactory.getInstance().defaultBaseUrl().toSubscribe(observable, subscriber);
+    }
 
 
 

@@ -5,18 +5,17 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 
 import com.equipmentmanage.app.R;
-import com.equipmentmanage.app.base.BaseActivity;
 
 /**
- * @Description: 组件详情
+ * @Description: 组件管理
  * @Author: zzh
- * @CreateDate: 2021/8/15
+ * @CreateDate: 2021/8/16
  */
-public class PartDetailActivity extends BaseActivity {
+public class PartManageActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_part_detail);
+        setContentView(R.layout.activity_part_manage);
     }
 }

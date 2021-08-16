@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:padding="@dimen/dp_12"
+    android:background="@drawable/bg_rec_white"
+    android:layout_marginBottom="@dimen/dp_8">
+
+    <TextView
+        android:id="@+id/tv_task_name"
+        android:layout_width="@dimen/dp_0"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:textColor="@color/c_303133"
+        android:textSize="@dimen/sp_16"
+        android:textStyle="bold"
+        tools:text="任务名称"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"/>
+
+    <TextView
+        android:id="@+id/tv_status"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/c_67C23A"
+        android:textSize="@dimen/sp_10"
+        android:layout_marginLeft="@dimen/dp_8"
+        tools:text="未完成"
+        android:background="@drawable/bg_rec_green"
+        android:paddingLeft="@dimen/dp_8"
+        android:paddingRight="@dimen/dp_8"
+        android:paddingTop="@dimen/dp_4"
+        android:paddingBottom="@dimen/dp_4"
+        app:layout_constraintTop_toTopOf="@+id/tv_task_name"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_task_name"
+        app:layout_constraintLeft_toRightOf="@+id/tv_task_name" />
+
+    <TextView
+        android:id="@+id/tv_task_num"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/c_909399"
+        android:textSize="@dimen/sp_12"
+        android:layout_marginTop="@dimen/dp_4"
+        tools:text="ZZ202105180987"
+        app:layout_constraintTop_toBottomOf="@+id/tv_task_name"
+        app:layout_constraintLeft_toLeftOf="@+id/tv_task_name" />
+
+    <!-- 任务完成进度-->
+    <TextView
+        android:id="@+id/tv_complete_progress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/c_FF9900"
+        android:textSize="@dimen/sp_14"
+        android:layout_marginTop="@dimen/dp_4"
+        tools:text="共有600个组件，已检测0个，0个泄漏"
+        app:layout_constraintTop_toBottomOf="@+id/tv_task_num"
+        app:layout_constraintLeft_toLeftOf="@+id/tv_task_num" />
+
+    <!-- 标签信息：-->
+    <TextView
+        android:id="@+id/tv_label_info_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/label_info"
+        android:textColor="@color/c_909399"
+        android:textSize="@dimen/sp_14"
+        android:layout_marginTop="@dimen/dp_4"
+        app:layout_constraintTop_toBottomOf="@+id/tv_complete_progress"
+        app:layout_constraintLeft_toLeftOf="@+id/tv_complete_progress" />
+
+    <TextView
+        android:id="@+id/tv_label_info"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/c_303133"
+        android:textSize="@dimen/sp_14"
+        android:layout_marginLeft="@dimen/dp_8"
+        tools:text="1111"
+        app:layout_constraintTop_toTopOf="@+id/tv_label_info_title"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_label_info_title"
+        app:layout_constraintLeft_toRightOf="@+id/tv_label_info_title" />
+
+    <!-- 上传时间-->
+    <TextView
+        android:id="@+id/tv_upload_date_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/upload_date"
+        android:textColor="@color/c_909399"
+        android:textSize="@dimen/sp_14"
+        android:layout_marginTop="@dimen/dp_4"
+        app:layout_constraintTop_toBottomOf="@+id/tv_label_info_title"
+        app:layout_constraintLeft_toLeftOf="@+id/tv_label_info_title" />
+
+    <TextView
+        android:id="@+id/tv_upload_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/c_303133"
+        android:textSize="@dimen/sp_14"
+        android:layout_marginLeft="@dimen/dp_8"
+        tools:text="222"
+        app:layout_constraintTop_toTopOf="@+id/tv_upload_date_title"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_upload_date_title"
+        app:layout_constraintLeft_toRightOf="@+id/tv_upload_date_title"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

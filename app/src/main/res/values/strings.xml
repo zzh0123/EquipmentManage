@@ -6,6 +6,9 @@
     <string name="equipment_detail">设备详情</string>
     <string name="equipment_info">设备信息</string>
     <string name="area_detail">区域详情</string>
+    <string name="part_detail">组件详情</string>
+    <string name="task_list">任务清单</string>
+
     <string name="search_hint">搜索</string>
     <string name="department">部门:</string>
     <string name="department1">部门</string>
@@ -13,12 +16,32 @@
     <string name="device_type1">装置类型</string>
     <string name="test_start_date">开始检测日期:</string>
     <string name="device_info">装置信息</string>
+    <string name="base_info">基本信息</string>
     <string name="chemical_details">化学品明细</string>
     <string name="product_flow_info">产品流信息</string>
     <string name="product_flow">产品流</string>
     <string name="product_flow_detail">产品流详情</string>
     <string name="pid_drawing_no">PID图号</string>
+    <string name="seal_material">密封材质</string>
 
+
+    <string name="location_info">位置信息</string>
+    <string name="extend_num">扩展号</string>
+    <string name="label_num">标签号</string>
+    <string name="reference">参考物</string>
+    <string name="orientation">方向</string>
+    <string name="distance">距离</string>
+    <string name="floor">楼层</string>
+    <string name="height">高度</string>
+    <string name="additional_desc">附加描述</string>
+    <string name="main_info">主要信息</string>
+    <string name="seal_point">密封点</string>
+    <string name="seal_type">密封点子类型</string>
+
+
+    <string name="area">区域</string>
+    <string name="equipment">设备</string>
+    <string name="device">装置</string>
     <string name="device_name">名称</string>
     <string name="device_code">编号</string>
     <string name="capacity">产能</string>
@@ -31,6 +54,15 @@
     <string name="divulge_submit_mailbox">泄露提报邮箱</string>
     <string name="enabled_0">不可用</string>
     <string name="enabled_1">可用</string>
+    <string name="progress_0">未完成</string>
+    <string name="progress_1">已完成</string>
+
+    <!-- 任务清单 -->
+    <string name="check_result_upload">检测结果上传</string>
+    <string name="label_info">标签信息:</string>
+    <string name="upload_date">上传时间:</string>
+    <string name="download_task">下载任务</string>
+
 
     <string name="belong_device">所属装置:</string>
     <string name="belong_device1">所属装置</string>
@@ -38,9 +70,26 @@
     <string name="belong_area1">所属区域:</string>
     <string name="medium_status">介质状态:</string>
     <string name="medium_status1">介质状态</string>
+    <string name="size">尺寸</string>
+    <string name="main_medium">主要介质</string>
+    <string name="annual_run_time">年运行时间</string>
+    <string name="manufacturer">生产厂家</string>
+    <string name="path_num">路径号</string>
+    <string name="unreachable">不可达</string>
+    <string name="unreachable_reason">不可达原因</string>
+    <string name="keep_warm">保温</string>
+    <string name="secondary_info">次要信息</string>
+    <string name="barcode">条形码</string>
+    <string name="operate_temp">操作温度</string>
+    <string name="operate_pressure">操作压力</string>
+    <string name="change_manage_id">变更管理ID</string>
+    <string name="replace_date">替换日期</string>
+    <string name="control_equipment_and_close_sys">控制设备 <br /> 和密闭通风 <br />  系统</string>
+    <string name="control_equipment_and_close_type">控制设备<br /> 和密闭通风 <br /> 类型</string>
 
 
     <string name="not_data">暂无数据，点击刷新</string>
+    <string name="not_data1">当前暂无任务，请点击按钮下载任务</string>
     <string name="search_success">查询成功！</string>
     <string name="search_fail">查询失败！</string>
     <string name="parse_fail">解析失败！</string>
@@ -64,6 +113,8 @@
     <string name="user">用户</string>
 
     <string name="lan_da">蓝达</string>
+    <string name="change_password">修改密码</string>
+    <string name="exit">退出登录</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".fragment.TaskFragment">
+    tools:context=".fragment.PutOnRecordFragment">
 
     <com.xuexiang.xui.widget.actionbar.TitleBar
         android:id="@+id/titleBar"

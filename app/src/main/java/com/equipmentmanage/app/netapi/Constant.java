@@ -103,5 +103,32 @@ public class Constant {
 //    public static String updateBy = "updateBy";
 //    public static String updateTime = "updateTime";
 
+    // 任务清单列表参数
+//    public static String areaId = "areaId";
+//    public static String belongCompany = "belongCompany";
+//        public static String createBy = "createBy";
+    public static String createScale = "createScale";
+//    public static String createTime = "createTime";
+
+        public static String detectionEdate = "detectionEdate";
+    public static String detectionPeriod = "detectionPeriod";
+        public static String detectionSdate = "detectionSdate";
+    public static String detectionYear = "detectionYear";
+//    public static String deviceId = "deviceId";
+
+//    public static String id = "id";
+    public static String inspectionType = "inspectionType";
+//    public static String pageNo = "pageNo";
+//    public static String pageSize = "pageSize";
+    public static String planType = "planType";
+
+//    public static String sysOrgCode = "sysOrgCode";
+    public static String taskEnd = "taskEnd";
+    public static String taskName = "taskName";
+    public static String taskNum = "taskNum";
+//    public static String updateBy = "updateBy";
+
+//    public static String updateTime = "updateTime";
+
 
 }

@@ -63,6 +63,10 @@ public interface HttpApi {
     @GET("/jeecg-boot/ldar/baseProdStream/list")
     Observable<ResponseBody> getProductFlowist(@QueryMap Map<String, Object> map);
 
+    // 获取任务清单列表
+    @GET("/jeecg-boot/ldar/liveTask/list")
+    Observable<ResponseBody> getTaskList(@QueryMap Map<String, Object> map);
+
 
     @GET("weather_mini")
     Observable<ResponseBody> getDeviceList1(@QueryMap Map<String, Object> map);

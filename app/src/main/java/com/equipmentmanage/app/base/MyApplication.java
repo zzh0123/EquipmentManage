@@ -7,6 +7,7 @@ import android.util.Log;
 
 import androidx.multidex.MultiDex;
 
+import com.equipmentmanage.app.db.utils.DaoManager;
 import com.equipmentmanage.app.utils.AppUtils;
 import com.tencent.mmkv.MMKV;
 import com.xuexiang.xaop.XAOP;
@@ -34,6 +35,7 @@ public class MyApplication extends Application {
         String rootDir = MMKV.initialize(this);
         System.out.println("mmkv root: " + rootDir);
         initAOP();
+        DaoManager.getInstance().init(this);
     }
 
     @Override

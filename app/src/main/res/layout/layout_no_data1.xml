@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/ll_no_data"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="@dimen/dp_150"
+            android:layout_height="@dimen/dp_150"
+            android:src="@mipmap/ic_no_data1"
+            android:scaleType="fitXY"
+            android:layout_gravity="center"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/not_data1"
+            android:textColor="@color/c_909399"
+            android:textSize="@dimen/sp_14"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/dp_8"/>
+
+        <TextView
+            android:id="@+id/tv_download_task"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_24"
+            android:background="@drawable/bg_click_blue"
+            android:gravity="center"
+            android:paddingTop="@dimen/dp_13"
+            android:paddingBottom="@dimen/dp_13"
+            android:paddingLeft="@dimen/dp_43"
+            android:paddingRight="@dimen/dp_43"
+            android:text="@string/download_task"
+            android:textColor="@color/white"
+            android:textSize="@dimen/sp_16" />
+    </LinearLayout>
+
+</LinearLayout>

@@ -1,9 +1,16 @@
 package com.equipmentmanage.app.fragment;
 
 import android.view.View;
+import android.widget.GridView;
+import android.widget.TextView;
+
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.equipmentmanage.app.R;
 import com.equipmentmanage.app.base.LazyFragment;
+import com.xuexiang.xui.widget.imageview.RadiusImageView;
+
+import butterknife.BindView;
 
 /**
  * @Description: 用户Fragment
@@ -12,6 +19,20 @@ import com.equipmentmanage.app.base.LazyFragment;
  */
 public class UserFragment extends LazyFragment {
 
+    @BindView(R.id.iv_header)
+    RadiusImageView ivHeader; //头像
+
+    @BindView(R.id.tv_user_name)
+    TextView tvUserName; //用户名
+
+    @BindView(R.id.tv_user_role)
+    TextView tvUserRole; //岗位角色
+
+    @BindView(R.id.cstl_change_password)
+    ConstraintLayout cstlChangePassword; //修改密码
+
+    @BindView(R.id.tv_exit)
+    TextView tvExit; //退出登录
 
     public UserFragment() {
         // Required empty public constructor

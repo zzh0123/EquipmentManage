@@ -8,6 +8,7 @@ buildscript {
     dependencies {
         classpath "com.android.tools.build:gradle:4.1.0"
         classpath 'com.github.xuexiangjys.XAOP:xaop-plugin:1.0.1'
+        classpath 'org.greenrobot:greendao-gradle-plugin:3.3.0' // add plugin
 //        classpath "com.android.tools.build:gradle:3.6.1"
 //        classpath 'com.hujiang.aspectjx:gradle-android-plugin-aspectjx:2.0.10'
 
