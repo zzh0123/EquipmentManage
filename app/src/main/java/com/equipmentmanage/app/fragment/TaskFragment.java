@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.listener.OnItemClickListener;
 import com.equipmentmanage.app.R;
+import com.equipmentmanage.app.activity.TaskDetailActivity;
 import com.equipmentmanage.app.adapter.DepartmentAdapter;
 import com.equipmentmanage.app.adapter.DeviceTypeAdapter;
 import com.equipmentmanage.app.adapter.TaskAdapter;
@@ -29,6 +30,7 @@ import com.equipmentmanage.app.utils.L;
 import com.equipmentmanage.app.utils.gson.GsonUtils;
 import com.equipmentmanage.app.utils.netutils.OnSuccessAndFaultListener;
 import com.equipmentmanage.app.utils.netutils.OnSuccessAndFaultSub;
+import com.equipmentmanage.app.view.TipDialog;
 import com.google.gson.reflect.TypeToken;
 import com.scwang.smart.refresh.layout.SmartRefreshLayout;
 import com.scwang.smart.refresh.layout.api.RefreshLayout;
@@ -84,6 +86,8 @@ public class TaskFragment extends LazyFragment {
 
     private int pageNo = 1, pageSize = 10;
 
+    private TipDialog tipDialog;
+
     public TaskFragment() {
         // Required empty public constructor
     }
@@ -127,9 +131,11 @@ public class TaskFragment extends LazyFragment {
             public void performAction(View view) {
                 L.i("zzz1--->download");
 //                refresh();
-                List<TaskBean> list = DaoUtilsStore.getInstance().getUserDaoUtils().queryAll();
-                L.i("zzz1--->size--" + list.size());
-                L.i("zzz1--->list0--" + list.get(0).toString());
+
+                if (tipDialog == null) {
+                    tipDialog = new TipDialog(getActivity());
+                }
+                tipDialog.show();
             }
 
             @Override
@@ -176,13 +182,25 @@ public class TaskFragment extends LazyFragment {
             public void onItemClick(@NonNull BaseQuickAdapter<?, ?> adapter, @NonNull View view, int position) {
                 TaskBean bean = mList.get(position);
                 if (bean != null) {
-//                    DeviceManageDetailActivity.open(TaskListActivity.this, bean);
+                    TaskDetailActivity.open(getActivity(), bean);
                 }
 
             }
         });
         adapter.setEmptyView(getEmptyDataView());
         rvList.setAdapter(adapter);
+
+        // 手术信息选择框,多条的时候弹出
+        tipDialog = new TipDialog(getActivity());
+        tipDialog.setOnConfirmListener(new TipDialog.OnConfirmListener() {
+            @Override
+            public void onConfirm() {
+                List<TaskBean> list = DaoUtilsStore.getInstance().getUserDaoUtils().queryAll();
+                L.i("zzz1--->size--" + list.size());
+                L.i("zzz1--->list0--" + list.get(0).toString());
+            }
+        });
+
     }
 
     private View getEmptyDataView() {

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">EquipmentManage</string>
+    <string name="app_name">LDAR</string>
     <string name="device_manage">装置管理</string>
     <string name="device_detail">装置详情</string>
     <string name="equipment_manage">设备管理</string>
@@ -8,6 +8,7 @@
     <string name="area_detail">区域详情</string>
     <string name="part_detail">组件详情</string>
     <string name="task_list">任务清单</string>
+    <string name="task_detail">任务详情</string>
 
     <string name="search_hint">搜索</string>
     <string name="department">部门:</string>
@@ -40,9 +41,12 @@
 
 
     <string name="area">区域</string>
+    <string name="area_name">区域名称</string>
     <string name="equipment">设备</string>
+    <string name="equipment_name">设备名称</string>
     <string name="device">装置</string>
     <string name="device_name">名称</string>
+    <string name="device_name1">装置名称</string>
     <string name="device_code">编号</string>
     <string name="capacity">产能</string>
     <string name="put_into_production_date">投产日期</string>
@@ -62,6 +66,29 @@
     <string name="label_info">标签信息:</string>
     <string name="upload_date">上传时间:</string>
     <string name="download_task">下载任务</string>
+
+    <!-- 任务详情 -->
+    <string name="part_amount">组件数</string>
+    <string name="checked">已检测</string>
+    <string name="leak_amount">泄漏数</string>
+    <string name="start_check">开始检测</string>
+    <string name="weather_params">气象参数</string>
+
+    <!-- 气象 -->
+    <string name="temperature">温度(℃)</string>
+    <string name="humidity">湿度(%RH)</string>
+    <string name="wind_speed">风速(米/秒)</string>
+    <string name="wind_direction">风向</string>
+    <string name="pressure">气压(hPa)</string>
+
+    <!-- 组件检测 -->
+    <string name="part_check">组件检测</string>
+    <string name="part_info">组件信息</string>
+    <string name="part_imgs">组件图片</string>
+    <string name="reread">重新读数</string>
+    <string name="read_value">读数</string>
+    <string name="last">上一个</string>
+    <string name="next">下一个</string>
 
 
     <string name="belong_device">所属装置:</string>
@@ -111,6 +138,13 @@
     <string name="put_on_record">建档</string>
     <string name="search">查询</string>
     <string name="user">用户</string>
+    <string name="tip">提示</string>
+    <string name="download_tip">再次下载将会覆盖历史任务信息，是否确认下载？</string>
+    <string name="cancel">取消</string>
+    <string name="confirm">确认</string>
+    <string name="please_enter">请输入</string>
+    <string name="please_select">请选择</string>
+    <string name="submit">提交</string>
 
     <string name="lan_da">蓝达</string>
     <string name="change_password">修改密码</string>

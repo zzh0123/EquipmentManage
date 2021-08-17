@@ -112,12 +112,6 @@ public class AreaManageActivity extends BaseActivity {
     private String department, deviceType;
 
     @Override
-    public void onAttachedToWindow() {
-        setShowTitle(false);
-        super.onAttachedToWindow();
-    }
-
-    @Override
     protected int initLayout() {
         return R.layout.activity_area_manage;
     }

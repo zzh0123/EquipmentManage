@@ -18,8 +18,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.EquipmentManage"
         android:usesCleartextTraffic="true">
-        <activity android:name=".activity.PartManageActivity"></activity>
-        <activity android:name=".activity.PartManageDetailActivity" />
+
 
         <meta-data
             android:name="android.max_aspect"
@@ -29,8 +28,7 @@
             android:value="true" /> <!-- 适配小米（xiaomi）刘海屏 -->
         <meta-data
             android:name="notch.config"
-            android:value="portrait|landscape" />
-        <!-- DeviceManageActivity   MainActivity AreaManageActivity  LoginActivity-->
+            android:value="portrait|landscape" /> <!-- DeviceManageActivity   MainActivity AreaManageActivity  LoginActivity -->
         <activity
             android:name=".activity.LoginActivity"
             android:screenOrientation="portrait">
@@ -42,7 +40,6 @@
         </activity> <!-- 登录页 -->
         <!-- <activity android:name=".activity.LoginActivity" -->
         <!-- android:screenOrientation="portrait" /> -->
-
         <!-- 任务清单 -->
         <!-- 装置管理 -->
         <activity
@@ -71,8 +68,22 @@
             android:screenOrientation="portrait" /> <!-- 设备管理详情 -->
         <activity
             android:name=".activity.ProductFlowDetailActivity"
+            android:screenOrientation="portrait" /> <!-- 任务详情 -->
+        <activity
+            android:name=".activity.TaskDetailActivity"
+            android:screenOrientation="portrait" /> <!-- 组件管理 -->
+        <activity
+            android:name=".activity.PartManageActivity"
+            android:screenOrientation="portrait" /> <!-- 组件管理详情 -->
+        <activity
+            android:name=".activity.PartManageDetailActivity"
+            android:screenOrientation="portrait" /> <!-- 气象参数 -->
+        <activity
+            android:name=".activity.WeatherParamsActivity"
             android:screenOrientation="portrait" />
-
+        <!-- 组件检测 -->
+        <activity android:name=".activity.PartCheckActivity"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>

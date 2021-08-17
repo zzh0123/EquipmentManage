@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/c_F5F5F5"
+    android:orientation="vertical"
+    tools:context=".fragment.PartInfoFragment">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:paddingTop="@dimen/dp_10"
+        android:paddingBottom="@dimen/dp_10"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <!-- 装置名称-->
+        <TextView
+            android:id="@+id/tv_device_name_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_10"
+            android:paddingLeft="@dimen/dp_16"
+            android:text="@string/device_name1"
+            android:textColor="@color/c_909399"
+            android:textSize="@dimen/sp_14"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_device_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dp_80"
+            android:textColor="@color/c_303133"
+            android:textSize="@dimen/sp_14"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_device_name_title"
+            app:layout_constraintLeft_toRightOf="@+id/tv_device_name_title"
+            app:layout_constraintTop_toTopOf="@+id/tv_device_name_title"
+            tools:text="1111" />
+
+        <!-- 区域名称-->
+        <TextView
+            android:id="@+id/tv_area_name_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_22"
+            android:paddingLeft="@dimen/dp_16"
+            android:text="@string/area_name"
+            android:textColor="@color/c_909399"
+            android:textSize="@dimen/sp_14"
+            app:layout_constraintLeft_toLeftOf="@+id/tv_device_name_title"
+            app:layout_constraintTop_toBottomOf="@+id/tv_device_name_title" />
+
+        <TextView
+            android:id="@+id/tv_area_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/c_303133"
+            android:textSize="@dimen/sp_14"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_area_name_title"
+            app:layout_constraintLeft_toLeftOf="@+id/tv_device_name"
+            app:layout_constraintTop_toTopOf="@+id/tv_area_name_title"
+            tools:text="222" />
+
+        <!-- 设备名称 -->
+        <TextView
+            android:id="@+id/tv_equipment_name_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_22"
+            android:paddingLeft="@dimen/dp_16"
+            android:text="@string/equipment_name"
+            android:textColor="@color/c_909399"
+            android:textSize="@dimen/sp_14"
+            app:layout_constraintLeft_toLeftOf="@+id/tv_area_name_title"
+            app:layout_constraintTop_toBottomOf="@+id/tv_area_name_title" />
+
+        <TextView
+            android:id="@+id/tv_equipment_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/c_303133"
+            android:textSize="@dimen/sp_14"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_equipment_name_title"
+            app:layout_constraintLeft_toLeftOf="@+id/tv_area_name"
+            app:layout_constraintTop_toTopOf="@+id/tv_equipment_name_title"
+            tools:text="3333" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

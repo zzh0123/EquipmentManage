@@ -10,6 +10,8 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.appcompat.widget.AppCompatImageView;
+
 import com.equipmentmanage.app.R;
 import com.equipmentmanage.app.activity.AreaManageActivity;
 import com.equipmentmanage.app.activity.DeviceManageActivity;
@@ -144,7 +146,7 @@ public class PutOnRecordFragment extends LazyFragment {
             if (convertView == null) {
                 convertView = LayoutInflater.from(mContext).inflate(R.layout.item_grid, parent, false);
                 viewHolder = new ViewHolder();
-                viewHolder.ivImg = (ImageView) convertView.findViewById(R.id.iv_img);
+                viewHolder.ivIcon = (AppCompatImageView) convertView.findViewById(R.id.iv_icon);
                 viewHolder.tvName = (TextView) convertView.findViewById(R.id.tv_name);
 
                 convertView.setTag(viewHolder);
@@ -155,14 +157,13 @@ public class PutOnRecordFragment extends LazyFragment {
 
             // 这里只是模拟，实际开发可能需要加载网络图片，可以使用ImageLoader这样的图片加载框架来异步加载图片
 //            imageLoader.displayImage("drawable://" + mThumbIds[position], viewHolder.itemImg);
-            viewHolder.ivImg.setImageResource(icons[position]);
+            viewHolder.ivIcon.setImageResource(icons[position]);
             viewHolder.tvName.setText(iconNames[position]);
             return convertView;
         }
 
-
         class ViewHolder {
-            ImageView ivImg;
+            AppCompatImageView ivIcon;
             TextView tvName;
         }
     }

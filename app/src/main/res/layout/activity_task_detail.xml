@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".activity.TaskDetailActivity">
+
+    <com.xuexiang.xui.widget.actionbar.TitleBar
+        android:id="@+id/titleBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/c_409EFF"
+        app:tb_actionPadding="@dimen/dp_20"
+        app:tb_barHeight="@dimen/dp_45"
+        app:tb_immersive="true"
+        app:tb_leftImageResource="@mipmap/ic_arrow_left"
+        app:tb_leftText=""
+        app:tb_sideTextPadding="@dimen/dp_20"
+        app:tb_titleText="@string/task_detail"
+        app:tb_titleTextSize="@dimen/sp_16"
+        app:tb_useThemeColor="false" />
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_0"
+        android:layout_weight="1"
+        android:background="@color/c_F5F5F5"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tv_progress"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="@dimen/dp_12"
+                    android:gravity="center"
+                    android:paddingTop="@dimen/dp_10"
+                    android:paddingBottom="@dimen/dp_10"
+                    android:textColor="@color/c_303133"
+                    android:textSize="@dimen/sp_16"
+                    android:textStyle="bold"
+                    tools:text="9%" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingTop="@dimen/dp_10"
+                    android:paddingBottom="@dimen/dp_10"
+                    android:layout_marginTop="@dimen/dp_12">
+
+                    <LinearLayout
+                        android:layout_width="@dimen/dp_0"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/tv_part_amount_total"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:gravity="center"
+                            android:textColor="@color/c_303133"
+                            android:textSize="@dimen/sp_16"
+                            tools:text="600" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginTop="@dimen/dp_10"
+                            android:gravity="center"
+                            android:text="@string/part_amount"
+                            android:textColor="@color/c_909399"
+                            android:textSize="@dimen/sp_12" />
+
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="@dimen/dp_0_5"
+                        android:layout_height="match_parent"
+                        android:background="@color/c_DCDFE6" />
+
+                    <LinearLayout
+                        android:layout_width="@dimen/dp_0"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/tv_checked_amount"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:gravity="center"
+                            android:textColor="@color/c_303133"
+                            android:textSize="@dimen/sp_16"
+                            tools:text="100" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginTop="@dimen/dp_10"
+                            android:gravity="center"
+                            android:text="@string/checked"
+                            android:textColor="@color/c_909399"
+                            android:textSize="@dimen/sp_12" />
+
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="@dimen/dp_0_5"
+                        android:layout_height="match_parent"
+                        android:background="@color/c_DCDFE6" />
+
+                    <LinearLayout
+                        android:layout_width="@dimen/dp_0"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/tv_leak_amount"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:gravity="center"
+                            android:textColor="@color/c_303133"
+                            android:textSize="@dimen/sp_16"
+                            tools:text="0" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginTop="@dimen/dp_10"
+                            android:gravity="center"
+                            android:text="@string/leak_amount"
+                            android:textColor="@color/c_909399"
+                            android:textSize="@dimen/sp_12" />
+
+                    </LinearLayout>
+
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+
+            <!-- 任务名称-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@drawable/bg_rec_white"
+                android:layout_margin="@dimen/dp_12">
+
+                <TextView
+                    android:id="@+id/tv_task_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dp_10"
+                    android:layout_marginLeft="@dimen/dp_10"
+                    android:textColor="@color/c_606266"
+                    android:textSize="@dimen/sp_14"
+                    tools:text="任务名称"/>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp_0_5"
+                    android:background="@color/c_DCDFE6"
+                    android:layout_marginTop="@dimen/dp_10"/>
+
+                <com.equipmentmanage.app.view.MyGridView
+                    android:id="@+id/gridView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:numColumns="3" />
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+    <!--开始检测-->
+    <TextView
+        android:id="@+id/tv_start_check"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/dp_12"
+        android:layout_marginTop="@dimen/dp_8"
+        android:layout_marginRight="@dimen/dp_12"
+        android:layout_marginBottom="@dimen/dp_8"
+        android:background="@drawable/bg_click_blue"
+        android:gravity="center"
+        android:paddingTop="@dimen/dp_13"
+        android:paddingBottom="@dimen/dp_13"
+        android:text="@string/start_check"
+        android:textColor="@color/white"
+        android:textSize="@dimen/sp_16"
+        android:visibility="visible"/>
+
+</LinearLayout>

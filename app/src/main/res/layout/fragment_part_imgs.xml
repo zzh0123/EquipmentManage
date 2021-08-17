@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/c_F5F5F5"
+    android:orientation="vertical"
+    tools:context=".fragment.PartImgsFragment">
+
+
+    <ImageView
+        android:id="@+id/iv_part"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_0"
+        android:layout_weight="1"
+        android:scaleType="fitXY"
+        android:src="@mipmap/ic_test1" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingTop="@dimen/dp_6"
+        android:paddingBottom="@dimen/dp_12"
+        android:paddingLeft="@dimen/dp_12"
+        android:paddingRight="@dimen/dp_12"
+        android:background="@color/white">
+
+        <TextView
+            android:id="@+id/read_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:gravity="center"
+            android:textColor="@color/c_303133"
+            android:textSize="@dimen/sp_14"
+            tools:text="0.0 ppm" />
+
+        <!--重新读数-->
+        <TextView
+            android:id="@+id/tv_reread"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_click_blue"
+            android:gravity="center"
+            android:paddingTop="@dimen/dp_9"
+            android:paddingBottom="@dimen/dp_9"
+            android:text="@string/reread"
+            android:textColor="@color/white"
+            android:textSize="@dimen/sp_16"
+            android:layout_marginTop="@dimen/dp_6"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="@dimen/dp_12">
+
+            <TextView
+                android:id="@+id/tv_last"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_empty_blue"
+                android:gravity="center"
+                android:paddingTop="@dimen/dp_7"
+                android:paddingBottom="@dimen/dp_7"
+                android:paddingLeft="@dimen/dp_10"
+                android:paddingRight="@dimen/dp_10"
+                android:text="@string/last"
+                android:textColor="@color/c_409EFF"
+                android:textSize="@dimen/sp_16" />
+
+            <ProgressBar
+                android:id="@+id/progress_bar"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_width="@dimen/dp_0"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:minHeight="@dimen/dp_20"
+                android:padding="@dimen/dp_10"
+                android:progressDrawable="@drawable/bg_progressbar" />
+
+            <TextView
+                android:id="@+id/tv_next"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_empty_blue"
+                android:gravity="center"
+                android:paddingTop="@dimen/dp_7"
+                android:paddingBottom="@dimen/dp_7"
+                android:paddingLeft="@dimen/dp_10"
+                android:paddingRight="@dimen/dp_10"
+                android:text="@string/next"
+                android:textColor="@color/c_409EFF"
+                android:textSize="@dimen/sp_16" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+</LinearLayout>

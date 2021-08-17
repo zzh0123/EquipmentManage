@@ -49,6 +49,8 @@ public class Constant {
     public static String areaBean = "areaBean";
     // 产品流实体
     public static String productFlowBean = "productFlowBean";
+    // 任务实体
+    public static String taskBean = "taskBean";
 
     // 设备列表参数
     public static String areaId = "areaId";
