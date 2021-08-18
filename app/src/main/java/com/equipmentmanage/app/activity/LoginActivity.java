@@ -2,6 +2,8 @@ package com.equipmentmanage.app.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Environment;
 import android.text.Editable;
@@ -49,6 +51,11 @@ import es.dmoral.toasty.Toasty;
  * @CreateDate: 2021/8/13
  */
 public class LoginActivity extends BaseActivity {
+
+    public static void open(Context c){
+        Intent i = new Intent(c, LoginActivity.class);
+        c.startActivity(i);
+    }
 
     @BindView(R.id.et_account)
     EditText etAccount; //账号
@@ -172,7 +179,8 @@ public class LoginActivity extends BaseActivity {
         loginPostBean.setPassword(etPassword.getText().toString().trim());
 
         kv.removeValuesForKeys(new String[]{Constant.token, Constant.userId, Constant.username,
-                Constant.realname, Constant.orgCode, Constant.orgCodeTxt, Constant.telephone});
+                Constant.realname, Constant.orgCode, Constant.orgCodeTxt, Constant.telephone,
+                Constant.post});
 
         Subscribe.login(loginPostBean, new OnSuccessAndFaultSub(new OnSuccessAndFaultListener() {
             @Override
@@ -196,6 +204,7 @@ public class LoginActivity extends BaseActivity {
                                     kv.encode(Constant.orgCode, StringUtils.nullStrToEmpty(userInfoBean.getOrgCode()));
                                     kv.encode(Constant.orgCodeTxt, StringUtils.nullStrToEmpty(userInfoBean.getOrgCodeTxt()));
                                     kv.encode(Constant.telephone, StringUtils.nullStrToEmpty(userInfoBean.getTelephone()));
+                                    kv.encode(Constant.post, StringUtils.nullStrToEmpty(userInfoBean.getPost()));
                                 }
 
                             }

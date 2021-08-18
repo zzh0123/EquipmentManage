@@ -28,6 +28,14 @@ public class Subscribe {
     }
 
     /**
+     * 登出
+     */
+    public static void logout(LoginPostBean loginPostBean, DisposableObserver<ResponseBody> subscriber) {
+        Observable<ResponseBody> observable =  RetrofitFactory.getInstance().defaultBaseUrl().getHttpApi().logout(loginPostBean);
+        RetrofitFactory.getInstance().toSubscribe(observable, subscriber);
+    }
+
+    /**
      * getDeviceTypeList
      */
     public static void getDictList(String code, DisposableObserver<ResponseBody> subscriber) {

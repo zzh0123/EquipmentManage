@@ -239,9 +239,7 @@ public class TaskFragment extends LazyFragment {
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.tv_check_result_upload:
-//                if (valid()){
-//                    login();
-//                }
+
                 break;
         }
     }

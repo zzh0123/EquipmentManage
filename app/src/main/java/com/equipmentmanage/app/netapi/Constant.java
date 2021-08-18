@@ -14,6 +14,7 @@ public class Constant {
     public static String orgCode = "orgCode";
     public static String orgCodeTxt = "orgCodeTxt";
     public static String telephone = "telephone";
+    public static String post = "post";
 
     public static String city = "city";
     public static String department = "department";

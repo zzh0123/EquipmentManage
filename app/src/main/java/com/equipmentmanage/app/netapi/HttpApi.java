@@ -32,9 +32,13 @@ import retrofit2.http.Url;
  */
 public interface HttpApi {
 
-    // post请求
+    // 登录， post请求
     @POST("/jeecg-boot/sys/mLogin")
     Observable<ResponseBody> login(@Body LoginPostBean loginPostBean);
+
+    // 登出， post请求
+    @POST("/jeecg-boot/sys/logout")
+    Observable<ResponseBody> logout(@Body LoginPostBean loginPostBean);
 
     // get请求
 //    @GET("user/getUserList")

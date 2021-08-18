@@ -133,6 +133,8 @@
     <string name="return_empty">查询数据为空！</string>
     <string name="login_success">登录成功！</string>
     <string name="login_fail">登录失败！</string>
+    <string name="logout_success">登出成功！</string>
+    <string name="logout_fail">登出失败！</string>
     <string name="request_fail">请求失败！</string>
 
     <string name="account">账号</string>

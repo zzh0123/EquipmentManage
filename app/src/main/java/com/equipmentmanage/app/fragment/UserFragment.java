@@ -3,14 +3,33 @@ package com.equipmentmanage.app.fragment;
 import android.view.View;
 import android.widget.GridView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.equipmentmanage.app.R;
+import com.equipmentmanage.app.activity.LoginActivity;
+import com.equipmentmanage.app.activity.MainActivity;
 import com.equipmentmanage.app.base.LazyFragment;
+import com.equipmentmanage.app.bean.BaseBean;
+import com.equipmentmanage.app.bean.LoginPostBean;
+import com.equipmentmanage.app.bean.LoginResultBean;
+import com.equipmentmanage.app.bean.UserInfoBean;
+import com.equipmentmanage.app.netapi.Constant;
+import com.equipmentmanage.app.netsubscribe.Subscribe;
+import com.equipmentmanage.app.utils.ActivityCollector;
+import com.equipmentmanage.app.utils.L;
+import com.equipmentmanage.app.utils.StringUtils;
+import com.equipmentmanage.app.utils.gson.GsonUtils;
+import com.equipmentmanage.app.utils.netutils.OnSuccessAndFaultListener;
+import com.equipmentmanage.app.utils.netutils.OnSuccessAndFaultSub;
+import com.google.gson.reflect.TypeToken;
+import com.tencent.mmkv.MMKV;
 import com.xuexiang.xui.widget.imageview.RadiusImageView;
 
 import butterknife.BindView;
+import butterknife.OnClick;
+import es.dmoral.toasty.Toasty;
 
 /**
  * @Description: 用户Fragment
@@ -33,6 +52,9 @@ public class UserFragment extends LazyFragment {
 
     @BindView(R.id.tv_exit)
     TextView tvExit; //退出登录
+
+    private MMKV kv = MMKV.defaultMMKV();
+    private String userName, role;
 
     public UserFragment() {
         // Required empty public constructor
@@ -66,7 +88,10 @@ public class UserFragment extends LazyFragment {
 
     @Override
     protected void initView(View view) {
-
+        userName =  kv.decodeString(Constant.username, "");
+        role = kv.decodeString(Constant.post, "");
+        tvUserName.setText(StringUtils.nullStrToEmpty(userName));
+        tvUserRole.setText(StringUtils.nullStrToEmpty(role));
     }
 
     @Override
@@ -79,5 +104,59 @@ public class UserFragment extends LazyFragment {
 
     }
 
+    @OnClick({R.id.tv_exit})
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.tv_exit:
+                logout();
+                break;
+        }
+    }
+
+    /**
+     * 登出
+     */
+    private void logout(){
+        LoginPostBean loginPostBean = new LoginPostBean();
+//        loginPostBean.captcha ="";
+//        loginPostBean.checkKey ="";
+//        loginPostBean.setUsername(etAccount.getText().toString().trim());
+//        loginPostBean.setPassword(etPassword.getText().toString().trim());
+
+//        kv.removeValuesForKeys(new String[]{Constant.token, Constant.userId, Constant.username,
+//                Constant.realname, Constant.orgCode, Constant.orgCodeTxt, Constant.telephone,
+//                Constant.post});
+
+        Subscribe.logout(loginPostBean, new OnSuccessAndFaultSub(new OnSuccessAndFaultListener() {
+            @Override
+            public void onSuccess(String result) {
+                try {
+                    BaseBean<LoginResultBean> baseBean = GsonUtils.fromJson(result, new TypeToken<BaseBean<LoginResultBean>>() {
+                    }.getType());
+
+                    if (baseBean != null) {
+                        if (baseBean.isSuccess()) {
+                            Toasty.success(getActivity(), R.string.logout_success, Toast.LENGTH_SHORT, true).show();
+                            ActivityCollector.finishAll();
+                            LoginActivity.open(getActivity());
+                        } else {
+                            Toasty.error(getActivity(), R.string.logout_fail, Toast.LENGTH_SHORT, true).show();
+                        }
+                    } else {
+                        Toasty.error(getActivity(), R.string.return_empty, Toast.LENGTH_SHORT, true).show();
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    Toasty.error(getActivity(), R.string.parse_fail, Toast.LENGTH_SHORT, true).show();
+                }
+            }
+
+            @Override
+            public void onFault(String errorMsg) {
+                Toasty.error(getActivity(), R.string.request_fail, Toast.LENGTH_SHORT, true).show();
+
+            }
+        }, getActivity()));
+    }
 
 }
