@@ -1,27 +1,22 @@
 package com.equipmentmanage.app.activity;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatImageView;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.equipmentmanage.app.R;
 import com.equipmentmanage.app.base.BaseActivity;
-import com.equipmentmanage.app.bean.AreaManageResultBean;
 import com.equipmentmanage.app.bean.TaskBean;
-import com.equipmentmanage.app.fragment.PutOnRecordFragment;
 import com.equipmentmanage.app.netapi.Constant;
-import com.equipmentmanage.app.utils.StringUtils;
+import com.equipmentmanage.app.netapi.ConstantValue;
 import com.xuexiang.xaop.annotation.SingleClick;
 import com.xuexiang.xui.widget.actionbar.TitleBar;
 
@@ -114,10 +109,11 @@ public class TaskDetailActivity extends BaseActivity {
                 switch (position){
                     case 0:
                         // 校准设备
-                        statusArr[0] = "未校准";
-                        statusArr[1] = "已录入";
-                        adapter.notifyDataSetChanged();
-//                        DeviceManageActivity.open(this);
+//                        statusArr[0] = "未校准";
+//                        statusArr[1] = "已录入";
+//                        adapter.notifyDataSetChanged();
+                        // 0 校准设备(日常校准), 1 漂移校准
+                        CorrectActivity.open(TaskDetailActivity.this, ConstantValue.correct_type_0);
                         break;
                     case 1:
                         // 气象参数
@@ -130,7 +126,7 @@ public class TaskDetailActivity extends BaseActivity {
                         break;
                     case 3:
                         // 漂移校准
-//                        ProductFlowActivity.open(getActivity());
+                        CorrectActivity.open(TaskDetailActivity.this, ConstantValue.correct_type_1);
                         break;
                 }
             }

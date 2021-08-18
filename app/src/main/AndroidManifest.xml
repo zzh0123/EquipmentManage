@@ -80,10 +80,13 @@
             android:screenOrientation="portrait" /> <!-- 气象参数 -->
         <activity
             android:name=".activity.WeatherParamsActivity"
+            android:screenOrientation="portrait" /> <!-- 组件检测 -->
+        <activity
+            android:name=".activity.PartCheckActivity"
             android:screenOrientation="portrait" />
-        <!-- 组件检测 -->
-        <activity android:name=".activity.PartCheckActivity"
-            android:screenOrientation="portrait" />
+        <!-- 漂移校准 -->
+        <activity android:name=".activity.CorrectActivity"
+            android:screenOrientation="portrait"/>
     </application>
 
 </manifest>

@@ -1,33 +1,22 @@
 package com.equipmentmanage.app.activity;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.equipmentmanage.app.R;
 import com.equipmentmanage.app.base.BaseActivity;
-import com.equipmentmanage.app.bean.AreaManageResultBean;
 import com.equipmentmanage.app.fragment.PartImgsFragment;
 import com.equipmentmanage.app.fragment.PartInfoFragment;
-import com.equipmentmanage.app.fragment.PutOnRecordFragment;
-import com.equipmentmanage.app.fragment.TaskFragment;
-import com.equipmentmanage.app.netapi.Constant;
-import com.equipmentmanage.app.utils.StringUtils;
-import com.google.android.material.tabs.TabLayout;
-import com.google.android.material.tabs.TabLayoutMediator;
 import com.xuexiang.xaop.annotation.SingleClick;
 import com.xuexiang.xui.widget.actionbar.TitleBar;
-import com.xuexiang.xui.widget.tabbar.EasyIndicator;
-import com.xuexiang.xui.widget.tabbar.TabSegment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,7 +31,7 @@ import butterknife.OnClick;
  */
 public class PartCheckActivity extends BaseActivity {
 
-    public static void open(Context c){
+    public static void open(Context c) {
         Intent i = new Intent(c, PartCheckActivity.class);
         c.startActivity(i);
     }
@@ -72,7 +61,7 @@ public class PartCheckActivity extends BaseActivity {
     public ViewPager2 viewPager2;
     private FragmentStateAdapter fragmentStateAdapter;
 
-    private String[] tabTitles = { "组件信息", "组件图片"};
+    private String[] tabTitles = {"组件信息", "组件图片"};
     private List<Fragment> fragmentList = new ArrayList<>();
 
     @Override
@@ -99,7 +88,6 @@ public class PartCheckActivity extends BaseActivity {
 //            tvBelongDevice.setText(StringUtils.nullStrToEmpty(bean.getBelongDevice_dictText())); //所属装置
 ////            tvEnabled.setText(StringUtils.nullStrToEmpty(bean.getDeviceName())); //是否可用
 //        }
-
 
 
     }
@@ -147,7 +135,7 @@ public class PartCheckActivity extends BaseActivity {
      * @param position 选中的tab项的位置
      */
     private void change(int position) {
-        switch (position){
+        switch (position) {
             case 0:
                 tvPartInfoIndicator.setVisibility(View.VISIBLE);
                 tvPartImgsIndicator.setVisibility(View.INVISIBLE);
@@ -175,10 +163,12 @@ public class PartCheckActivity extends BaseActivity {
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.ll_part_info:
-                    change(0);
+                change(0);
+                viewPager2.setCurrentItem(0);
                 break;
             case R.id.ll_part_imgs:
                 change(1);
+                viewPager2.setCurrentItem(1);
                 break;
         }
     }

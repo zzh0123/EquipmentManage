@@ -1,0 +1,324 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".activity.CorrectActivity">
+
+    <com.xuexiang.xui.widget.actionbar.TitleBar
+        android:id="@+id/titleBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/c_409EFF"
+        app:tb_actionPadding="@dimen/dp_20"
+        app:tb_barHeight="@dimen/dp_45"
+        app:tb_immersive="true"
+        app:tb_leftImageResource="@mipmap/ic_arrow_left"
+        app:tb_leftText=""
+        app:tb_sideTextPadding="@dimen/dp_20"
+        app:tb_titleText="@string/drift_correct"
+        app:tb_titleTextSize="@dimen/sp_16"
+        app:tb_useThemeColor="false" />
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_0"
+        android:layout_weight="1"
+        android:background="@color/c_F5F5F5"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_12"
+                android:background="@color/white"
+                android:paddingLeft="@dimen/dp_16">
+
+                <!-- 标准气-->
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/cstl_standard_gas"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingRight="@dimen/dp_12"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent">
+
+                    <TextView
+                        android:id="@+id/tv_standard_gas_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingTop="@dimen/dp_13"
+                        android:paddingBottom="@dimen/dp_13"
+                        android:text="@string/standard_gas"
+                        android:textColor="@color/c_303133"
+                        android:textSize="@dimen/sp_14"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/tv_standard_gas"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="@dimen/dp_10"
+                        android:hint="@string/please_select"
+                        android:textColor="@color/c_303133"
+                        android:textColorHint="@color/c_909399"
+                        android:textSize="@dimen/sp_14"
+                        app:layout_constraintBottom_toBottomOf="@+id/tv_standard_gas_title"
+                        app:layout_constraintRight_toLeftOf="@+id/iv_right_standard_gas"
+                        app:layout_constraintTop_toTopOf="@+id/tv_standard_gas_title" />
+
+                    <ImageView
+                        android:id="@+id/iv_right_standard_gas"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:scaleType="fitXY"
+                        android:src="@mipmap/ic_arrow_right"
+                        app:layout_constraintBottom_toBottomOf="@+id/tv_standard_gas_title"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/tv_standard_gas_title" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <View
+                    android:id="@+id/line_standard_gas"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp_0_5"
+                    android:background="@color/c_DCDFE6"
+                    app:layout_constraintLeft_toLeftOf="@+id/cstl_standard_gas"
+                    app:layout_constraintTop_toBottomOf="@+id/cstl_standard_gas" />
+
+                <!-- 标准气读数-->
+                <TextView
+                    android:id="@+id/tv_std_gas_read_value_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="@dimen/dp_13"
+                    android:paddingBottom="@dimen/dp_13"
+                    android:text="@string/standard_gas_read_value"
+                    android:textColor="@color/c_303133"
+                    android:textSize="@dimen/sp_14"
+                    app:layout_constraintLeft_toLeftOf="@+id/line_standard_gas"
+                    app:layout_constraintTop_toBottomOf="@+id/line_standard_gas" />
+
+                <TextView
+                    android:id="@+id/tv_std_gas_read_value"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="right"
+                    android:paddingRight="@dimen/dp_12"
+                    android:textColor="@color/c_303133"
+                    android:textSize="@dimen/sp_14"
+                    tools:text="1111"
+                    app:layout_constraintBottom_toBottomOf="@+id/tv_std_gas_read_value_title"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/tv_std_gas_read_value_title" />
+
+                <View
+                    android:id="@+id/line_std_gas_read_value"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp_0_5"
+                    android:background="@color/c_DCDFE6"
+                    app:layout_constraintLeft_toLeftOf="@+id/tv_std_gas_read_value_title"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_std_gas_read_value_title" />
+
+                <!-- PPM阈值-->
+                <TextView
+                    android:id="@+id/tv_ppm_threshold_value_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="@dimen/dp_13"
+                    android:paddingBottom="@dimen/dp_13"
+                    android:text="@string/ppm_threshold_value"
+                    android:textColor="@color/c_303133"
+                    android:textSize="@dimen/sp_14"
+                    app:layout_constraintLeft_toLeftOf="@+id/line_std_gas_read_value"
+                    app:layout_constraintTop_toBottomOf="@+id/line_std_gas_read_value" />
+
+                <TextView
+                    android:id="@+id/tv_ppm_threshold_value"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="right"
+                    android:paddingRight="@dimen/dp_12"
+                    android:textColor="@color/c_303133"
+                    android:textSize="@dimen/sp_14"
+                    tools:text="1111"
+                    app:layout_constraintBottom_toBottomOf="@+id/tv_ppm_threshold_value_title"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/tv_ppm_threshold_value_title" />
+
+                <View
+                    android:id="@+id/line_ppm_threshold_value"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp_0_5"
+                    android:background="@color/c_DCDFE6"
+                    app:layout_constraintLeft_toLeftOf="@+id/tv_ppm_threshold_value_title"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_ppm_threshold_value_title" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_12"
+                android:background="@color/white"
+                android:paddingLeft="@dimen/dp_16">
+
+                <!-- 校准读数-->
+                <TextView
+                    android:id="@+id/tv_correct_read_value_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="@dimen/dp_13"
+                    android:paddingBottom="@dimen/dp_13"
+                    android:text="@string/correct_read_value"
+                    android:textColor="@color/c_303133"
+                    android:textSize="@dimen/sp_14"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <EditText
+                    android:id="@+id/et_correct_read_value"
+                    android:layout_width="@dimen/dp_150"
+                    android:layout_height="wrap_content"
+                    android:background="@null"
+                    android:gravity="right"
+                    android:hint="@string/please_enter"
+                    android:paddingRight="@dimen/dp_12"
+                    android:textColor="@color/c_303133"
+                    android:textColorHint="@color/c_909399"
+                    android:textSize="@dimen/sp_14"
+                    app:layout_constraintBottom_toBottomOf="@+id/tv_correct_read_value_title"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/tv_correct_read_value_title" />
+
+                <View
+                    android:id="@+id/line_correct_read_value"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp_0_5"
+                    android:background="@color/c_DCDFE6"
+                    app:layout_constraintLeft_toLeftOf="@+id/tv_correct_read_value_title"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_correct_read_value_title" />
+
+                <!-- 响应时间-->
+                <TextView
+                    android:id="@+id/tv_response_time_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="@dimen/dp_13"
+                    android:paddingBottom="@dimen/dp_13"
+                    android:text="@string/response_time"
+                    android:textColor="@color/c_303133"
+                    android:textSize="@dimen/sp_14"
+                    app:layout_constraintLeft_toLeftOf="@+id/line_correct_read_value"
+                    app:layout_constraintTop_toBottomOf="@+id/line_correct_read_value" />
+
+                <EditText
+                    android:id="@+id/et_response_time"
+                    android:layout_width="@dimen/dp_150"
+                    android:layout_height="wrap_content"
+                    android:background="@null"
+                    android:gravity="right"
+                    android:hint="@string/please_enter"
+                    android:paddingRight="@dimen/dp_12"
+                    android:textColor="@color/c_303133"
+                    android:textColorHint="@color/c_909399"
+                    android:textSize="@dimen/sp_14"
+                    app:layout_constraintBottom_toBottomOf="@+id/tv_response_time_title"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/tv_response_time_title" />
+
+                <View
+                    android:id="@+id/line_response_time"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp_0_5"
+                    android:background="@color/c_DCDFE6"
+                    app:layout_constraintLeft_toLeftOf="@+id/tv_response_time_title"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_response_time_title" />
+
+                <!-- 是否通过 -->
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/cstl_if_pass"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingRight="@dimen/dp_12"
+                    app:layout_constraintLeft_toLeftOf="@+id/line_response_time"
+                    app:layout_constraintTop_toBottomOf="@+id/line_response_time">
+
+                    <TextView
+                        android:id="@+id/tv_if_pass_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingTop="@dimen/dp_13"
+                        android:paddingBottom="@dimen/dp_13"
+                        android:text="@string/if_pass"
+                        android:textColor="@color/c_303133"
+                        android:textSize="@dimen/sp_14"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/tv_if_pass"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="@dimen/dp_10"
+                        android:hint="@string/please_select"
+                        android:textColor="@color/c_303133"
+                        android:textColorHint="@color/c_909399"
+                        android:textSize="@dimen/sp_14"
+                        app:layout_constraintBottom_toBottomOf="@+id/tv_if_pass_title"
+                        app:layout_constraintRight_toLeftOf="@+id/iv_right_if_pass"
+                        app:layout_constraintTop_toTopOf="@+id/tv_if_pass_title" />
+
+                    <ImageView
+                        android:id="@+id/iv_right_if_pass"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:scaleType="fitXY"
+                        android:src="@mipmap/ic_arrow_right"
+                        app:layout_constraintBottom_toBottomOf="@+id/tv_if_pass_title"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/tv_if_pass_title" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <View
+                    android:id="@+id/line_if_pass"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp_0_5"
+                    android:background="@color/c_DCDFE6"
+                    app:layout_constraintLeft_toLeftOf="@+id/cstl_if_pass"
+                    app:layout_constraintTop_toBottomOf="@+id/cstl_if_pass" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+    <!--开始检测-->
+    <TextView
+        android:id="@+id/tv_submit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/dp_12"
+        android:layout_marginTop="@dimen/dp_8"
+        android:layout_marginRight="@dimen/dp_12"
+        android:layout_marginBottom="@dimen/dp_8"
+        android:background="@drawable/bg_click_blue"
+        android:gravity="center"
+        android:paddingTop="@dimen/dp_13"
+        android:paddingBottom="@dimen/dp_13"
+        android:text="@string/submit"
+        android:textColor="@color/white"
+        android:textSize="@dimen/sp_16"
+        android:visibility="visible" />
+
+</LinearLayout>

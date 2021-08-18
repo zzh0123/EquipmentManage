@@ -90,6 +90,16 @@
     <string name="last">上一个</string>
     <string name="next">下一个</string>
 
+    <!-- 漂移校准 -->
+    <string name="drift_correct">漂移校准</string>
+    <string name="daily_correct">日常校准</string>
+    <string name="standard_gas">标准气</string>
+    <string name="standard_gas_read_value">标准气读数</string>
+    <string name="ppm_threshold_value">PPM阈值</string>
+    <string name="correct_read_value">校准读数</string>
+    <string name="response_time">响应时间</string>
+    <string name="if_pass">是否通过</string>
+
 
     <string name="belong_device">所属装置:</string>
     <string name="belong_device1">所属装置</string>

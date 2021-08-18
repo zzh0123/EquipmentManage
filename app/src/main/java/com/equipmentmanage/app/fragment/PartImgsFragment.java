@@ -4,14 +4,27 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.equipmentmanage.app.R;
 import com.equipmentmanage.app.base.LazyFragment;
+import com.equipmentmanage.app.bean.TagGroupModel;
+import com.equipmentmanage.app.utils.DirectionUtils;
+import com.equipmentmanage.app.view.TagImageView;
+import com.licrafter.tagview.DIRECTION;
+import com.licrafter.tagview.TagAdapter;
+import com.licrafter.tagview.TagViewGroup;
+import com.licrafter.tagview.views.ITagView;
+import com.licrafter.tagview.views.TagTextView;
 import com.xuexiang.xui.widget.imageview.RadiusImageView;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import butterknife.BindView;
+import butterknife.OnClick;
 
 /**
  * @Description: 组件图片Fragment
@@ -20,8 +33,8 @@ import butterknife.BindView;
  */
 public class PartImgsFragment extends LazyFragment {
 
-    @BindView(R.id.iv_part)
-    ImageView ivPart; //组件图片
+    @BindView(R.id.tagImageView)
+    TagImageView tagImageView; //组件图片
 
     @BindView(R.id.read_value)
     TextView readValue; //读数
@@ -75,13 +88,59 @@ public class PartImgsFragment extends LazyFragment {
 
     @Override
     protected void initData() {
+        tagImageView.setTagGroupClickListener(mTagGroupClickListener);
+
+        tagImageView.setImageRes(R.mipmap.ic_test1);
+        TagGroupModel tagGroupModel = new TagGroupModel();
+        List<TagGroupModel.Tag> tagList = new ArrayList<>();
+        TagGroupModel.Tag tag = new TagGroupModel.Tag();
+        tag.setName("V0001");
+        tag.setDirection(DirectionUtils.getValue(DIRECTION.RIGHT_TOP_STRAIGHT));
+        tagList.add(tag);
+        tagGroupModel.setTags(tagList);
+        tagGroupModel.setPercentX(0.4f);
+        tagGroupModel.setPercentY(0.8f);
+
+        tagImageView.setTag(tagGroupModel);
+//        tagImageView.setTagList();
 
     }
+
+
+
 
     @Override
     protected void initEvent() {
 
+
     }
 
+    @OnClick({R.id.tagImageView})
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.tagImageView:
+//                if (valid()){
+//                    login();
+//                }
+                break;
+        }
+    }
+
+    private TagViewGroup.OnTagGroupClickListener mTagGroupClickListener = new TagViewGroup.OnTagGroupClickListener() {
+        @Override
+        public void onCircleClick(TagViewGroup container) {
+//            Toast.makeText(MainActivity.this, "点击中心圆", Toast.LENGTH_SHORT).show();
+        }
+
+        @Override
+        public void onTagClick(TagViewGroup container, ITagView tag, int position) {
+//            Toast.makeText(MainActivity.this, "点击Tag->" + ((TagTextView) tag).getText().toString(), Toast.LENGTH_SHORT).show();
+        }
+
+        @Override
+        public void onLongPress(final TagViewGroup group) {
+//            Toast.makeText(MainActivity.this, "点击中心圆", Toast.LENGTH_SHORT).show();
+        }
+    };
 
 }
