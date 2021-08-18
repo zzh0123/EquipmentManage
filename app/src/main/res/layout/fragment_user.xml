@@ -9,6 +9,19 @@
     android:background="@color/c_F5F5F5">
 
 
+    <com.xuexiang.xui.widget.actionbar.TitleBar
+        android:id="@+id/titleBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/c_409EFF"
+        app:tb_actionPadding="@dimen/dp_20"
+        app:tb_barHeight="@dimen/dp_45"
+        app:tb_immersive="true"
+        app:tb_sideTextPadding="@dimen/dp_20"
+        app:tb_titleText="@string/lan_da"
+        app:tb_titleTextSize="@dimen/sp_16"
+        app:tb_useThemeColor="false" />
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/cstl_user_info"
         android:layout_width="match_parent"
