@@ -7,14 +7,27 @@ import android.util.Log;
 
 import androidx.multidex.MultiDex;
 
+import com.equipmentmanage.app.BuildConfig;
 import com.equipmentmanage.app.db.utils.DaoManager;
+import com.equipmentmanage.app.netapi.BaseConstant;
 import com.equipmentmanage.app.utils.AppUtils;
+import com.equipmentmanage.app.utils.ReleaseServer;
+import com.equipmentmanage.app.utils.RequestHandler;
+import com.equipmentmanage.app.utils.TestServer;
+import com.hjq.http.EasyConfig;
+import com.hjq.http.config.IRequestApi;
+import com.hjq.http.config.IRequestInterceptor;
+import com.hjq.http.config.IRequestServer;
+import com.hjq.http.model.HttpHeaders;
+import com.hjq.http.model.HttpParams;
 import com.tencent.mmkv.MMKV;
 import com.xuexiang.xaop.XAOP;
 import com.xuexiang.xaop.checker.IThrowableHandler;
 import com.xuexiang.xaop.logger.XLogger;
 
 import java.util.ArrayList;
+
+import okhttp3.OkHttpClient;
 
 
 public class MyApplication extends Application {
@@ -91,6 +104,43 @@ public class MyApplication extends Application {
 //        });
 
 
+    }
+
+    private void initEasyHttp(){
+        // 网络请求框架初始化
+        IRequestServer server;
+        if (BuildConfig.DEBUG) {
+            server = new TestServer();
+        } else {
+            server = new ReleaseServer();
+        }
+
+        OkHttpClient okHttpClient = new OkHttpClient.Builder()
+                .build();
+
+        EasyConfig.with(okHttpClient)
+                // 是否打印日志
+                //.setLogEnabled(BuildConfig.DEBUG)
+                // 设置服务器配置
+                .setServer(server)
+                // 设置请求处理策略
+                .setHandler(new RequestHandler(this))
+                // 设置请求参数拦截器
+                .setInterceptor(new IRequestInterceptor() {
+                    @Override
+                    public void interceptArguments(IRequestApi api, HttpParams params, HttpHeaders headers) {
+                        headers.put("timestamp", String.valueOf(System.currentTimeMillis()));
+                    }
+                })
+                // 设置请求重试次数
+                .setRetryCount(1)
+                // 设置请求重试时间
+                .setRetryTime(2000)
+                // 添加全局请求参数
+                .addParam("X-Access-Token",  BaseConstant.TOKEN)
+                // 添加全局请求头
+                //.addHeader("time", "20191030")
+                .into();
     }
 
     public static Context getContext(){
