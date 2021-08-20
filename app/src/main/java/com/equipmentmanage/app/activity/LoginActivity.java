@@ -23,6 +23,7 @@ import com.equipmentmanage.app.bean.LoginPostBean;
 import com.equipmentmanage.app.bean.LoginResultBean;
 import com.equipmentmanage.app.bean.ResultInfo;
 import com.equipmentmanage.app.bean.UserInfoBean;
+import com.equipmentmanage.app.netapi.BaseConstant;
 import com.equipmentmanage.app.netapi.Constant;
 import com.equipmentmanage.app.netsubscribe.Subscribe;
 import com.equipmentmanage.app.utils.GsonUtils1;
@@ -178,7 +179,8 @@ public class LoginActivity extends BaseActivity {
         loginPostBean.setUsername(etAccount.getText().toString().trim());
         loginPostBean.setPassword(etPassword.getText().toString().trim());
 
-        kv.removeValuesForKeys(new String[]{Constant.token, Constant.userId, Constant.username,
+        BaseConstant.TOKEN = "";
+        kv.removeValuesForKeys(new String[]{Constant.userId, Constant.username,
                 Constant.realname, Constant.orgCode, Constant.orgCodeTxt, Constant.telephone,
                 Constant.post});
 
@@ -194,8 +196,9 @@ public class LoginActivity extends BaseActivity {
                             LoginResultBean loginResultBean = baseBean.getResult();
                             if (loginResultBean != null){
                                 String token = loginResultBean.getToken();
-                                kv.encode(Constant.token, token);
-                                L.i("zzz1", "rtro token0: " + kv.decodeString(Constant.token, ""));
+                                BaseConstant.TOKEN = token;
+//                                kv.encode(Constant.token, token);
+//                                L.i("zzz1", "rtro token0: " + kv.decodeString(Constant.token, ""));
                                 UserInfoBean userInfoBean = loginResultBean.getUserInfo();
                                 if (userInfoBean != null){
                                     kv.encode(Constant.userId, userInfoBean.getId());

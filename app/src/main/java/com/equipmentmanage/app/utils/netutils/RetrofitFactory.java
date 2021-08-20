@@ -1,5 +1,6 @@
 package com.equipmentmanage.app.utils.netutils;
 import com.equipmentmanage.app.base.MyApplication;
+import com.equipmentmanage.app.netapi.BaseConstant;
 import com.equipmentmanage.app.netapi.Constant;
 import com.equipmentmanage.app.netapi.HttpApi;
 import com.equipmentmanage.app.netapi.URLConstant;
@@ -65,7 +66,7 @@ public class RetrofitFactory {
 //                        .addHeader("Accept-Encoding", "gzip")
                         .addHeader("Accept", "application/json")
                         .addHeader("Content-Type", "application/json; charset=utf-8")
-                        .addHeader("X-Access-Token", token)
+                        .addHeader("X-Access-Token", BaseConstant.TOKEN)
 //                        .addHeader("tenant-id", "")
                         .method(originalRequest.method(), originalRequest.body());
 //                requestBuilder.addHeader("Authorization", token);//添加请求头信息，服务器进行token有效性验证
@@ -92,13 +93,13 @@ public class RetrofitFactory {
         //错误重连
         okHttpBuilder.retryOnConnectionFailure(true);
 
-//        retrofit = new Retrofit.Builder()
-//                .client(okHttpBuilder.build())
-//                .addConverterFactory(GsonConverterFactory.create())//json转换成JavaBean
-//                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-//                .baseUrl(BASE_URL)
-//                .build();
-//        httpApi = retrofit.create(HttpApi.class);
+        retrofit = new Retrofit.Builder()
+                .client(okHttpBuilder.build())
+                .addConverterFactory(GsonConverterFactory.create())//json转换成JavaBean
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                .baseUrl(BASE_URL)
+                .build();
+        httpApi = retrofit.create(HttpApi.class);
     }
 
     /**
@@ -139,13 +140,13 @@ public class RetrofitFactory {
             };
             okHttpBuilder.cache(cache).addInterceptor(cacheInterceptor);
 
-            retrofit = new Retrofit.Builder()
-                    .client(okHttpBuilder.build())
-                    .addConverterFactory(GsonConverterFactory.create())//json转换成JavaBean
-                    .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+//            retrofit = new Retrofit.Builder()
+//                    .client(okHttpBuilder.build())
+//                    .addConverterFactory(GsonConverterFactory.create())//json转换成JavaBean
+//                    .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
 //                    .baseUrl(BASE_URL)
-                    .build();
-            httpApi = retrofit.create(HttpApi.class);
+//                    .build();
+//            httpApi = retrofit.create(HttpApi.class);
         }
         return this;
     }

@@ -23,7 +23,7 @@ public class Subscribe {
      * 登录
      */
     public static void login(LoginPostBean loginPostBean, DisposableObserver<ResponseBody> subscriber) {
-        Observable<ResponseBody> observable =  RetrofitFactory.getInstance().defaultBaseUrl().getHttpApi().login(loginPostBean);
+        Observable<ResponseBody> observable =  RetrofitFactory.getInstance().getHttpApi().login(loginPostBean);
         RetrofitFactory.getInstance().toSubscribe(observable, subscriber);
     }
 
@@ -31,7 +31,7 @@ public class Subscribe {
      * 登出
      */
     public static void logout(LoginPostBean loginPostBean, DisposableObserver<ResponseBody> subscriber) {
-        Observable<ResponseBody> observable =  RetrofitFactory.getInstance().defaultBaseUrl().getHttpApi().logout(loginPostBean);
+        Observable<ResponseBody> observable =  RetrofitFactory.getInstance().getHttpApi().logout(loginPostBean);
         RetrofitFactory.getInstance().toSubscribe(observable, subscriber);
     }
 
@@ -39,8 +39,8 @@ public class Subscribe {
      * getDeviceTypeList
      */
     public static void getDictList(String code, DisposableObserver<ResponseBody> subscriber) {
-        Observable<ResponseBody> observable =  RetrofitFactory.getInstance().defaultBaseUrl().getHttpApi().getDictList(code);
-        RetrofitFactory.getInstance().defaultBaseUrl().toSubscribe(observable, subscriber);
+        Observable<ResponseBody> observable =  RetrofitFactory.getInstance().getHttpApi().getDictList(code);
+        RetrofitFactory.getInstance().toSubscribe(observable, subscriber);
     }
 
 
@@ -49,40 +49,40 @@ public class Subscribe {
      * getDeviceList
      */
     public static void getDeviceList(Map<String, Object> map, DisposableObserver<ResponseBody> subscriber) {
-        Observable<ResponseBody> observable =  RetrofitFactory.getInstance().defaultBaseUrl().getHttpApi().getDeviceList(map);
-        RetrofitFactory.getInstance().defaultBaseUrl().toSubscribe(observable, subscriber);
+        Observable<ResponseBody> observable =  RetrofitFactory.getInstance().getHttpApi().getDeviceList(map);
+        RetrofitFactory.getInstance().toSubscribe(observable, subscriber);
     }
 
     /**
      * 获取设备管理列表
      */
     public static void getEquipmentList(Map<String, Object> map, DisposableObserver<ResponseBody> subscriber) {
-        Observable<ResponseBody> observable =  RetrofitFactory.getInstance().defaultBaseUrl().getHttpApi().getEquipmentList(map);
-        RetrofitFactory.getInstance().defaultBaseUrl().toSubscribe(observable, subscriber);
+        Observable<ResponseBody> observable =  RetrofitFactory.getInstance().getHttpApi().getEquipmentList(map);
+        RetrofitFactory.getInstance().toSubscribe(observable, subscriber);
     }
 
     /**
      * 获取区域管理列表
      */
     public static void getAreaList(Map<String, Object> map, DisposableObserver<ResponseBody> subscriber) {
-        Observable<ResponseBody> observable =  RetrofitFactory.getInstance().defaultBaseUrl().getHttpApi().getAreaList(map);
-        RetrofitFactory.getInstance().defaultBaseUrl().toSubscribe(observable, subscriber);
+        Observable<ResponseBody> observable =  RetrofitFactory.getInstance().getHttpApi().getAreaList(map);
+        RetrofitFactory.getInstance().toSubscribe(observable, subscriber);
     }
 
     /**
      * 获取产品流列表
      */
     public static void getProductFlowist(Map<String, Object> map, DisposableObserver<ResponseBody> subscriber) {
-        Observable<ResponseBody> observable =  RetrofitFactory.getInstance().defaultBaseUrl().getHttpApi().getProductFlowist(map);
-        RetrofitFactory.getInstance().defaultBaseUrl().toSubscribe(observable, subscriber);
+        Observable<ResponseBody> observable =  RetrofitFactory.getInstance().getHttpApi().getProductFlowist(map);
+        RetrofitFactory.getInstance().toSubscribe(observable, subscriber);
     }
 
     /**
      * 获取任务清单列表
      */
     public static void getTaskList(Map<String, Object> map, DisposableObserver<ResponseBody> subscriber) {
-        Observable<ResponseBody> observable =  RetrofitFactory.getInstance().defaultBaseUrl().getHttpApi().getTaskList(map);
-        RetrofitFactory.getInstance().defaultBaseUrl().toSubscribe(observable, subscriber);
+        Observable<ResponseBody> observable =  RetrofitFactory.getInstance().getHttpApi().getTaskList(map);
+        RetrofitFactory.getInstance().toSubscribe(observable, subscriber);
     }
 
 
@@ -94,13 +94,13 @@ public class Subscribe {
      * getUserList
      */
     public static void getUserList(DisposableObserver<ResponseBody> subscriber) {
-        Observable<ResponseBody> observable =  RetrofitFactory.getInstance().defaultBaseUrl().getHttpApi().getUserList();
-        RetrofitFactory.getInstance().defaultBaseUrl().toSubscribe(observable, subscriber);
+        Observable<ResponseBody> observable =  RetrofitFactory.getInstance().getHttpApi().getUserList();
+        RetrofitFactory.getInstance().toSubscribe(observable, subscriber);
     }
 
     public static void getUserList1(DisposableObserver<ResponseBody> subscriber, String citykey) {
-        Observable<ResponseBody> observable =  RetrofitFactory.getInstance().defaultBaseUrl().getHttpApi().getUserList1(citykey);
-        RetrofitFactory.getInstance().defaultBaseUrl().toSubscribe(observable, subscriber);
+        Observable<ResponseBody> observable =  RetrofitFactory.getInstance().getHttpApi().getUserList1(citykey);
+        RetrofitFactory.getInstance().toSubscribe(observable, subscriber);
     }
 
     /**
