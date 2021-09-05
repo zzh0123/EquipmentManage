@@ -19,7 +19,7 @@
         app:tb_leftImageResource="@mipmap/ic_arrow_left"
         app:tb_leftText=""
         app:tb_sideTextPadding="@dimen/dp_20"
-        app:tb_titleText="@string/device_manage"
+        app:tb_titleText="@string/area_manage"
         app:tb_titleTextSize="@dimen/sp_16"
         app:tb_useThemeColor="false" />
 
