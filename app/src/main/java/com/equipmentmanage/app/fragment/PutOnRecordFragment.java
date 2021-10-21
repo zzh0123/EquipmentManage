@@ -14,11 +14,18 @@ import androidx.appcompat.widget.AppCompatImageView;
 
 import com.equipmentmanage.app.R;
 import com.equipmentmanage.app.activity.AreaManageActivity;
+import com.equipmentmanage.app.activity.ComponentManageActivity;
 import com.equipmentmanage.app.activity.DeviceManageActivity;
 import com.equipmentmanage.app.activity.EquipmentManageActivity;
 import com.equipmentmanage.app.activity.ProductFlowActivity;
 import com.equipmentmanage.app.base.LazyFragment;
+import com.equipmentmanage.app.bean.TaskBean;
+//import com.equipmentmanage.app.db.utils.DaoUtilsStore;
+import com.equipmentmanage.app.utils.L;
+import com.equipmentmanage.app.view.TipDialog;
 import com.xuexiang.xui.widget.actionbar.TitleBar;
+
+import java.util.List;
 
 import butterknife.BindView;
 
@@ -36,10 +43,11 @@ public class PutOnRecordFragment extends LazyFragment {
     GridView gridView; //gridView
 
     // 图片封装为一个数组
-    private int[] icons = { R.mipmap.ic_device_manage, R.mipmap.ic_area_manage,
-            R.mipmap.ic_equipment_manage, R.mipmap.ic_product_flow, R.mipmap.ic_part_manage};
-    private String[] iconNames = { "装置管理", "区域管理", "设备管理", "产品流", "组件管理"};
+    private int[] icons = {R.mipmap.ic_device_manage, R.mipmap.ic_area_manage,
+            R.mipmap.ic_equipment_manage, R.mipmap.ic_product_flow, R.mipmap.ic_part_manage, R.mipmap.ic_part_manage};
+    private String[] iconNames = {"装置管理", "区域管理", "设备管理", "产品流", "组件管理", "上传"};
 
+    private TipDialog tipDialog;
 
     public PutOnRecordFragment() {
         // Required empty public constructor
@@ -62,10 +70,6 @@ public class PutOnRecordFragment extends LazyFragment {
 //        fragment.setArguments(args);
 //        return fragment;
 //    }
-
-
-
-
     @Override
     protected int getContentViewId() {
         return R.layout.fragment_put_on_record;
@@ -74,6 +78,15 @@ public class PutOnRecordFragment extends LazyFragment {
     @Override
     protected void initView(View view) {
         gridView.setAdapter(new MyGridViewAdapter(getActivity()));
+
+        //
+        tipDialog = new TipDialog(getActivity());
+        tipDialog.setOnConfirmListener(new TipDialog.OnConfirmListener() {
+            @Override
+            public void onConfirm() {
+                // TODO: 2021/10/16 上传的方法
+            }
+        });
     }
 
     @Override
@@ -86,8 +99,8 @@ public class PutOnRecordFragment extends LazyFragment {
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                // { "装置管理", "区域管理", "设备管理", "产品流", "组件管理"};
-                switch (position){
+                // { "装置管理", "区域管理", "设备管理", "产品流", "组件管理", "上传"};
+                switch (position) {
                     case 0:
                         // 装置管理
                         DeviceManageActivity.open(getActivity());
@@ -106,12 +119,25 @@ public class PutOnRecordFragment extends LazyFragment {
                         break;
                     case 4:
                         // 组件管理
+                        ComponentManageActivity.open(getActivity());
+                        break;
+                    case 5:
+                        // 上传
+                        showUploadDialog();
 //                        DeviceManageActivity.open(getActivity());
                         break;
                 }
             }
         });
 
+    }
+
+    private void showUploadDialog() {
+        if (tipDialog == null) {
+            tipDialog = new TipDialog(getActivity());
+        }
+        tipDialog.show();
+        tipDialog.setTitleAndTip(null, getString(R.string.upload_tip));
     }
 
 
@@ -167,7 +193,6 @@ public class PutOnRecordFragment extends LazyFragment {
             TextView tvName;
         }
     }
-
 
 
 }

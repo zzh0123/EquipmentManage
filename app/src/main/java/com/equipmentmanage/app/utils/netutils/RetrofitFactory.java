@@ -37,15 +37,15 @@ public class RetrofitFactory {
     // 缓存文件夹名称
     public static final String CACHE_NAME = "equipment_manage_cache";
     public static String BASE_URL = URLConstant.BASE_URL;
-    private static final int DEFAULT_CONNECT_TIMEOUT = 5;
-    private static final int DEFAULT_WRITE_TIMEOUT = 10;
-    private static final int DEFAULT_READ_TIMEOUT = 10;
+    private static final int DEFAULT_CONNECT_TIMEOUT = 35;
+    private static final int DEFAULT_WRITE_TIMEOUT = 35;
+    private static final int DEFAULT_READ_TIMEOUT = 35;
     private Retrofit retrofit;
     private HttpApi httpApi;
     /**
      * 请求失败重连次数
      */
-    private int RETRY_COUNT = 0;
+    private int RETRY_COUNT = 3;
     private OkHttpClient.Builder okHttpBuilder;
     private MMKV kv = MMKV.defaultMMKV();
     private String token = "";

@@ -42,7 +42,7 @@ public class MyGridView extends GridView{
         View localView1 = getChildAt(0);
         int column = getWidth() / localView1.getWidth();//计算出一共有多少列，假设有3列
         int childCount = getChildCount();//子view的总数
-        System.out.println("子view的总数childCount==" + childCount);
+//        System.out.println("子view的总数childCount==" + childCount);
         Paint localPaint;//画笔
         localPaint = new Paint();
         localPaint.setStyle(Paint.Style.STROKE);

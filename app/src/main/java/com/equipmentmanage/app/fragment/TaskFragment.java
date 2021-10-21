@@ -23,10 +23,12 @@ import com.equipmentmanage.app.bean.DepartmentBean;
 import com.equipmentmanage.app.bean.DictItemBean;
 import com.equipmentmanage.app.bean.TaskBean;
 import com.equipmentmanage.app.bean.TaskResultBean;
-import com.equipmentmanage.app.db.utils.DaoUtilsStore;
+//import com.equipmentmanage.app.db.utils.DaoUtilsStore;
 import com.equipmentmanage.app.netapi.Constant;
 import com.equipmentmanage.app.netsubscribe.Subscribe;
 import com.equipmentmanage.app.utils.L;
+import com.equipmentmanage.app.utils.StringUtils;
+import com.equipmentmanage.app.utils.Util;
 import com.equipmentmanage.app.utils.gson.GsonUtils;
 import com.equipmentmanage.app.utils.netutils.OnSuccessAndFaultListener;
 import com.equipmentmanage.app.utils.netutils.OnSuccessAndFaultSub;
@@ -36,6 +38,7 @@ import com.scwang.smart.refresh.layout.SmartRefreshLayout;
 import com.scwang.smart.refresh.layout.api.RefreshLayout;
 import com.scwang.smart.refresh.layout.listener.OnLoadMoreListener;
 import com.scwang.smart.refresh.layout.listener.OnRefreshListener;
+import com.tencent.mmkv.MMKV;
 import com.xuexiang.xaop.annotation.SingleClick;
 import com.xuexiang.xui.widget.actionbar.TitleBar;
 
@@ -88,6 +91,9 @@ public class TaskFragment extends LazyFragment {
 
     private TipDialog tipDialog;
 
+    private MMKV kv = MMKV.defaultMMKV();
+    private String username = "20002";
+
     public TaskFragment() {
         // Required empty public constructor
     }
@@ -116,6 +122,7 @@ public class TaskFragment extends LazyFragment {
 
     @Override
     protected void initView(View view) {
+//        username = kv.getString(Constant.username, "");
         titleBar.addAction(new TitleBar.Action() {
             @Override
             public String getText() {
@@ -190,14 +197,14 @@ public class TaskFragment extends LazyFragment {
         adapter.setEmptyView(getEmptyDataView());
         rvList.setAdapter(adapter);
 
-        // 手术信息选择框,多条的时候弹出
+        //
         tipDialog = new TipDialog(getActivity());
         tipDialog.setOnConfirmListener(new TipDialog.OnConfirmListener() {
             @Override
             public void onConfirm() {
-                List<TaskBean> list = DaoUtilsStore.getInstance().getUserDaoUtils().queryAll();
-                L.i("zzz1--->size--" + list.size());
-                L.i("zzz1--->list0--" + list.get(0).toString());
+//                List<TaskBean> list = DaoUtilsStore.getInstance().getUserDaoUtils().queryAll();
+//                L.i("zzz1--->size--" + list.size());
+//                L.i("zzz1--->list0--" + list.get(0).toString());
             }
         });
 
@@ -249,37 +256,52 @@ public class TaskFragment extends LazyFragment {
      */
     private void getTaskList() {
         Map<String, Object> params = new HashMap<>();
-        params.put(Constant.areaId, ""); // 		区域
-        params.put(Constant.belongCompany, ""); // 归属公司
-        params.put(Constant.createBy, ""); // 	创建人
-        params.put(Constant.createScale, ""); // 创建级别
-        params.put(Constant.createTime, ""); // 	创建日期
+        //旧的参数-废弃
+//        params.put(Constant.areaId, ""); // 		区域
+//        params.put(Constant.belongCompany, ""); // 归属公司
+//        params.put(Constant.createBy, ""); // 	创建人
+//        params.put(Constant.createScale, ""); // 创建级别
+//        params.put(Constant.createTime, ""); // 	创建日期
+//
+//        params.put(Constant.detectionEdate, ""); // 	结束日期
+//        params.put(Constant.detectionPeriod, ""); // 	检测期间
+//        params.put(Constant.detectionSdate, ""); // 开始日期
+//        params.put(Constant.detectionYear, ""); // 	检测年度
+//        params.put(Constant.deviceId, ""); // 	装置
+//
+//        params.put(Constant.id, ""); // 主键
+//        params.put(Constant.inspectionType, ""); // 检测类型
+//        params.put(Constant.pageNo, "" + pageNo); // pageNo
+//        params.put(Constant.pageSize, "" + pageSize); // pageSize
+//        params.put(Constant.planType, ""); // 计划类型
+//
+//        params.put(Constant.sysOrgCode, ""); // 所属部门
+//        params.put(Constant.taskEnd, ""); // 是否已结束
+//        params.put(Constant.taskName, ""); // 	任务名称
+//        params.put(Constant.taskNum, ""); // 任务编号
+//        params.put(Constant.updateBy, ""); // 更新人
+//
+//        params.put(Constant.updateTime, ""); // 	更新日期
+        if (StringUtils.isNullOrEmpty(username)) {
+            Toasty.warning(getActivity(), R.string.username_empty_tip, Toast.LENGTH_SHORT, false).show();
+            return;
+        }
 
-        params.put(Constant.detectionEdate, ""); // 	结束日期
-        params.put(Constant.detectionPeriod, ""); // 	检测期间
-        params.put(Constant.detectionSdate, ""); // 开始日期
-        params.put(Constant.detectionYear, ""); // 	检测年度
-        params.put(Constant.deviceId, ""); // 	装置
+        if (StringUtils.isNullOrEmpty(username)) {
+            Toasty.warning(getActivity(), R.string.username_empty_tip, Toast.LENGTH_SHORT, false).show();
+            return;
+        }
 
-        params.put(Constant.id, ""); // 主键
-        params.put(Constant.inspectionType, ""); // 检测类型
-        params.put(Constant.pageNo, "" + pageNo); // pageNo
-        params.put(Constant.pageSize, "" + pageSize); // pageSize
-        params.put(Constant.planType, ""); // 计划类型
-
-        params.put(Constant.sysOrgCode, ""); // 所属部门
-        params.put(Constant.taskEnd, ""); // 是否已结束
-        params.put(Constant.taskName, ""); // 	任务名称
-        params.put(Constant.taskNum, ""); // 任务编号
-        params.put(Constant.updateBy, ""); // 更新人
-
-        params.put(Constant.updateTime, ""); // 	更新日期
+        params.put(Constant.detectionUser, username); // 	当前登录人编号
+        params.put(Constant.taskSdate, "2021-10-13"); // 	当前日期 2021-10-13
 
         Subscribe.getTaskList(params, new OnSuccessAndFaultSub(new OnSuccessAndFaultListener() {
             @Override
             public void onSuccess(String result) {
                 //成功
                 try {
+//                    String address = Util.readAssert(getActivity(), "text1.txt");
+
                     BaseBean<TaskResultBean> baseBean = GsonUtils.fromJson(result, new TypeToken<BaseBean<TaskResultBean>>() {
                     }.getType());
 
@@ -294,7 +316,7 @@ public class TaskFragment extends LazyFragment {
                                 if (dataList != null && dataList.size() > 0) {
                                     mList.addAll(dataList);
                                     // 插入sqlite
-                                    DaoUtilsStore.getInstance().getUserDaoUtils().insertMultiple(mList);
+//                                    DaoUtilsStore.getInstance().getUserDaoUtils().insertMultiple(mList);
                                     tvCheckResultUpload.setVisibility(View.VISIBLE);
                                     srl.finishRefresh();
                                     srl.finishLoadMore();
@@ -306,6 +328,7 @@ public class TaskFragment extends LazyFragment {
                                 srl.finishRefresh();
                                 srl.finishLoadMoreWithNoMoreData();
                             }
+
 
                             adapter.notifyDataSetChanged();
                         } else {

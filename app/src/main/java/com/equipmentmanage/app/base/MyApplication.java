@@ -5,10 +5,14 @@ import android.app.Application;
 import android.content.Context;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
+import androidx.camera.camera2.Camera2Config;
+import androidx.camera.core.CameraXConfig;
 import androidx.multidex.MultiDex;
 
 import com.equipmentmanage.app.BuildConfig;
-import com.equipmentmanage.app.db.utils.DaoManager;
+//import com.equipmentmanage.app.db.utils.DaoManager;
+import com.equipmentmanage.app.listener.PictureSelectorEngineImp;
 import com.equipmentmanage.app.netapi.BaseConstant;
 import com.equipmentmanage.app.utils.AppUtils;
 import com.equipmentmanage.app.utils.ReleaseServer;
@@ -20,6 +24,9 @@ import com.hjq.http.config.IRequestInterceptor;
 import com.hjq.http.config.IRequestServer;
 import com.hjq.http.model.HttpHeaders;
 import com.hjq.http.model.HttpParams;
+import com.luck.picture.lib.app.IApp;
+import com.luck.picture.lib.app.PictureAppMaster;
+import com.luck.picture.lib.engine.PictureSelectorEngine;
 import com.tencent.mmkv.MMKV;
 import com.xuexiang.xaop.XAOP;
 import com.xuexiang.xaop.checker.IThrowableHandler;
@@ -30,7 +37,7 @@ import java.util.ArrayList;
 import okhttp3.OkHttpClient;
 
 
-public class MyApplication extends Application {
+public class MyApplication extends Application implements IApp, CameraXConfig.Provider{
 
     public static Context appContext;
     public static ArrayList<Activity> allActivities = new ArrayList<Activity>();
@@ -48,7 +55,9 @@ public class MyApplication extends Application {
         String rootDir = MMKV.initialize(this);
         System.out.println("mmkv root: " + rootDir);
         initAOP();
-        DaoManager.getInstance().init(this);
+//        DaoManager.getInstance().init(this);
+
+        PictureAppMaster.getInstance().setApp(this);
     }
 
     @Override
@@ -56,6 +65,22 @@ public class MyApplication extends Application {
         super.attachBaseContext(base);
         // 使用 Dex分包
         MultiDex.install(this);
+    }
+
+    @Override
+    public Context getAppContext() {
+        return this;
+    }
+
+    @Override
+    public PictureSelectorEngine getPictureSelectorEngine() {
+        return new PictureSelectorEngineImp();
+    }
+
+    @NonNull
+    @Override
+    public CameraXConfig getCameraXConfig() {
+        return Camera2Config.defaultConfig();
     }
 
     private void initAOP(){

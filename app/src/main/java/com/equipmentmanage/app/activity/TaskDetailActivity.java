@@ -122,7 +122,7 @@ public class TaskDetailActivity extends BaseActivity {
                         break;
                     case 2:
                         // 组件查询
-                        PartCheckActivity.open(TaskDetailActivity.this);
+                        PartCheckActivity.open(TaskDetailActivity.this, bean);
                         break;
                     case 3:
                         // 漂移校准

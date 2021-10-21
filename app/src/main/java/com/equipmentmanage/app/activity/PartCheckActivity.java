@@ -7,14 +7,17 @@ import androidx.viewpager2.widget.ViewPager2;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.equipmentmanage.app.R;
 import com.equipmentmanage.app.base.BaseActivity;
+import com.equipmentmanage.app.bean.TaskBean;
 import com.equipmentmanage.app.fragment.PartImgsFragment;
 import com.equipmentmanage.app.fragment.PartInfoFragment;
+import com.equipmentmanage.app.netapi.Constant;
 import com.xuexiang.xaop.annotation.SingleClick;
 import com.xuexiang.xui.widget.actionbar.TitleBar;
 
@@ -31,8 +34,9 @@ import butterknife.OnClick;
  */
 public class PartCheckActivity extends BaseActivity {
 
-    public static void open(Context c) {
+    public static void open(Context c, TaskBean bean) {
         Intent i = new Intent(c, PartCheckActivity.class);
+        i.putExtra(Constant.taskBean, bean);
         c.startActivity(i);
     }
 
@@ -64,6 +68,8 @@ public class PartCheckActivity extends BaseActivity {
     private String[] tabTitles = {"组件信息", "组件图片"};
     private List<Fragment> fragmentList = new ArrayList<>();
 
+    private TaskBean bean;
+
     @Override
     protected int initLayout() {
         return R.layout.activity_part_check;
@@ -71,6 +77,7 @@ public class PartCheckActivity extends BaseActivity {
 
     @Override
     protected void initView() {
+        bean = (TaskBean) getIntent().getSerializableExtra(Constant.taskBean);
 
 //        bean = (AreaManageResultBean.Records) getIntent().getSerializableExtra(Constant.areaBean);
 
@@ -112,9 +119,9 @@ public class PartCheckActivity extends BaseActivity {
             @Override
             public Fragment createFragment(int position) {
                 Fragment fragment = fragmentList.get(position);
-//                Bundle bundle=new Bundle();
-//                bundle.putString(Constants.STATUS, config.getStatusList().get(position));
-//                fragment.setArguments(bundle);
+                Bundle bundle=new Bundle();
+                bundle.putSerializable(Constant.taskBean, bean);
+                fragment.setArguments(bundle);
                 return fragment;
             }
 

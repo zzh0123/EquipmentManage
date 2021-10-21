@@ -10,6 +10,9 @@ public class ConstantValue {
     public static String all_device_type = "全部装置类型";
     public static String all_device_type_value = "";
 
+    public static String all_img_type = "全部类型";
+    public static String all_img_type_value = "";
+
     /**
      * 0 校准设备(日常校准), 1 漂移校准
      */

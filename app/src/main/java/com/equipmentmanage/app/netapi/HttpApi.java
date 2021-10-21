@@ -1,6 +1,7 @@
 package com.equipmentmanage.app.netapi;
 
 import com.equipmentmanage.app.bean.LoginPostBean;
+import com.equipmentmanage.app.bean.TaskBean;
 import com.equipmentmanage.app.bean.User;
 
 import java.util.List;
@@ -67,9 +68,20 @@ public interface HttpApi {
     @GET("/jeecg-boot/ldar/baseProdStream/list")
     Observable<ResponseBody> getProductFlowist(@QueryMap Map<String, Object> map);
 
+    // 获取任务清单列表-废弃
+//    @GET("/jeecg-boot/ldar/liveTask/list")
+//    Observable<ResponseBody> getTaskList(@QueryMap Map<String, Object> map);
+
     // 获取任务清单列表
-    @GET("/jeecg-boot/ldar/liveTask/list")
+    @GET("/jeecg-boot/ldar/app/liveTaskApp/downLoadTaskList")
     Observable<ResponseBody> getTaskList(@QueryMap Map<String, Object> map);
+
+    // 检查结果上传， post请求
+    @POST("/jeecg-boot/ldar/app/liveTaskApp/accessResultList")
+    Observable<ResponseBody> accessResultList(@Body List<TaskBean> records);
+
+
+
 
 
     @GET("weather_mini")

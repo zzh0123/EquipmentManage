@@ -1,5 +1,6 @@
 package com.equipmentmanage.app.netsubscribe;
 import com.equipmentmanage.app.bean.LoginPostBean;
+import com.equipmentmanage.app.bean.TaskBean;
 import com.equipmentmanage.app.bean.User;
 import com.equipmentmanage.app.utils.netutils.RetrofitFactory;
 
@@ -32,6 +33,14 @@ public class Subscribe {
      */
     public static void logout(LoginPostBean loginPostBean, DisposableObserver<ResponseBody> subscriber) {
         Observable<ResponseBody> observable =  RetrofitFactory.getInstance().getHttpApi().logout(loginPostBean);
+        RetrofitFactory.getInstance().toSubscribe(observable, subscriber);
+    }
+
+    /**
+     * 检查结果上传
+     */
+    public static void accessResultList(List<TaskBean> records, DisposableObserver<ResponseBody> subscriber) {
+        Observable<ResponseBody> observable =  RetrofitFactory.getInstance().getHttpApi().accessResultList(records);
         RetrofitFactory.getInstance().toSubscribe(observable, subscriber);
     }
 

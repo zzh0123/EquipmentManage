@@ -274,6 +274,7 @@ public class DeviceManageActivity extends BaseActivity {
         });
     }
 
+    @SingleClick
     @OnClick({R.id.imb_clear, R.id.ll_department, R.id.ll_device_type})
     public void onClick(View v) {
         switch (v.getId()) {

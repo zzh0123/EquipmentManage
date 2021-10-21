@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.equipmentmanage.app.R;
 import com.equipmentmanage.app.utils.L;
+import com.equipmentmanage.app.utils.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,6 +28,7 @@ import java.util.List;
  */
 public class TipDialog extends Dialog implements View.OnClickListener {
 
+    private TextView tvTitle, tvTipContent;
     private TextView tvCancel, tvConfirm;
     private Context context;
 
@@ -65,16 +67,28 @@ public class TipDialog extends Dialog implements View.OnClickListener {
         window.setAttributes(lp);
         window.addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
 
+        tvTitle = findViewById(R.id.tv_title);
+        tvTipContent = findViewById(R.id.tv_tip_content);
+
         tvCancel = findViewById(R.id.tv_cancel);
         tvConfirm = findViewById(R.id.tv_confirm);
     }
-
 
     // 初始化监听
     private void initListener() {
         tvCancel.setOnClickListener(this);
         tvConfirm.setOnClickListener(this);
 
+    }
+
+    public void setTitleAndTip(String title, String tip) {
+        if (!StringUtils.isNullOrEmpty(title)){
+            tvTitle.setText(title);
+        }
+
+        if (!StringUtils.isNullOrEmpty(tip)){
+            tvTipContent.setText(tip);
+        }
     }
 
     @Override
