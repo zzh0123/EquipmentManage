@@ -7,6 +7,7 @@ import com.chad.library.adapter.base.viewholder.BaseViewHolder;
 import com.equipmentmanage.app.R;
 import com.equipmentmanage.app.bean.AreaManageBean;
 import com.equipmentmanage.app.bean.AreaManageResultBean;
+import com.equipmentmanage.app.bean.BaseAreaBean;
 import com.equipmentmanage.app.utils.StringUtils;
 
 import org.jetbrains.annotations.NotNull;
@@ -19,17 +20,17 @@ import java.util.List;
  * @Author: zzh
  * @CreateDate: 2021/8/11
  */
-public class AreaAdapter extends BaseQuickAdapter<AreaManageResultBean.Records, BaseViewHolder> {
-    public AreaAdapter(@Nullable List<AreaManageResultBean.Records> data) {
+public class AreaAdapter extends BaseQuickAdapter<BaseAreaBean, BaseViewHolder> {
+    public AreaAdapter(@Nullable List<BaseAreaBean> data) {
         super(R.layout.item_area_manage, data);
     }
 
     @Override
-    protected void convert(@NotNull BaseViewHolder holder, @Nullable AreaManageResultBean.Records bean) {
+    protected void convert(@NotNull BaseViewHolder holder, @Nullable BaseAreaBean bean) {
         holder.setText(R.id.tv_area_name, StringUtils.nullStrToEmpty(bean.getAreaName())); // 区域名称
 //        holder.setText(R.id.tv_status, StringUtils.nullStrToEmpty(bean.getStatus())); // 状态
         holder.setText(R.id.tv_device_code, StringUtils.nullStrToEmpty(bean.getAreaCode())); // 区域编码
-        holder.setText(R.id.tv_belong_device, StringUtils.nullStrToEmpty(bean.getBelongDevice_dictText())); // 所属装置
+        holder.setText(R.id.tv_belong_device, StringUtils.nullStrToEmpty(bean.getDeviceName())); // 所属装置
 
         TextView tvStatus = holder.getView(R.id.tv_status);
 //        String status = bean.getStatus();

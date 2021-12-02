@@ -14,6 +14,7 @@ import com.equipmentmanage.app.R;
 import com.equipmentmanage.app.adapter.DictItemAdapter;
 import com.equipmentmanage.app.base.BaseActivity;
 import com.equipmentmanage.app.bean.BaseBean;
+import com.equipmentmanage.app.bean.BaseDeviceBean;
 import com.equipmentmanage.app.bean.ChemicalDetailBean;
 import com.equipmentmanage.app.bean.DeviceManageResultBean;
 import com.equipmentmanage.app.bean.DictItemBean;
@@ -40,7 +41,7 @@ import es.dmoral.toasty.Toasty;
  */
 public class DeviceManageDetailActivity extends BaseActivity {
 
-    public static void open(Context c, DeviceManageResultBean.Records bean) {
+    public static void open(Context c, BaseDeviceBean bean) {
         Intent i = new Intent(c, DeviceManageDetailActivity.class);
         i.putExtra(Constant.deviceBean, bean);
         c.startActivity(i);
@@ -87,7 +88,7 @@ public class DeviceManageDetailActivity extends BaseActivity {
 
     private String department, deviceType;
 
-    private DeviceManageResultBean.Records bean;
+    private BaseDeviceBean bean;
 
     @Override
     protected int initLayout() {
@@ -97,7 +98,7 @@ public class DeviceManageDetailActivity extends BaseActivity {
     @Override
     protected void initView() {
 
-        bean = (DeviceManageResultBean.Records) getIntent().getSerializableExtra(Constant.deviceBean);
+        bean = (BaseDeviceBean) getIntent().getSerializableExtra(Constant.deviceBean);
 
         titleBar.setLeftClickListener(new View.OnClickListener() {
             @SingleClick
@@ -110,7 +111,7 @@ public class DeviceManageDetailActivity extends BaseActivity {
         if (bean != null) {
             tvDeviceName.setText(StringUtils.nullStrToEmpty(bean.getDeviceName())); //名称
             tvDeviceCode.setText(StringUtils.nullStrToEmpty(bean.getDeviceCode())); //编号
-            tvDeviceType.setText(StringUtils.nullStrToEmpty(bean.getDeviceType_dictText())); //装置类型
+            tvDeviceType.setText(StringUtils.nullStrToEmpty(bean.getDeviceType())); //装置类型
 //            tvDepartment.setText(StringUtils.nullStrToEmpty(bean.getDeviceName())); //部门
             tvCapacity.setText(StringUtils.nullStrToEmpty(bean.getDeviceCapacity())); //产能
 

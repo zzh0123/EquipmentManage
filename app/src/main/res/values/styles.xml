@@ -9,4 +9,32 @@
         <item name="android:scrollHorizontally">true</item>
     </style>
 
+
+    <style name="superButton_style">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:paddingTop">10dp</item>
+        <item name="android:paddingBottom">10dp</item>
+        <item name="android:layout_marginStart">4dp</item>
+        <item name="android:layout_marginEnd">4dp</item>
+        <item name="sCornersRadius">8dp</item>
+        <item name="sSelectorNormalColor">@color/c_409EFF</item>
+        <item name="sSelectorDisableColor">@color/white</item>
+        <item name="sSelectorPressedColor">@color/c_80409EFF</item>
+        <item name="android:textColor">@color/xui_config_color_white</item>
+        <item name="android:textSize">@dimen/sp_18</item>
+    </style>
+
+    <style name="AppTheme" parent="XUITheme.Phone">
+
+        <!-- 自定义自己的主题样式 -->
+
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+
+    </style>
+
+
+
 </resources>

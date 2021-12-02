@@ -32,11 +32,19 @@ import com.equipmentmanage.app.adapter.DeviceAdapter;
 import com.equipmentmanage.app.base.BaseActivity;
 import com.equipmentmanage.app.bean.AreaManageBean;
 import com.equipmentmanage.app.bean.AreaManageResultBean;
+import com.equipmentmanage.app.bean.BaseAreaBean;
+import com.equipmentmanage.app.bean.BaseAreaTableBean;
 import com.equipmentmanage.app.bean.BaseBean;
+import com.equipmentmanage.app.bean.BaseDeviceBean;
+import com.equipmentmanage.app.bean.BaseDeviceTableBean;
 import com.equipmentmanage.app.bean.DepartmentBean;
 import com.equipmentmanage.app.bean.DeviceManageBean;
+import com.equipmentmanage.app.bean.DeviceManageResultBean;
+import com.equipmentmanage.app.bean.DeviceTableBean;
 import com.equipmentmanage.app.bean.EquipmentManageResultBean;
+import com.equipmentmanage.app.dao.AppDatabase;
 import com.equipmentmanage.app.netapi.Constant;
+import com.equipmentmanage.app.netapi.ConstantValue;
 import com.equipmentmanage.app.netsubscribe.Subscribe;
 import com.equipmentmanage.app.utils.L;
 import com.equipmentmanage.app.utils.StringUtils;
@@ -69,7 +77,7 @@ import es.dmoral.toasty.Toasty;
  */
 public class AreaManageActivity extends BaseActivity {
 
-    public static void open(Context c){
+    public static void open(Context c) {
         Intent i = new Intent(c, AreaManageActivity.class);
         c.startActivity(i);
     }
@@ -111,6 +119,9 @@ public class AreaManageActivity extends BaseActivity {
 
     private String department, deviceType;
 
+    private List<BaseAreaBean> baseAreaBeanList = new ArrayList<>();
+
+
     @Override
     protected int initLayout() {
         return R.layout.activity_area_manage;
@@ -127,6 +138,38 @@ public class AreaManageActivity extends BaseActivity {
             }
         });
 
+        titleBar.addAction(new TitleBar.Action() {
+            @Override
+            public String getText() {
+                return null;
+            }
+
+            @Override
+            public int getDrawable() {
+                return R.mipmap.ic_download;
+            }
+
+            @Override
+            public void performAction(View view) {
+                L.i("zzz1--->download");
+                refresh();
+            }
+
+            @Override
+            public int leftPadding() {
+                return 0;
+            }
+
+            @Override
+            public int rightPadding() {
+                return 0;
+            }
+        });
+
+//        List<DeviceTableBean> list = AppDatabase.getInstance(AreaManageActivity.this).deviceTableDao().getAll();
+////        L.i("zzz1-getdevicelist->" + GsonUtils.toJson(list));
+//        DeviceManageResultBean.Records records = GsonUtils.fromJson(list.get(0).content, DeviceManageResultBean.Records.class);
+//        L.i("zzz1-getDeviceName->" + records.getDeviceName());
 
         DepartmentBean departmentBean = new DepartmentBean();
         departmentBean.setName("部门1");
@@ -137,8 +180,8 @@ public class AreaManageActivity extends BaseActivity {
         departmentBeanList.add(departmentBean);
         departmentBeanList.add(departmentBean1);
 
-        srl.setEnableRefresh(true);
-        srl.setEnableLoadMore(true);
+        srl.setEnableRefresh(false);
+        srl.setEnableLoadMore(false);
         srl.setEnableFooterFollowWhenNoMoreData(true);
 
         srl.setOnRefreshListener(new OnRefreshListener() {
@@ -156,11 +199,11 @@ public class AreaManageActivity extends BaseActivity {
 
         LinearLayoutManager manager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         rvList.setLayoutManager(manager);
-        adapter = new AreaAdapter(mList);
+        adapter = new AreaAdapter(baseAreaBeanList);
         adapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(@NonNull BaseQuickAdapter<?, ?> adapter, @NonNull View view, int position) {
-                AreaManageResultBean.Records bean = mList.get(position);
+                BaseAreaBean bean = baseAreaBeanList.get(position);
                 if (bean != null) {
                     AreaManageDetailActivity.open(AreaManageActivity.this, bean);
                 }
@@ -200,7 +243,7 @@ public class AreaManageActivity extends BaseActivity {
                         || (event != null && KeyEvent.KEYCODE_ENTER == event.getKeyCode() && KeyEvent.ACTION_DOWN == event.getAction())) {
                     //处理事件
                     L.i("zzz1--->etSearch");
-                    refresh();
+                    readCache();
                 }
                 return false;
             }
@@ -258,7 +301,7 @@ public class AreaManageActivity extends BaseActivity {
         llNoData.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                refresh();
+                readCache();
             }
         });
         return notDataView;
@@ -266,17 +309,105 @@ public class AreaManageActivity extends BaseActivity {
 
     @Override
     protected void initData() {
-        refresh();
+        readCache();
     }
 
     private void refresh() {
-        pageNo = 1;
-        getAreaList();
+//        pageNo = 1;
+        getBaseAreaList();
     }
 
     private void loadMore() {
-        pageNo++;
-        getAreaList();
+//        pageNo++;
+        getBaseAreaList();
+    }
+
+    private void readCache() {
+//        BaseDeviceTableBean list = AppDatabase.getInstance(AreaManageActivity.this).baseDeviceTableDao().loadById("1");
+//                L.i("zzz1-baseDevice->" + GsonUtils.toJson(list3));
+//        GsonUtils.fromJson(list.content, List<BaseEquipmentBean>)
+
+        baseAreaBeanList.clear();
+        BaseAreaTableBean list = AppDatabase.getInstance(AreaManageActivity.this).baseAreaTableDao().loadById("1");
+//                L.i("zzz1-Area->" + GsonUtils.toJson(list3));
+        if (list != null) {
+            List<BaseAreaBean> baseAreaBeans = GsonUtils.fromJson(list.content, new TypeToken<List<BaseAreaBean>>() {
+            }.getType());
+
+            L.i("zzz1-baseAreaBeans.list222--->" + baseAreaBeans.size());
+            if (baseAreaBeans != null && baseAreaBeans.size() > 0) {
+                baseAreaBeanList.addAll(baseAreaBeans);
+            } else {
+                Toasty.error(AreaManageActivity.this, R.string.return_empty, Toast.LENGTH_SHORT, true).show();
+
+            }
+        } else {
+            Toasty.normal(AreaManageActivity.this, "请先下载数据", Toast.LENGTH_SHORT).show();
+        }
+        adapter.notifyDataSetChanged();
+
+    }
+
+    /**
+     * 区域
+     */
+    private void getBaseAreaList() {
+        Subscribe.getBaseAreaList(ConstantValue.belongCompany1, new OnSuccessAndFaultSub(new OnSuccessAndFaultListener() {
+            @Override
+            public void onSuccess(String result) {
+                //成功
+                try {
+                    BaseBean<List<BaseAreaBean>> baseBean = GsonUtils.fromJson(result, new TypeToken<BaseBean<List<BaseAreaBean>>>() {
+                    }.getType());
+
+                    if (null != baseBean) {
+                        if (baseBean.isSuccess()) {
+//                            deviceTypeBeanList.clear();
+                            List<BaseAreaBean> dataList = baseBean.getResult();
+                            if (dataList != null && dataList.size() > 0) {
+                                BaseAreaTableBean baseAreaTableBean = new BaseAreaTableBean();
+                                baseAreaTableBean.id = "1";
+                                baseAreaTableBean.content = GsonUtils.toJson(dataList);
+                                Long rowId = AppDatabase.getInstance(AreaManageActivity.this).baseAreaTableDao().insert(baseAreaTableBean);
+                                if (rowId != null){
+                                    Toasty.success(AreaManageActivity.this, R.string.download_success, Toast.LENGTH_SHORT, true).show();
+                                    readCache();
+                                } else {
+                                    Toasty.error(AreaManageActivity.this, R.string.download_fail, Toast.LENGTH_SHORT, true).show();
+                                }
+
+                            } else {
+                                int row = AppDatabase.getInstance(AreaManageActivity.this).baseAreaTableDao().deleteAll();
+                                L.i("zzz1-area-row-->" + row);
+                                if (row >= 0){
+                                    mList.clear();
+                                    adapter.notifyDataSetChanged();
+                                }
+                                Toasty.error(AreaManageActivity.this, R.string.return_empty, Toast.LENGTH_SHORT, true).show();
+                            }
+
+//                            deviceTypeAdapter.notifyDataSetChanged();
+
+                        } else {
+                            Toasty.error(AreaManageActivity.this, R.string.search_fail, Toast.LENGTH_SHORT, true).show();
+                        }
+                    } else {
+                        Toasty.error(AreaManageActivity.this, R.string.return_empty, Toast.LENGTH_SHORT, true).show();
+
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    Toasty.error(AreaManageActivity.this, R.string.parse_fail, Toast.LENGTH_SHORT, true).show();
+
+                }
+
+            }
+
+            @Override
+            public void onFault(String errorMsg) {
+                Toasty.error(AreaManageActivity.this, R.string.request_fail, Toast.LENGTH_SHORT, true).show();
+            }
+        }, AreaManageActivity.this));
     }
 
     /**

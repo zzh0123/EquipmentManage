@@ -70,13 +70,13 @@ public class SearchFragment extends LazyFragment {
 
     @Override
     protected void initView(View view) {
-        titleBar.setLeftClickListener(new View.OnClickListener() {
-            @SingleClick
-            @Override
-            public void onClick(View v) {
-                getActivity().finish();
-            }
-        });
+//        titleBar.setLeftClickListener(new View.OnClickListener() {
+//            @SingleClick
+//            @Override
+//            public void onClick(View v) {
+//                getActivity().finish();
+//            }
+//        });
     }
 
     @Override

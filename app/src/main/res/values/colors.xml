@@ -20,9 +20,21 @@
     <color name="c_FFEEF8E8">#FFEEF8E8</color>
     <color name="c_909399">#909399</color>
     <color name="c_409EFF">#409EFF</color>
+    <color name="c_80409EFF">#80409EFF</color>
     <color name="c_FFC0C4CC">#FFC0C4CC</color>
     <color name="c_FFDCDFE6">#FFDCDFE6</color>
     <color name="c_FFF3F6F9">#FFF3F6F9</color>
     <color name="c_F56C6C">#F56C6C</color>
     <color name="c_FF9900">#FF9900</color>
+    <color name="app_color_f6">#f6f6f6</color>
+    <color name="app_color_white">#FFFFFF</color>
+
+    <color name="divider">#ffdcdcdc</color>
+    <color name="blue3">#ff43a3fd</color>
+    <color name="text_gray9">#999999</color>
+
+    <color name="colorGray">#f25f5f5f</color>
+    <color name="colorBg">#f2f1f1f1</color>
+    <color name="colorSelect">#f2c5c5c5</color>
+
 </resources>

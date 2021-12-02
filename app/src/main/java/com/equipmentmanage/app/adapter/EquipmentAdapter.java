@@ -5,6 +5,7 @@ import android.widget.TextView;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.viewholder.BaseViewHolder;
 import com.equipmentmanage.app.R;
+import com.equipmentmanage.app.bean.BaseEquipmentBean;
 import com.equipmentmanage.app.bean.DeviceManageBean;
 import com.equipmentmanage.app.bean.EquipmentManageBean;
 import com.equipmentmanage.app.bean.EquipmentManageResultBean;
@@ -20,18 +21,18 @@ import java.util.List;
  * @Author: zzh
  * @CreateDate: 2021/8/12
  */
-public class EquipmentAdapter extends BaseQuickAdapter<EquipmentManageResultBean.Records, BaseViewHolder> {
-    public EquipmentAdapter(@Nullable List<EquipmentManageResultBean.Records> data) {
+public class EquipmentAdapter extends BaseQuickAdapter<BaseEquipmentBean, BaseViewHolder> {
+    public EquipmentAdapter(@Nullable List<BaseEquipmentBean> data) {
         super(R.layout.item_equipment_manage, data);
     }
 
     @Override
-    protected void convert(@NotNull BaseViewHolder holder, @Nullable EquipmentManageResultBean.Records bean) {
+    protected void convert(@NotNull BaseViewHolder holder, @Nullable BaseEquipmentBean bean) {
         holder.setText(R.id.tv_equipment_name, StringUtils.nullStrToEmpty(bean.getEquipmentName())); // 装置名称
 //        holder.setText(R.id.tv_status, StringUtils.nullStrToEmpty(bean.getStatus())); // 状态
         holder.setText(R.id.tv_device_code, StringUtils.nullStrToEmpty(bean.getEquipmentCode())); // 装置编码
-        holder.setText(R.id.tv_belong_device, StringUtils.nullStrToEmpty(bean.getDeviceId_dictText())); // 所属装置
-        holder.setText(R.id.tv_belong_area, StringUtils.nullStrToEmpty(bean.getAreaId_dictText())); // 所属区域
+        holder.setText(R.id.tv_belong_device, StringUtils.nullStrToEmpty(bean.getDeviceName())); // 所属装置
+        holder.setText(R.id.tv_belong_area, StringUtils.nullStrToEmpty(bean.getAreaName())); // 所属区域
 
         TextView tvStatus = holder.getView(R.id.tv_status);
 //        String status = bean.getStatus();

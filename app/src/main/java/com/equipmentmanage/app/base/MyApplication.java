@@ -31,6 +31,7 @@ import com.tencent.mmkv.MMKV;
 import com.xuexiang.xaop.XAOP;
 import com.xuexiang.xaop.checker.IThrowableHandler;
 import com.xuexiang.xaop.logger.XLogger;
+import com.xuexiang.xui.XUI;
 
 import java.util.ArrayList;
 
@@ -56,6 +57,9 @@ public class MyApplication extends Application implements IApp, CameraXConfig.Pr
         System.out.println("mmkv root: " + rootDir);
         initAOP();
 //        DaoManager.getInstance().init(this);
+//        XUI.init(this); //初始化UI框架
+//        XUI.debug(true);  //开启UI框架调试日志
+
 
         PictureAppMaster.getInstance().setApp(this);
     }

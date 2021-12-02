@@ -32,7 +32,8 @@
         android:paddingTop="@dimen/dp_6"
         android:paddingLeft="@dimen/dp_8"
         android:paddingRight="@dimen/dp_8"
-        android:paddingBottom="@dimen/dp_6">
+        android:paddingBottom="@dimen/dp_6"
+        android:visibility="gone">
         <!--搜索框-->
         <LinearLayout
             android:id="@+id/ll_search"

@@ -3,13 +3,19 @@
     <string name="device_manage">装置管理</string>
     <string name="device_detail">装置详情</string>
     <string name="equipment_manage">设备管理</string>
+    <string name="component_manage">组件管理</string>
+    <string name="component_manage1">密封点建档</string>
+
     <string name="equipment_detail">设备详情</string>
     <string name="equipment_info">设备信息</string>
     <string name="area_manage">区域管理</string>
+    <string name="take_photo">拍照</string>
     <string name="area_detail">区域详情</string>
     <string name="part_detail">组件详情</string>
     <string name="task_list">任务清单</string>
     <string name="task_detail">任务详情</string>
+
+    <string name="base_data">基础数据</string>
 
     <string name="search_hint">搜索</string>
     <string name="department">部门:</string>
@@ -59,6 +65,8 @@
     <string name="divulge_submit_mailbox">泄露提报邮箱</string>
     <string name="enabled_0">不可用</string>
     <string name="enabled_1">可用</string>
+    <string name="pass_0">未通过</string>
+    <string name="pass_1">通过</string>
     <string name="progress_0">未完成</string>
     <string name="progress_1">已完成</string>
 
@@ -84,6 +92,7 @@
 
     <!-- 组件检测 -->
     <string name="part_check">组件检测</string>
+    <string name="seal_point_check">密封点检测</string>
     <string name="part_info">组件信息</string>
     <string name="part_imgs">组件图片</string>
     <string name="reread">重新读数</string>
@@ -125,6 +134,8 @@
     <string name="control_equipment_and_close_sys">控制设备 <br /> 和密闭通风 <br />  系统</string>
     <string name="control_equipment_and_close_type">控制设备<br /> 和密闭通风 <br /> 类型</string>
 
+    <string name="upload_tip">确定上传吗？</string>
+    <string name="clear_cache_tip">确定清空缓存吗？</string>
 
     <string name="not_data">暂无数据，点击刷新</string>
     <string name="not_data1">当前暂无任务，请点击按钮下载任务</string>
@@ -137,11 +148,11 @@
     <string name="logout_success">登出成功！</string>
     <string name="logout_fail">登出失败！</string>
     <string name="request_fail">请求失败！</string>
+    <string name="download_fail">下载失败！</string>
+    <string name="download_success">下载成功！</string>
+    <string name="upload_fail">上传成功！</string>
+    <string name="upload_success">上传成功！</string>
 
-    <string name="http_network_error">请求失败，请检查网络设置</string>
-    <string name="http_response_error">服务器响应异常，请稍后再试</string>
-    <string name="http_server_error">服务器连接异常，请稍后再试</string>
-    <string name="http_request_cancel">请求被中断，请重试</string>
     <string name="http_token_error">登录失效，请重新登录</string>
     <string name="http_data_explain_error">数据解析异常，请稍后</string>
     <string name="http_server_out_time">服务器请求超时，请稍后再试</string>
@@ -157,6 +168,7 @@
 
     <string name="task">任务</string>
     <string name="put_on_record">建档</string>
+    <string name="upload_download">上传下载</string>
     <string name="search">查询</string>
     <string name="user">用户</string>
     <string name="tip">提示</string>
@@ -166,11 +178,50 @@
     <string name="please_enter">请输入</string>
     <string name="please_select">请选择</string>
     <string name="submit">提交</string>
+    <string name="submit_fail">提交失败！</string>
+    <string name="submit_success">提交成功！</string>
+
+    <string name="sure">确定</string>
+
+    <string name="save">保存</string>
+    <string name="recall">撤回</string>
+
 
     <string name="lan_da">蓝达</string>
     <string name="change_password">修改密码</string>
+    <string name="clear_cache">清空缓存</string>
     <string name="exit">退出登录</string>
+
+
+    <string name="username_empty_tip">登录人编号为空！</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="http_unknown_error">请求出错，未知错误</string>
+    <string name="http_network_error">请求失败，请检查网络设置</string>
+    <string name="http_response_error">服务器响应异常，请稍后再试</string>
+    <string name="http_server_error">服务器连接异常，请稍后再试</string>
+    <string name="http_request_cancel">请求被中断，请重试</string>
+    <string name="version_update">版本更新</string>
+    <string name="configure">配置</string>
+    <string name="select_configure_ip">选择配置IP</string>
+    <string name="custom_configure_ip">自定义配置IP</string>
+
+    <string name="tag_num_hint">请输入标签号</string>
+    <string name="reference_hint">请输入参考物</string>
+    <string name="distance_hint">请输入距离(米)</string>
+    <string name="height_hint">请输入高度(米)</string>
+    <string name="floor_level_hint">请输入楼层</string>
+    <string name="size_hint">请输入尺寸(mm)</string>
+    <string name="manufacturer_hint">请输入生产厂家</string>
+    <string name="production_date_hint">请选择投产日期</string>
+    <string name="unreachable_reason_hint">请输入不可达原因</string>
+    <string name="oper_temper_hint">请输入操作温度(℃)</string>
+    <string name="oper_pressure_hint">请输入操作压力(MPa)</string>
+    <string name="barcode_hint">请输入条形码</string>
+    <string name="detection_freq_hint">请输入检测频率/AOV检测频率</string>
+    <string name="leakage_threshold_hint">请输入泄漏阈值/DPM</string>
+
+
 </resources>

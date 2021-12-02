@@ -23,6 +23,7 @@ import com.equipmentmanage.app.bean.ResultInfo;
 import com.equipmentmanage.app.fragment.PutOnRecordFragment;
 import com.equipmentmanage.app.fragment.SearchFragment;
 import com.equipmentmanage.app.fragment.TaskFragment;
+import com.equipmentmanage.app.fragment.UpDownLoadFragment;
 import com.equipmentmanage.app.fragment.UserFragment;
 import com.equipmentmanage.app.netsubscribe.Subscribe;
 import com.equipmentmanage.app.utils.GsonUtils1;
@@ -72,6 +73,7 @@ public class MainActivity extends BaseActivity implements NavigationBarView.OnIt
 
         fragmentList.add(new TaskFragment());
         fragmentList.add(new PutOnRecordFragment());
+//        fragmentList.add(new UpDownLoadFragment());
         fragmentList.add(new SearchFragment());
         fragmentList.add(new UserFragment());
 
@@ -124,6 +126,9 @@ public class MainActivity extends BaseActivity implements NavigationBarView.OnIt
             case R.id.put_on_record:
                 viewPager2.setCurrentItem(1);
                 break;
+//            case R.id.upload_download: // 上传下载
+//                viewPager2.setCurrentItem(2);
+//                break;
             case R.id.search:
                 viewPager2.setCurrentItem(2);
                 break;

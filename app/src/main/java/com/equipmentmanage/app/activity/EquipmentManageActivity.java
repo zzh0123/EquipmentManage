@@ -30,13 +30,21 @@ import com.equipmentmanage.app.adapter.DepartmentAdapter;
 import com.equipmentmanage.app.adapter.DeviceAdapter;
 import com.equipmentmanage.app.adapter.EquipmentAdapter;
 import com.equipmentmanage.app.base.BaseActivity;
+import com.equipmentmanage.app.bean.BaseAreaBean;
+import com.equipmentmanage.app.bean.BaseAreaTableBean;
 import com.equipmentmanage.app.bean.BaseBean;
+import com.equipmentmanage.app.bean.BaseEquipmentBean;
+import com.equipmentmanage.app.bean.BaseEquipmentTableBean;
 import com.equipmentmanage.app.bean.DepartmentBean;
 import com.equipmentmanage.app.bean.DeviceManageBean;
 import com.equipmentmanage.app.bean.DeviceManageResultBean;
 import com.equipmentmanage.app.bean.EquipmentManageBean;
 import com.equipmentmanage.app.bean.EquipmentManageResultBean;
+import com.equipmentmanage.app.bean.EquipmentManageTableBean;
+import com.equipmentmanage.app.bean.TaskTableBean;
+import com.equipmentmanage.app.dao.AppDatabase;
 import com.equipmentmanage.app.netapi.Constant;
+import com.equipmentmanage.app.netapi.ConstantValue;
 import com.equipmentmanage.app.netsubscribe.Subscribe;
 import com.equipmentmanage.app.utils.L;
 import com.equipmentmanage.app.utils.StringUtils;
@@ -110,10 +118,12 @@ public class EquipmentManageActivity extends BaseActivity {
     RecyclerView rvList;
     private EquipmentAdapter adapter;
     private List<EquipmentManageResultBean.Records> mList = new ArrayList<>();
-
+    List<EquipmentManageTableBean> tableBeans = new ArrayList<>();
     private int pageNo = 1, pageSize = 10;
 
     private String department, deviceType;
+
+    private List<BaseEquipmentBean> baseEquipmentBeanList = new ArrayList<>();
 
     @Override
     public void onAttachedToWindow() {
@@ -137,6 +147,34 @@ public class EquipmentManageActivity extends BaseActivity {
             }
         });
 
+        titleBar.addAction(new TitleBar.Action() {
+            @Override
+            public String getText() {
+                return null;
+            }
+
+            @Override
+            public int getDrawable() {
+                return R.mipmap.ic_download;
+            }
+
+            @Override
+            public void performAction(View view) {
+                L.i("zzz1--->download");
+                refresh();
+            }
+
+            @Override
+            public int leftPadding() {
+                return 0;
+            }
+
+            @Override
+            public int rightPadding() {
+                return 0;
+            }
+        });
+
 
         DepartmentBean departmentBean = new DepartmentBean();
         departmentBean.setName("部门1");
@@ -147,8 +185,8 @@ public class EquipmentManageActivity extends BaseActivity {
         departmentBeanList.add(departmentBean);
         departmentBeanList.add(departmentBean1);
 
-        srl.setEnableRefresh(true);
-        srl.setEnableLoadMore(true);
+        srl.setEnableRefresh(false);
+        srl.setEnableLoadMore(false);
         srl.setEnableFooterFollowWhenNoMoreData(true);
 
         srl.setOnRefreshListener(new OnRefreshListener() {
@@ -166,11 +204,11 @@ public class EquipmentManageActivity extends BaseActivity {
 
         LinearLayoutManager manager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         rvList.setLayoutManager(manager);
-        adapter = new EquipmentAdapter(mList);
+        adapter = new EquipmentAdapter(baseEquipmentBeanList);
         adapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(@NonNull BaseQuickAdapter<?, ?> adapter, @NonNull View view, int position) {
-                EquipmentManageResultBean.Records bean = mList.get(position);
+                BaseEquipmentBean bean = baseEquipmentBeanList.get(position);
                 if (bean != null) {
                     EquipmentManageDetailActivity.open(EquipmentManageActivity.this, bean);
                 }
@@ -210,7 +248,7 @@ public class EquipmentManageActivity extends BaseActivity {
                         || (event != null && KeyEvent.KEYCODE_ENTER == event.getKeyCode() && KeyEvent.ACTION_DOWN == event.getAction())) {
                     //处理事件
                     L.i("zzz1--->etSearch");
-                    refresh();
+                    readCache();
                 }
                 return false;
             }
@@ -258,6 +296,8 @@ public class EquipmentManageActivity extends BaseActivity {
                 break;
             case R.id.ll_equipment:
                 departmentPopupWindow.show();
+//                List<EquipmentManageTableBean> list = AppDatabase.getInstance(EquipmentManageActivity.this).equipmentManageDao().getAll();
+//                L.i("zzz1-getAll2->" + GsonUtils.toJson(list));
                 break;
             case R.id.ll_area:
                 departmentPopupWindow.show();
@@ -274,7 +314,7 @@ public class EquipmentManageActivity extends BaseActivity {
 //                wahId = -999;
 //                ownerId = -999;
 //                getDeptList();
-                refresh();
+                readCache();
             }
         });
         return notDataView;
@@ -282,17 +322,100 @@ public class EquipmentManageActivity extends BaseActivity {
 
     @Override
     protected void initData() {
-        refresh();
+        readCache();
     }
 
     private void refresh() {
-        pageNo = 1;
-        getEquipmentList();
+//        pageNo = 1;
+        getBaseEquipmentList();
     }
 
     private void loadMore() {
-        pageNo++;
-        getEquipmentList();
+//        pageNo++;
+        getBaseEquipmentList();
+    }
+
+    private void readCache() {
+        baseEquipmentBeanList.clear();
+        BaseEquipmentTableBean list = AppDatabase.getInstance(EquipmentManageActivity.this).baseEquipmentTableDao().loadById("1");
+        if (list != null) {
+            List<BaseEquipmentBean> baseEquipmentBeans = GsonUtils.fromJson(list.content, new TypeToken<List<BaseEquipmentBean>>() {
+            }.getType());
+
+            L.i("zzz1-baseEquipmentBeans.list222--->" + baseEquipmentBeans.size());
+
+            if (baseEquipmentBeans != null && baseEquipmentBeans.size() > 0) {
+                baseEquipmentBeanList.addAll(baseEquipmentBeans);
+            } else {
+                Toasty.error(EquipmentManageActivity.this, R.string.return_empty, Toast.LENGTH_SHORT, true).show();
+            }
+        } else {
+            Toasty.normal(EquipmentManageActivity.this, "请先下载数据", Toast.LENGTH_SHORT).show();
+        }
+        adapter.notifyDataSetChanged();
+
+    }
+
+    /**
+     * 设备
+     */
+    private void getBaseEquipmentList() {
+        Subscribe.getBaseEquipmentList(ConstantValue.belongCompany1, new OnSuccessAndFaultSub(new OnSuccessAndFaultListener() {
+            @Override
+            public void onSuccess(String result) {
+                //成功
+                try {
+                    BaseBean<List<BaseEquipmentBean>> baseBean = GsonUtils.fromJson(result, new TypeToken<BaseBean<List<BaseEquipmentBean>>>() {
+                    }.getType());
+
+                    if (null != baseBean) {
+                        if (baseBean.isSuccess()) {
+//                            deviceTypeBeanList.clear();
+                            List<BaseEquipmentBean> dataList = baseBean.getResult();
+                            if (dataList != null && dataList.size() > 0) {
+                                L.i("zzz1-baseEquipmentBeans.list1111--->" + dataList.size());
+                                BaseEquipmentTableBean baseEquipmentTableBean = new BaseEquipmentTableBean();
+                                baseEquipmentTableBean.id = "1";
+                                baseEquipmentTableBean.content = GsonUtils.toJson(dataList);
+                                Long rowId = AppDatabase.getInstance(EquipmentManageActivity.this).baseEquipmentTableDao().insert(baseEquipmentTableBean);
+                                if (rowId != null){
+                                    Toasty.success(EquipmentManageActivity.this, R.string.download_success, Toast.LENGTH_SHORT, true).show();
+                                    readCache();
+                                } else {
+                                    Toasty.error(EquipmentManageActivity.this, R.string.download_fail, Toast.LENGTH_SHORT, true).show();
+                                }
+                            } else {
+                                int row = AppDatabase.getInstance(EquipmentManageActivity.this).baseEquipmentTableDao().deleteAll();
+//                                    L.i("zzz1-del-row-->" + row);
+                                if (row >= 0){
+                                    mList.clear();
+                                    adapter.notifyDataSetChanged();
+                                }
+                                Toasty.error(EquipmentManageActivity.this, R.string.return_empty, Toast.LENGTH_SHORT, true).show();
+                            }
+
+//                            deviceTypeAdapter.notifyDataSetChanged();
+
+                        } else {
+                            Toasty.error(EquipmentManageActivity.this, R.string.search_fail, Toast.LENGTH_SHORT, true).show();
+                        }
+                    } else {
+                        Toasty.error(EquipmentManageActivity.this, R.string.return_empty, Toast.LENGTH_SHORT, true).show();
+
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    Toasty.error(EquipmentManageActivity.this, R.string.parse_fail, Toast.LENGTH_SHORT, true).show();
+
+                }
+
+            }
+
+            @Override
+            public void onFault(String errorMsg) {
+                Toasty.error(EquipmentManageActivity.this, R.string.request_fail, Toast.LENGTH_SHORT, true).show();
+            }
+        }, EquipmentManageActivity.this));
     }
 
     /**
@@ -336,6 +459,14 @@ public class EquipmentManageActivity extends BaseActivity {
                                 List<EquipmentManageResultBean.Records> dataList = resultBean.getRecords();
                                 if (dataList != null && dataList.size() > 0) {
                                     mList.addAll(dataList);
+                                    for (int i = 0; i < mList.size(); i++) {
+                                        EquipmentManageTableBean tableBean = new EquipmentManageTableBean();
+                                        tableBean.id = mList.get(i).getId();
+                                        tableBean.content = GsonUtils.toJson(mList.get(i));
+                                        tableBeans.add(tableBean);
+                                    }
+                                    AppDatabase.getInstance(EquipmentManageActivity.this).equipmentManageDao().insertAll(tableBeans);
+
                                     srl.finishRefresh();
                                     srl.finishLoadMore();
                                 } else {

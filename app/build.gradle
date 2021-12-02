@@ -163,8 +163,31 @@ dependencies {
     // eventbus
     implementation 'org.greenrobot:eventbus:3.2.0'
 
+    // 图片选择器
+    implementation 'io.github.lucksiege:pictureselector:v2.7.3-rc08'
+    implementation "androidx.camera:camera-core:1.0.0-rc04"
+    implementation "androidx.camera:camera-camera2:1.1.0-alpha08"
+
     // 网络请求框架easyHttp
     implementation 'com.github.getActivity:EasyHttp:9.6'
+
+    def room_version = "2.2.5"
+
+    // room
+    implementation "androidx.room:room-runtime:$room_version"
+    annotationProcessor "androidx.room:room-compiler:$room_version" // For Kotlin use kapt instead of annotationProcessor
+
+    // optional - Kotlin Extensions and Coroutines support for Room
+    implementation "androidx.room:room-ktx:$room_version"
+
+    // optional - RxJava support for Room
+    implementation "androidx.room:room-rxjava2:$room_version"
+
+    // optional - Guava support for Room, including Optional and ListenableFuture
+    implementation "androidx.room:room-guava:$room_version"
+
+    // Test helpers
+    testImplementation "androidx.room:room-testing:$room_version"
 
 }
 

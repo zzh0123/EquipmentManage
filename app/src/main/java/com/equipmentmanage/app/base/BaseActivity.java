@@ -23,6 +23,7 @@ import androidx.fragment.app.FragmentActivity;
 import com.equipmentmanage.app.utils.ActivityCollector;
 import com.equipmentmanage.app.utils.L;
 import com.gyf.immersionbar.ImmersionBar;
+import com.xuexiang.xui.XUI;
 
 import butterknife.ButterKnife;
 
@@ -46,6 +47,7 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
+        XUI.initTheme(this);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         super.onCreate(savedInstanceState);
         context = this;

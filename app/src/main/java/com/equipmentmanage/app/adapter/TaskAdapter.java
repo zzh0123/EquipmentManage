@@ -20,13 +20,13 @@ import java.util.List;
  * @Author: zzh
  * @CreateDate: 2021/8/16
  */
-public class TaskAdapter extends BaseQuickAdapter<TaskBean, BaseViewHolder> {
-    public TaskAdapter(@Nullable List<TaskBean> data) {
+public class TaskAdapter extends BaseQuickAdapter<TaskResultBean.Records, BaseViewHolder> {
+    public TaskAdapter(@Nullable List<TaskResultBean.Records> data) {
         super(R.layout.item_task, data);
     }
 
     @Override
-    protected void convert(@NotNull BaseViewHolder holder, @Nullable TaskBean bean) {
+    protected void convert(@NotNull BaseViewHolder holder, @Nullable TaskResultBean.Records bean) {
         holder.setText(R.id.tv_task_name, StringUtils.nullStrToEmpty(bean.getTaskName())); // 任务名称
 //        holder.setText(R.id.tv_status, StringUtils.nullStrToEmpty(bean.getStatus())); // 状态
         holder.setText(R.id.tv_task_num, StringUtils.nullStrToEmpty(bean.getTaskNum())); // 任务编码
@@ -34,7 +34,7 @@ public class TaskAdapter extends BaseQuickAdapter<TaskBean, BaseViewHolder> {
                 "共有" + StringUtils.nullStrToEmpty(bean.getUserTaskCompCount()) + "个密封点，已检测"
                         + StringUtils.nullStrToEmpty(bean.getUserDetectionCount()) + "个，"
                         + StringUtils.nullStrToEmpty(bean.getLeakageCount()) + "个泄露" ); // 任务完成进度
-//        holder.setText(R.id.tv_label_info, StringUtils.nullStrToEmpty(bean.getDeviceType_dictText())); // 标签信息
+        holder.setText(R.id.tv_label_info, StringUtils.nullStrToEmpty(bean.getTagInfo())); // 标签信息
         holder.setText(R.id.tv_upload_date, StringUtils.nullStrToEmpty(bean.getUploadTime())); // 上传时间
 
 //        TextView tvStatus = holder.getView(R.id.tv_status);
@@ -48,6 +48,12 @@ public class TaskAdapter extends BaseQuickAdapter<TaskBean, BaseViewHolder> {
 //            tvStatus.setTextColor(getContext().getResources().getColor(R.color.c_67C23A));
 //            tvStatus.setBackgroundResource(R.drawable.bg_rec_green);
 //        }
+
+        // 上传按钮，依次走校验流程
+
+        // 任务缓存本地--》上传
+        // --》依次  校准（）， 气象参数（无网络）， 组件查询（无网络），漂移校准（）
+        // 校准（）  理论只有依次，每次覆盖，取最后一次
 
     }
 }

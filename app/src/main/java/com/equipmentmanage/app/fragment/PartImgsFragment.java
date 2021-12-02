@@ -10,14 +10,19 @@ import android.widget.Toast;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.equipmentmanage.app.R;
+import com.equipmentmanage.app.activity.BaseDataActivity;
 import com.equipmentmanage.app.activity.LoginActivity;
 import com.equipmentmanage.app.base.LazyFragment;
 import com.equipmentmanage.app.bean.BaseBean;
+import com.equipmentmanage.app.bean.GasTableBean;
 import com.equipmentmanage.app.bean.LiveTaskAppAssignedPage;
 import com.equipmentmanage.app.bean.LoginPostBean;
 import com.equipmentmanage.app.bean.LoginResultBean;
 import com.equipmentmanage.app.bean.TagGroupModel;
 import com.equipmentmanage.app.bean.TaskBean;
+import com.equipmentmanage.app.bean.TaskRecordsTableBean;
+import com.equipmentmanage.app.bean.TaskResultBean;
+import com.equipmentmanage.app.dao.AppDatabase;
 import com.equipmentmanage.app.netapi.Constant;
 import com.equipmentmanage.app.netsubscribe.Subscribe;
 import com.equipmentmanage.app.utils.ActivityCollector;
@@ -67,8 +72,8 @@ public class PartImgsFragment extends LazyFragment {
     @BindView(R.id.progress_bar)
     ProgressBar progressBar; //下一个
 
-    List<TaskBean> records = new ArrayList<>();
-    private TaskBean bean;
+    List<TaskResultBean.Records> records = new ArrayList<>();
+    private TaskResultBean.Records bean;
 
     public PartImgsFragment() {
         // Required empty public constructor
@@ -110,12 +115,13 @@ public class PartImgsFragment extends LazyFragment {
         tagImageView.setTagGroupClickListener(mTagGroupClickListener);
 
         Bundle bundle = getArguments();
-        bean = (TaskBean) bundle.getSerializable(Constant.taskBean);
+        bean = (TaskResultBean.Records) bundle.getSerializable(Constant.taskBean);
 
         // liveTaskAppPicPageList
-        tagImageView.setImageUrl(bean.getLiveTaskAppPicPageList().get(0).getPictPath());
+//        tagImageView.setImageUrl(bean.getLiveTaskAppPicPageList().get(0).getPictPath());
 
-//        tagImageView.setImageRes(R.mipmap.ic_test1);
+        tagImageView.setImageRes(R.mipmap.ic_test1);
+        List<TagGroupModel> tagGroupList = new ArrayList<>();
         TagGroupModel tagGroupModel = new TagGroupModel();
         List<TagGroupModel.Tag> tagList = new ArrayList<>();
         TagGroupModel.Tag tag = new TagGroupModel.Tag();
@@ -126,18 +132,62 @@ public class PartImgsFragment extends LazyFragment {
         tagGroupModel.setPercentX(0.4f);
         tagGroupModel.setPercentY(0.8f);
 
-        tagImageView.setTag(tagGroupModel);
-//        tagImageView.setTagList();
+        TagGroupModel tagGroupModel1 = new TagGroupModel();
+        List<TagGroupModel.Tag> tagList1 = new ArrayList<>();
+        TagGroupModel.Tag tag1 = new TagGroupModel.Tag();
+        tag1.setName("V0002");
+        tag1.setDirection(DirectionUtils.getValue(DIRECTION.RIGHT_TOP_STRAIGHT));
+        tagList1.add(tag1);
+        tagGroupModel1.setTags(tagList1);
+        tagGroupModel1.setPercentX(0.5f);
+        tagGroupModel1.setPercentY(0.5f);
+
+        TagGroupModel tagGroupModel2 = new TagGroupModel();
+        List<TagGroupModel.Tag> tagList2 = new ArrayList<>();
+        TagGroupModel.Tag tag2 = new TagGroupModel.Tag();
+        tag2.setName("V0003");
+        tag2.setDirection(DirectionUtils.getValue(DIRECTION.RIGHT_TOP_STRAIGHT));
+        tagList2.add(tag2);
+        tagGroupModel2.setTags(tagList2);
+        tagGroupModel2.setPercentX(0.2f);
+        tagGroupModel2.setPercentY(0.6f);
+
+        tagGroupList.add(tagGroupModel);
+        tagGroupList.add(tagGroupModel1);
+        tagGroupList.add(tagGroupModel2);
+//        tagImageView.setTag(tagGroupModel);
+        tagImageView.setTagList(tagGroupList);
 
 
+        // 每个任务多个图片，1个图片多个点，把点检测完，进行下一张图片
+        // 检测是蓝牙读数
+        // BigDecimal.valueOf(i)  setDetectionVal  读取的
         //"检测组件")
-        List<LiveTaskAppAssignedPage> liveTaskAppAssignedPageList = bean.getLiveTaskAppPicPageList().get(0).getLiveTaskAppAssignedPageList();
-        for (int i = 0; i < liveTaskAppAssignedPageList.size(); i++){
-            liveTaskAppAssignedPageList.get(i).setDetectionVal(BigDecimal.valueOf(i));
+
+
+        //  先检测背景纸  弹框检测背景纸---》接着检测  所有点默认第一次 areaid
+
+        // areaid 变化 ，重新检测背景纸  ，
+        List<TaskResultBean.LiveTaskAppPicPageList> liveTaskAppPicPageList = bean.getLiveTaskAppPicPageList();
+        if (liveTaskAppPicPageList != null && liveTaskAppPicPageList.size() > 0){
+            for (int i = 0; i < liveTaskAppPicPageList.size(); i++){
+                TaskResultBean.LiveTaskAppPicPageList pic = liveTaskAppPicPageList.get(i);
+                List<TaskResultBean.LiveTaskAppAssignedPageList> picDotList = pic.getLiveTaskAppAssignedPageList();
+                for (int j = 0; j < picDotList.size(); j++){
+                    picDotList.get(j).setDetectionVal(String.valueOf(j));
+//                    picDotList.get(j).setBackgrVal();
+                }
+            }
         }
 
 
         records.add(bean);
+
+        TaskRecordsTableBean taskRecordsTableBean = new TaskRecordsTableBean();
+        taskRecordsTableBean.id = "1";
+        taskRecordsTableBean.content = GsonUtils.toJson(records);
+        AppDatabase.getInstance(getActivity()).taskRecordsTableDao().insert(taskRecordsTableBean);
+//        Toasty.success(BaseDataActivity.this, R.string.download_success, Toast.LENGTH_SHORT, true).show();
 
 
     }
@@ -158,7 +208,7 @@ public class PartImgsFragment extends LazyFragment {
 //                if (valid()){
 //                    login();
 //                }
-                accessResultList();
+//                accessResultList();
                 break;
         }
     }

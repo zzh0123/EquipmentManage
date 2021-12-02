@@ -31,12 +31,18 @@ import com.equipmentmanage.app.adapter.EquipmentAdapter;
 import com.equipmentmanage.app.adapter.ProductFlowAdapter;
 import com.equipmentmanage.app.base.BaseActivity;
 import com.equipmentmanage.app.bean.AreaManageResultBean;
+import com.equipmentmanage.app.bean.BaseAreaBean;
+import com.equipmentmanage.app.bean.BaseAreaTableBean;
 import com.equipmentmanage.app.bean.BaseBean;
+import com.equipmentmanage.app.bean.BaseStreamBean;
+import com.equipmentmanage.app.bean.BaseStreamTableBean;
 import com.equipmentmanage.app.bean.DepartmentBean;
 import com.equipmentmanage.app.bean.EquipmentManageBean;
 import com.equipmentmanage.app.bean.ProductFlowBean;
 import com.equipmentmanage.app.bean.ProductFlowResultBean;
+import com.equipmentmanage.app.dao.AppDatabase;
 import com.equipmentmanage.app.netapi.Constant;
+import com.equipmentmanage.app.netapi.ConstantValue;
 import com.equipmentmanage.app.netsubscribe.Subscribe;
 import com.equipmentmanage.app.utils.L;
 import com.equipmentmanage.app.utils.StringUtils;
@@ -116,6 +122,8 @@ public class ProductFlowActivity extends BaseActivity {
 
     private String department, deviceType;
 
+    private List<BaseStreamBean> baseStreamBeanList = new ArrayList<>();
+
     @Override
     public void onAttachedToWindow() {
         setShowTitle(false);
@@ -138,6 +146,34 @@ public class ProductFlowActivity extends BaseActivity {
             }
         });
 
+        titleBar.addAction(new TitleBar.Action() {
+            @Override
+            public String getText() {
+                return null;
+            }
+
+            @Override
+            public int getDrawable() {
+                return R.mipmap.ic_download;
+            }
+
+            @Override
+            public void performAction(View view) {
+                L.i("zzz1--->download");
+                refresh();
+            }
+
+            @Override
+            public int leftPadding() {
+                return 0;
+            }
+
+            @Override
+            public int rightPadding() {
+                return 0;
+            }
+        });
+
 
 
         DepartmentBean departmentBean = new DepartmentBean();
@@ -149,8 +185,8 @@ public class ProductFlowActivity extends BaseActivity {
         departmentBeanList.add(departmentBean);
         departmentBeanList.add(departmentBean1);
 
-        srl.setEnableRefresh(true);
-        srl.setEnableLoadMore(true);
+        srl.setEnableRefresh(false);
+        srl.setEnableLoadMore(false);
         srl.setEnableFooterFollowWhenNoMoreData(true);
 
         srl.setOnRefreshListener(new OnRefreshListener() {
@@ -168,11 +204,11 @@ public class ProductFlowActivity extends BaseActivity {
 
         LinearLayoutManager manager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         rvList.setLayoutManager(manager);
-        adapter = new ProductFlowAdapter(mList);
+        adapter = new ProductFlowAdapter(baseStreamBeanList);
         adapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(@NonNull BaseQuickAdapter<?, ?> adapter, @NonNull View view, int position) {
-                ProductFlowResultBean.Records bean = mList.get(position);
+                BaseStreamBean bean = baseStreamBeanList.get(position);
                 if (bean != null) {
                     ProductFlowDetailActivity.open(ProductFlowActivity.this, bean);
                 }
@@ -212,7 +248,7 @@ public class ProductFlowActivity extends BaseActivity {
                         || (event != null && KeyEvent.KEYCODE_ENTER == event.getKeyCode() && KeyEvent.ACTION_DOWN == event.getAction())) {
                     //处理事件
                     L.i("zzz1--->etSearch");
-                    refresh();
+                    readCache();
                 }
                 return false;
             }
@@ -273,7 +309,7 @@ public class ProductFlowActivity extends BaseActivity {
         llNoData.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                refresh();
+                readCache();
             }
         });
         return notDataView;
@@ -281,17 +317,105 @@ public class ProductFlowActivity extends BaseActivity {
 
     @Override
     protected void initData() {
-        refresh();
+        readCache();
     }
 
     private void refresh() {
-        pageNo = 1;
-        getProductFlowist();
+//        pageNo = 1;
+        getBaseStreamList();
     }
 
     private void loadMore() {
-        pageNo++;
-        getProductFlowist();
+//        pageNo++;
+        getBaseStreamList();
+    }
+
+    private void readCache() {
+//        BaseDeviceTableBean list = AppDatabase.getInstance(AreaManageActivity.this).baseDeviceTableDao().loadById("1");
+//                L.i("zzz1-baseDevice->" + GsonUtils.toJson(list3));
+//        GsonUtils.fromJson(list.content, List<BaseEquipmentBean>)
+
+        baseStreamBeanList.clear();
+        BaseStreamTableBean list = AppDatabase.getInstance(ProductFlowActivity.this).baseStreamTableDao().loadById("1");
+//                L.i("zzz1-Area->" + GsonUtils.toJson(list3));
+
+        if (list != null) {
+            List<BaseStreamBean> baseStreamBeans = GsonUtils.fromJson(list.content, new TypeToken<List<BaseStreamBean>>() {
+            }.getType());
+
+            L.i("zzz1-baseStreamBeans.list222--->" + baseStreamBeans.size());
+
+            if (baseStreamBeans != null && baseStreamBeans.size() > 0) {
+                baseStreamBeanList.addAll(baseStreamBeans);
+            } else {
+                Toasty.warning(ProductFlowActivity.this, R.string.return_empty, Toast.LENGTH_SHORT, true).show();
+            }
+        } else {
+            Toasty.normal(ProductFlowActivity.this, "请先下载数据", Toast.LENGTH_SHORT).show();
+        }
+        adapter.notifyDataSetChanged();
+
+    }
+
+    /**
+     * 产品流
+     */
+    private void getBaseStreamList() {
+        Subscribe.getBaseStreamList(ConstantValue.belongCompany1, new OnSuccessAndFaultSub(new OnSuccessAndFaultListener() {
+            @Override
+            public void onSuccess(String result) {
+                //成功
+                try {
+                    BaseBean<List<BaseStreamBean>> baseBean = GsonUtils.fromJson(result, new TypeToken<BaseBean<List<BaseStreamBean>>>() {
+                    }.getType());
+
+                    if (null != baseBean) {
+                        if (baseBean.isSuccess()) {
+//                            deviceTypeBeanList.clear();
+                            List<BaseStreamBean> dataList = baseBean.getResult();
+                            if (dataList != null && dataList.size() > 0) {
+                                BaseStreamTableBean baseStreamTableBean = new BaseStreamTableBean();
+                                baseStreamTableBean.id = "1";
+                                baseStreamTableBean.content = GsonUtils.toJson(dataList);
+                                Long rowId = AppDatabase.getInstance(ProductFlowActivity.this).baseStreamTableDao().insert(baseStreamTableBean);
+                                if (rowId != null){
+                                    Toasty.success(ProductFlowActivity.this, R.string.download_success, Toast.LENGTH_SHORT, true).show();
+                                    readCache();
+                                } else {
+                                    Toasty.error(ProductFlowActivity.this, R.string.download_fail, Toast.LENGTH_SHORT, true).show();
+                                }
+                            } else {
+                                int row = AppDatabase.getInstance(ProductFlowActivity.this).baseStreamTableDao().deleteAll();
+//                                    L.i("zzz1-del-row-->" + row);
+                                if (row >= 0){
+                                    mList.clear();
+                                    adapter.notifyDataSetChanged();
+                                }
+                                Toasty.error(ProductFlowActivity.this, R.string.return_empty, Toast.LENGTH_SHORT, true).show();
+                            }
+
+//                            deviceTypeAdapter.notifyDataSetChanged();
+
+                        } else {
+                            Toasty.error(ProductFlowActivity.this, R.string.search_fail, Toast.LENGTH_SHORT, true).show();
+                        }
+                    } else {
+                        Toasty.error(ProductFlowActivity.this, R.string.return_empty, Toast.LENGTH_SHORT, true).show();
+
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    Toasty.error(ProductFlowActivity.this, R.string.parse_fail, Toast.LENGTH_SHORT, true).show();
+
+                }
+
+            }
+
+            @Override
+            public void onFault(String errorMsg) {
+                Toasty.error(ProductFlowActivity.this, R.string.request_fail, Toast.LENGTH_SHORT, true).show();
+            }
+        }, ProductFlowActivity.this));
     }
 
     /**

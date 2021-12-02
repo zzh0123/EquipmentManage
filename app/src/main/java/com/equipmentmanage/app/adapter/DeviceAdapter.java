@@ -5,6 +5,7 @@ import android.widget.TextView;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.viewholder.BaseViewHolder;
 import com.equipmentmanage.app.R;
+import com.equipmentmanage.app.bean.BaseDeviceBean;
 import com.equipmentmanage.app.bean.DeviceManageBean;
 import com.equipmentmanage.app.bean.DeviceManageResultBean;
 import com.equipmentmanage.app.utils.StringUtils;
@@ -19,18 +20,18 @@ import java.util.List;
  * @Author: zzh
  * @CreateDate: 2021/8/10
  */
-public class DeviceAdapter extends BaseQuickAdapter<DeviceManageResultBean.Records, BaseViewHolder> {
-    public DeviceAdapter(@Nullable List<DeviceManageResultBean.Records> data) {
+public class DeviceAdapter extends BaseQuickAdapter<BaseDeviceBean, BaseViewHolder> {
+    public DeviceAdapter(@Nullable List<BaseDeviceBean> data) {
         super(R.layout.item_device_manage, data);
     }
 
     @Override
-    protected void convert(@NotNull BaseViewHolder holder, @Nullable DeviceManageResultBean.Records bean) {
+    protected void convert(@NotNull BaseViewHolder holder, @Nullable BaseDeviceBean bean) {
         holder.setText(R.id.tv_device_name, StringUtils.nullStrToEmpty(bean.getDeviceName())); // 装置名称
 //        holder.setText(R.id.tv_status, StringUtils.nullStrToEmpty(bean.getStatus())); // 状态
         holder.setText(R.id.tv_device_code, StringUtils.nullStrToEmpty(bean.getDeviceCode())); // 装置编码
 //        holder.setText(R.id.tv_department_name, StringUtils.nullStrToEmpty(bean.getDepartment())); // 部门
-        holder.setText(R.id.tv_device_type, StringUtils.nullStrToEmpty(bean.getDeviceType_dictText())); // 装置类型
+        holder.setText(R.id.tv_device_type, StringUtils.nullStrToEmpty(bean.getDeviceType())); // 装置类型
         holder.setText(R.id.tv_test_start_date, StringUtils.nullStrToEmpty(bean.getTestSdate())); // 开始检测日期
 
         TextView tvStatus = holder.getView(R.id.tv_status);

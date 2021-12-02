@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.chad.library.adapter.base.listener.OnItemChildClickListener;
 import com.chad.library.adapter.base.listener.OnItemClickListener;
 import com.equipmentmanage.app.R;
 import com.equipmentmanage.app.activity.TaskDetailActivity;
@@ -19,13 +20,22 @@ import com.equipmentmanage.app.adapter.DeviceTypeAdapter;
 import com.equipmentmanage.app.adapter.TaskAdapter;
 import com.equipmentmanage.app.base.LazyFragment;
 import com.equipmentmanage.app.bean.BaseBean;
+import com.equipmentmanage.app.bean.BaseGasBean;
+import com.equipmentmanage.app.bean.CorrectCheckBean;
 import com.equipmentmanage.app.bean.DepartmentBean;
 import com.equipmentmanage.app.bean.DictItemBean;
-import com.equipmentmanage.app.bean.TaskBean;
+import com.equipmentmanage.app.bean.GasTableBean;
+import com.equipmentmanage.app.bean.TaskRecordsTableBean;
 import com.equipmentmanage.app.bean.TaskResultBean;
 //import com.equipmentmanage.app.db.utils.DaoUtilsStore;
+import com.equipmentmanage.app.bean.TaskTableBean;
+import com.equipmentmanage.app.bean.WeatherParamsBean;
+import com.equipmentmanage.app.bean.WeatherParamsTableBean;
+import com.equipmentmanage.app.dao.AppDatabase;
 import com.equipmentmanage.app.netapi.Constant;
+import com.equipmentmanage.app.netapi.ConstantValue;
 import com.equipmentmanage.app.netsubscribe.Subscribe;
+import com.equipmentmanage.app.utils.DateUtil;
 import com.equipmentmanage.app.utils.L;
 import com.equipmentmanage.app.utils.StringUtils;
 import com.equipmentmanage.app.utils.Util;
@@ -39,8 +49,10 @@ import com.scwang.smart.refresh.layout.api.RefreshLayout;
 import com.scwang.smart.refresh.layout.listener.OnLoadMoreListener;
 import com.scwang.smart.refresh.layout.listener.OnRefreshListener;
 import com.tencent.mmkv.MMKV;
-import com.xuexiang.xaop.annotation.SingleClick;
 import com.xuexiang.xui.widget.actionbar.TitleBar;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -74,9 +86,9 @@ public class TaskFragment extends LazyFragment {
     //选择装置类型
     private ListPopupWindow devicePopupWindow;
     private String deviceTypeName = "";
-    ;
+
     private String deviceTypeValue = "";
-    ;
+
     private List<DictItemBean> deviceTypeBeanList = new ArrayList<>();
     private DeviceTypeAdapter deviceTypeAdapter;
 
@@ -85,14 +97,27 @@ public class TaskFragment extends LazyFragment {
     @BindView(R.id.rv_list)
     RecyclerView rvList;
     private TaskAdapter adapter;
-    private List<TaskBean> mList = new ArrayList<>();
+    private List<TaskResultBean.Records> mList = new ArrayList<>();
+    List<TaskTableBean> taskTableBeans = new ArrayList<>();
 
     private int pageNo = 1, pageSize = 10;
 
     private TipDialog tipDialog;
 
     private MMKV kv = MMKV.defaultMMKV();
-    private String username = "20002";
+    private String username;
+    //    private String username = "20002";
+    private TaskResultBean.Records bean;
+    private String mId;
+    // 校验缓存
+    private List<BaseGasBean> baseGasBeanList = new ArrayList<>();
+    private List<BaseGasBean> baseGasBeanDriftList = new ArrayList<>();
+
+    private String currentDate;
+
+    //    private String belongCompany;
+    private String is_daily_checked, is_drift_checked,
+            is_weather_checked, is_seal_point_checked;
 
     public TaskFragment() {
         // Required empty public constructor
@@ -102,8 +127,6 @@ public class TaskFragment extends LazyFragment {
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
      * @return A new instance of fragment TaskFragment.
      */
     // TODO: Rename and change types and number of parameters
@@ -122,7 +145,21 @@ public class TaskFragment extends LazyFragment {
 
     @Override
     protected void initView(View view) {
-//        username = kv.getString(Constant.username, "");
+        // 注册订阅者
+        if (!EventBus.getDefault().isRegistered(this)) {//加上判断
+            EventBus.getDefault().register(this);
+        }
+
+        username = kv.getString(Constant.username, "");
+        L.i("zzz1---username->" + username);
+        currentDate = DateUtil.getCurentTime();
+        L.i("zzz1---currentDate->" + currentDate);
+//        titleBar.setLeftClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                L.i("zzz1---setLeftClickListener->");
+//            }
+//        });
         titleBar.addAction(new TitleBar.Action() {
             @Override
             public String getText() {
@@ -139,10 +176,25 @@ public class TaskFragment extends LazyFragment {
                 L.i("zzz1--->download");
 //                refresh();
 
-                if (tipDialog == null) {
-                    tipDialog = new TipDialog(getActivity());
-                }
-                tipDialog.show();
+//                if (tipDialog == null) {
+//                    tipDialog = new TipDialog(getActivity());
+//                }
+//                tipDialog.show();
+
+
+                // 组件检测-缓存
+//                TaskRecordsTableBean list = AppDatabase.getInstance(getActivity()).taskRecordsTableDao().loadById("1");
+//                L.i("zzz1-taskRecords->" + GsonUtils.toJson(list));
+////        GsonUtils.fromJson(list.content, List<BaseEquipmentBean>)
+//                if (list != null) {
+//                    List<TaskResultBean.Records> taskRecords = GsonUtils.fromJson(list.content, new TypeToken<List<TaskResultBean.Records>>() {
+//                    }.getType());
+////                    L.i("zzz1-taskRecords.list uuu--->" + taskRecords.size());
+//                    L.i("zzz1-taskRecords.list uuu--->" + taskRecords.get(0).getLiveTaskAppPicPageList().get(0).getLiveTaskAppAssignedPageList().size());
+//                }
+
+                // 网络请求获取数据
+                refresh();
             }
 
             @Override
@@ -156,16 +208,9 @@ public class TaskFragment extends LazyFragment {
             }
         });
 
-        titleBar.setLeftClickListener(new View.OnClickListener() {
-            @SingleClick
-            @Override
-            public void onClick(View v) {
-                getActivity().finish();
-            }
-        });
 
-        srl.setEnableRefresh(true);
-        srl.setEnableLoadMore(true);
+        srl.setEnableRefresh(false);
+        srl.setEnableLoadMore(false);
         srl.setEnableFooterFollowWhenNoMoreData(true);
 
         srl.setOnRefreshListener(new OnRefreshListener() {
@@ -184,10 +229,29 @@ public class TaskFragment extends LazyFragment {
         LinearLayoutManager manager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
         rvList.setLayoutManager(manager);
         adapter = new TaskAdapter(mList);
+        adapter.addChildClickViewIds(R.id.tv_upload);
+        adapter.setOnItemChildClickListener(new OnItemChildClickListener() {
+            @Override
+            public void onItemChildClick(@NonNull BaseQuickAdapter adapter, @NonNull View view, int position) {
+                int id = view.getId();
+                bean = mList.get(position);
+                mId = bean.getId();
+                if (id == R.id.tv_upload) {
+                    if (bean != null) {
+                        if (isCanUpload()) {
+                            readDailyCache();
+                            readDriftCache();
+                            readWeatherParamsCache();
+                            readImgCheckCache();
+                        }
+                    }
+                }
+            }
+        });
         adapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(@NonNull BaseQuickAdapter<?, ?> adapter, @NonNull View view, int position) {
-                TaskBean bean = mList.get(position);
+                TaskResultBean.Records bean = mList.get(position);
                 if (bean != null) {
                     TaskDetailActivity.open(getActivity(), bean);
                 }
@@ -205,6 +269,7 @@ public class TaskFragment extends LazyFragment {
 //                List<TaskBean> list = DaoUtilsStore.getInstance().getUserDaoUtils().queryAll();
 //                L.i("zzz1--->size--" + list.size());
 //                L.i("zzz1--->list0--" + list.get(0).toString());
+                getTaskList();
             }
         });
 
@@ -216,7 +281,8 @@ public class TaskFragment extends LazyFragment {
         llNoData.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                refresh();
+//                refresh();
+                readTaskListCache();
             }
         });
         return notDataView;
@@ -229,16 +295,18 @@ public class TaskFragment extends LazyFragment {
 
     @Override
     protected void initData() {
-        refresh();
+//        refresh();
+
+        readTaskListCache();
     }
 
     private void refresh() {
-        pageNo = 1;
+//        pageNo = 1;
         getTaskList();
     }
 
     private void loadMore() {
-        pageNo++;
+//        pageNo++;
         getTaskList();
     }
 
@@ -246,7 +314,8 @@ public class TaskFragment extends LazyFragment {
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.tv_check_result_upload:
-
+                List<TaskTableBean> list = AppDatabase.getInstance(getActivity()).taskTableDao().getAll();
+                L.i("zzz1-getAll->" + GsonUtils.toJson(list));
                 break;
         }
     }
@@ -287,13 +356,19 @@ public class TaskFragment extends LazyFragment {
             return;
         }
 
+        // 默认当天
+        String taskSdate;
         if (StringUtils.isNullOrEmpty(username)) {
             Toasty.warning(getActivity(), R.string.username_empty_tip, Toast.LENGTH_SHORT, false).show();
             return;
         }
 
+        // 默认当天
         params.put(Constant.detectionUser, username); // 	当前登录人编号
-        params.put(Constant.taskSdate, "2021-10-13"); // 	当前日期 2021-10-13
+//        currentDate= "2021-11-20";
+        String currentDate = DateUtil.getCurentTime1(); // 2021-11-20
+//        currentDate = "2021-11-27";
+        params.put(Constant.taskSdate, currentDate); // 	当前日期 2021-10-13 2021-11-06
 
         Subscribe.getTaskList(params, new OnSuccessAndFaultSub(new OnSuccessAndFaultListener() {
             @Override
@@ -301,26 +376,53 @@ public class TaskFragment extends LazyFragment {
                 //成功
                 try {
 //                    String address = Util.readAssert(getActivity(), "text1.txt");
-
+//                    String address = Util.readAssert(getActivity(), "checktest2.txt");
                     BaseBean<TaskResultBean> baseBean = GsonUtils.fromJson(result, new TypeToken<BaseBean<TaskResultBean>>() {
                     }.getType());
 
                     if (null != baseBean) {
                         if (baseBean.isSuccess()) {
-                            if (pageNo == 1) {
-                                mList.clear();
-                            }
+//                            if (pageNo == 1) {
+//                                mList.clear();
+//                            }
+//                            mList.clear();
                             TaskResultBean resultBean = baseBean.getResult();
                             if (resultBean != null) {
-                                List<TaskBean> dataList = resultBean.getRecords();
+                                List<TaskResultBean.Records> dataList = resultBean.getRecords();
                                 if (dataList != null && dataList.size() > 0) {
-                                    mList.addAll(dataList);
+//                                    mList.addAll(dataList);
                                     // 插入sqlite
 //                                    DaoUtilsStore.getInstance().getUserDaoUtils().insertMultiple(mList);
-                                    tvCheckResultUpload.setVisibility(View.VISIBLE);
+                                    for (int i = 0; i < mList.size(); i++) {
+                                        TaskTableBean taskTableBean = new TaskTableBean();
+                                        taskTableBean.id = mList.get(i).getId();
+                                        taskTableBean.content = GsonUtils.toJson(mList.get(i));
+                                        taskTableBeans.add(taskTableBean);
+                                    }
+
+                                    TaskTableBean taskTableBean = new TaskTableBean();
+                                    taskTableBean.id = "1" + username;
+                                    taskTableBean.content = GsonUtils.toJson(dataList);
+
+                                    Long rowId = AppDatabase.getInstance(getActivity()).taskTableDao().insert(taskTableBean);
+                                    if (rowId != null) {
+                                        Toasty.success(getActivity(), R.string.download_success, Toast.LENGTH_SHORT, true).show();
+                                        readTaskListCache();
+                                    } else {
+                                        Toasty.error(getActivity(), R.string.download_fail, Toast.LENGTH_SHORT, true).show();
+                                    }
+
+                                    tvCheckResultUpload.setVisibility(View.GONE);
                                     srl.finishRefresh();
                                     srl.finishLoadMore();
                                 } else {
+                                    int row = AppDatabase.getInstance(getActivity()).taskTableDao().deleteAllByUser("1" + username);
+//                                    L.i("zzz1-del-row-->" + row);
+                                    if (row >= 0){
+                                        mList.clear();
+                                        adapter.notifyDataSetChanged();
+                                    }
+                                    Toasty.success(getActivity(), "未查询到任务！", Toast.LENGTH_SHORT, true).show();
                                     srl.finishRefresh();
                                     srl.finishLoadMoreWithNoMoreData();
                                 }
@@ -330,7 +432,7 @@ public class TaskFragment extends LazyFragment {
                             }
 
 
-                            adapter.notifyDataSetChanged();
+//                            adapter.notifyDataSetChanged();
                         } else {
                             Toasty.error(getActivity(), R.string.search_fail, Toast.LENGTH_SHORT, true).show();
                             srl.finishRefresh();
@@ -362,5 +464,397 @@ public class TaskFragment extends LazyFragment {
         }, getActivity()));
     }
 
+    /**
+     * 任务列表-缓存
+     */
+    private void readTaskListCache() {
+        mList.clear();
+        TaskTableBean list = AppDatabase.getInstance(getActivity()).taskTableDao().loadById("1" + username);
+        if (list != null) {
+            List<TaskResultBean.Records> taskBeanList = GsonUtils.fromJson(list.content, new TypeToken<List<TaskResultBean.Records>>() {
+            }.getType());
 
+            L.i("zzz1-taskBeanList.size--->" + taskBeanList.size());
+
+            if (taskBeanList != null && taskBeanList.size() > 0) {
+                mList.addAll(taskBeanList);
+            } else {
+                Toasty.warning(getActivity(), "请先下载任务！", Toast.LENGTH_SHORT, true).show();
+            }
+        } else {
+            Toasty.warning(getActivity(), "请先下载任务！", Toast.LENGTH_SHORT, true).show();
+        }
+        adapter.notifyDataSetChanged();
+
+    }
+
+    private boolean isCanUpload() {
+        boolean isCan = true;
+        is_daily_checked = kv.getString(Constant.is_correct_checked + mId + "2", "");
+        if (StringUtils.isNullOrEmpty(is_daily_checked) || (!is_daily_checked.equals(ConstantValue.correct_1))) {
+            isCan = false;
+            Toasty.warning(getActivity(), "请先校准设备！", Toast.LENGTH_SHORT, true).show();
+        }
+
+        is_weather_checked = kv.getString(Constant.is_weather_checked + mId, "");
+        if (StringUtils.isNullOrEmpty(is_weather_checked) || (!is_weather_checked.equals(ConstantValue.entered_1))) {
+            isCan = false;
+            Toasty.warning(getActivity(), "请先录入气象参数！", Toast.LENGTH_SHORT, true).show();
+        }
+
+        is_drift_checked = kv.getString(Constant.is_correct_checked + mId + "3", "");
+        if (StringUtils.isNullOrEmpty(is_drift_checked) || (!is_drift_checked.equals(ConstantValue.correct_1))) {
+            isCan = false;
+            Toasty.warning(getActivity(), "请先漂移校准！", Toast.LENGTH_SHORT, true).show();
+        }
+
+        is_seal_point_checked = kv.getString(Constant.is_seal_point_checked + mId, "");
+        if (StringUtils.isNullOrEmpty(is_seal_point_checked) || (!is_seal_point_checked.equals(ConstantValue.seal_point_checked_1))) {
+            isCan = false;
+            Toasty.warning(getActivity(), "请先完成密封点检测！", Toast.LENGTH_SHORT, true).show();
+        }
+
+        return isCan;
+    }
+
+    /**
+     * 标准气查询-缓存
+     */
+    private void readDailyCache() {
+        // 装置
+        GasTableBean list = AppDatabase.getInstance(getActivity()).baseGasTableDao().loadById(mId + "2");
+//                L.i("zzz1-baseDevice->" + GsonUtils.toJson(list));
+//        GsonUtils.fromJson(list.content, List<BaseEquipmentBean>)
+        if (list != null) {
+            List<BaseGasBean> baseGasBeans = GsonUtils.fromJson(list.content, new TypeToken<List<BaseGasBean>>() {
+            }.getType());
+            L.i("zzz1-baseGasBeans.list uuu--->" + baseGasBeans.size());
+
+            baseGasBeanList.clear();
+            if (baseGasBeans != null && baseGasBeans.size() > 0) {
+                baseGasBeanList.addAll(baseGasBeans);
+
+                accessCorrecting(ConstantValue.correct_type_0, baseGasBeanList);
+            } else {
+                Toasty.warning(getActivity(), "请先进行日常校准", Toast.LENGTH_SHORT, true).show();
+            }
+
+        } else {
+            Toasty.warning(getActivity(), "请先进行日常校准", Toast.LENGTH_SHORT, true).show();
+        }
+
+
+    }
+
+    /**
+     * 漂移校准-缓存
+     */
+    private void readDriftCache() {
+        // 装置
+        GasTableBean list = AppDatabase.getInstance(getActivity()).baseGasTableDao().loadById(mId + "3");
+//                L.i("zzz1-readDriftCache->" + GsonUtils.toJson(list));
+//        GsonUtils.fromJson(list.content, List<BaseEquipmentBean>)
+        if (list != null) {
+            List<BaseGasBean> baseGasBeans = GsonUtils.fromJson(list.content, new TypeToken<List<BaseGasBean>>() {
+            }.getType());
+            L.i("zzz1-baseGasBeans.list uuu漂移--->" + baseGasBeans.size());
+
+            baseGasBeanDriftList.clear();
+            if (baseGasBeans != null && baseGasBeans.size() > 0) {
+                baseGasBeanDriftList.addAll(baseGasBeans);
+                accessCorrecting1(ConstantValue.correct_type_1, baseGasBeanDriftList);
+            } else {
+                Toasty.warning(getActivity(), "请先进行漂移校准", Toast.LENGTH_SHORT, true).show();
+            }
+
+        } else {
+            Toasty.warning(getActivity(), "请先进行漂移校准", Toast.LENGTH_SHORT, true).show();
+        }
+
+    }
+
+    /**
+     * 气象参数-缓存
+     */
+    private void readWeatherParamsCache() {
+        // 装置
+        WeatherParamsTableBean list = AppDatabase.getInstance(getActivity()).weatherParamsTableDao().loadById(mId);
+//        L.i("zzz1-weatherParamsBean00->" + GsonUtils.toJson(list));
+//        GsonUtils.fromJson(list.content, List<BaseEquipmentBean>)
+        if (list != null) {
+            WeatherParamsBean weatherParamsBean = GsonUtils.fromJson(list.content, new TypeToken<WeatherParamsBean>() {
+            }.getType());
+            L.i("zzz1-weatherParamsBean uuu--->" + weatherParamsBean.getTemperatures());
+
+            if (weatherParamsBean != null) {
+                accessWeather(weatherParamsBean);
+            } else {
+                Toasty.warning(getActivity(), "请先进行气象参数校验", Toast.LENGTH_SHORT, true).show();
+            }
+
+        } else {
+            Toasty.warning(getActivity(), "请先进行气象参数校验", Toast.LENGTH_SHORT, true).show();
+        }
+
+    }
+
+    /**
+     * 组件检测-缓存
+     */
+    private void readImgCheckCache() {
+        // 组件检测
+        TaskRecordsTableBean list = AppDatabase.getInstance(getActivity()).taskRecordsTableDao().loadById(mId);
+//        L.i("zzz1-taskRecords->" + GsonUtils.toJson(list));
+//        GsonUtils.fromJson(list.content, List<BaseEquipmentBean>)
+        if (list != null) {
+            List<TaskResultBean.Records> taskRecords = GsonUtils.fromJson(list.content, new TypeToken<List<TaskResultBean.Records>>() {
+            }.getType());
+            L.i("zzz1-taskRecords.list uuu--->" + taskRecords.size());
+
+            if (taskRecords != null && taskRecords.size() > 0) {
+                accessResultList(taskRecords);
+            } else {
+                Toasty.warning(getActivity(), "请先进行组件检测", Toast.LENGTH_SHORT, true).show();
+            }
+
+        } else {
+            Toasty.warning(getActivity(), "请先进行组件检测", Toast.LENGTH_SHORT, true).show();
+        }
+
+    }
+
+    /**
+     * 检测仪器校准
+     */
+    private void accessCorrecting(String correctType, List<BaseGasBean> baseGasBeans) {
+        String instrumentTypeValue = kv.getString(mId + "2" + Constant.instrumentTypeValue, "");
+        CorrectCheckBean correctCheckBean = new CorrectCheckBean();
+        correctCheckBean.setBelongCompany(StringUtils.nullStrToEmpty(bean.getBelongCompany()));
+        correctCheckBean.setTaskId(bean.getTaskId());
+        correctCheckBean.setCorrectingDate(currentDate); // 2021-11-06 15:52:11
+        correctCheckBean.setCorrectingDevice(instrumentTypeValue); // 加仪器选择框
+        correctCheckBean.setCreateBy(username); // 20001
+//        correctCheckBean.setCreateTime("2021-11-06 15:52:11");
+        correctCheckBean.setDetectionPeople(username); // 20001
+        List<CorrectCheckBean.LiveCorrectingGasList> liveCorrectingGasList = new ArrayList<>();
+        for (int i = 0; i < baseGasBeans.size(); i++) {
+            CorrectCheckBean.LiveCorrectingGasList listBean = new CorrectCheckBean.LiveCorrectingGasList();
+            listBean.setCalibGas(baseGasBeans.get(i).getGasName()); // 标准气 calibGas
+            listBean.setCalibReading(Integer.parseInt(baseGasBeans.get(i).getCalibThreshold())); // calibReading 标准气读数
+            listBean.setPpm(Integer.parseInt(baseGasBeans.get(i).getPpm())); // ppm PPM阈值
+            // 0 校准设备(日常校准), 1 漂移校准
+            if (!StringUtils.isNullString(correctType) && correctType.equals(ConstantValue.correct_type_0)) {
+                listBean.setGasBreading(Integer.parseInt(baseGasBeans.get(i).getActualValue())); // gasBreading校准读数(日常)
+                listBean.setResponseBtime(Integer.parseInt(baseGasBeans.get(i).getResponseTime())); // responseBtime	响应时间(日常)
+                listBean.setIsbpass(ConstantValue.isPass_type_0); // isbpass	是否通过(日常)
+            } else {
+                listBean.setGasAreading(Integer.parseInt(baseGasBeans.get(i).getActualValue())); // gasAreading 校准读数(漂移)
+                listBean.setResponseAtime(Integer.parseInt(baseGasBeans.get(i).getResponseTime())); // responseAtime 响应时间(漂移)
+                listBean.setIsapass(ConstantValue.isPass_type_1); // isapass 是否通过(漂移)
+            }
+
+            liveCorrectingGasList.add(listBean);
+        }
+        correctCheckBean.setLiveCorrectingGasList(liveCorrectingGasList);
+
+        Subscribe.accessCorrecting(correctCheckBean, new OnSuccessAndFaultSub(new OnSuccessAndFaultListener() {
+            @Override
+            public void onSuccess(String result) {
+                try {
+                    BaseBean<String> baseBean = GsonUtils.fromJson(result, new TypeToken<BaseBean<String>>() {
+                    }.getType());
+
+                    if (baseBean != null) {
+                        if (baseBean.isSuccess()) {
+//                            Toasty.success(getActivity(), R.string.submit_success, Toast.LENGTH_SHORT, true).show();
+
+
+                        } else {
+                            Toasty.error(getActivity(), StringUtils.nullStrToEmpty(baseBean.getMessage()), Toast.LENGTH_SHORT, true).show();
+                        }
+                    } else {
+                        Toasty.error(getActivity(), R.string.return_empty, Toast.LENGTH_SHORT, true).show();
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    Toasty.error(getActivity(), R.string.parse_fail, Toast.LENGTH_SHORT, true).show();
+                }
+            }
+
+            @Override
+            public void onFault(String errorMsg) {
+                Toasty.error(getActivity(), R.string.request_fail, Toast.LENGTH_SHORT, true).show();
+
+            }
+        }, getActivity()));
+    }
+
+    /**
+     * 检测仪器校准
+     */
+    private void accessCorrecting1(String correctType, List<BaseGasBean> baseGasBeans) {
+        String instrumentTypeValue = kv.getString(mId + "3" + Constant.instrumentTypeValue, "");
+        CorrectCheckBean correctCheckBean = new CorrectCheckBean();
+        correctCheckBean.setBelongCompany(ConstantValue.belongCompany1);
+        correctCheckBean.setTaskId(bean.getTaskId());
+        correctCheckBean.setCorrectingDate(currentDate);
+        correctCheckBean.setCorrectingDevice(instrumentTypeValue); // 仪器1111
+        correctCheckBean.setCreateBy(username); // 20001
+//        correctCheckBean.setCreateTime("2021-11-06 15:52:11");
+        correctCheckBean.setDetectionPeople(username);  // 20001
+        List<CorrectCheckBean.LiveCorrectingGasList> liveCorrectingGasList = new ArrayList<>();
+        for (int i = 0; i < baseGasBeans.size(); i++) {
+            CorrectCheckBean.LiveCorrectingGasList listBean = new CorrectCheckBean.LiveCorrectingGasList();
+            listBean.setCalibGas(baseGasBeans.get(i).getGasName()); // 标准气 calibGas
+            listBean.setCalibReading(Integer.parseInt(baseGasBeans.get(i).getCalibThreshold())); // calibReading 标准气读数
+            listBean.setPpm(Integer.parseInt(baseGasBeans.get(i).getPpm())); // ppm PPM阈值
+            // 0 校准设备(日常校准), 1 漂移校准
+            if (!StringUtils.isNullString(correctType) && correctType.equals(ConstantValue.correct_type_0)) {
+                listBean.setGasBreading(Integer.parseInt(baseGasBeans.get(i).getActualValue())); // gasBreading校准读数(日常)
+                listBean.setResponseBtime(Integer.parseInt(baseGasBeans.get(i).getResponseTime())); // responseBtime	响应时间(日常)
+                listBean.setIsbpass(ConstantValue.isPass_type_0); // isbpass	是否通过(日常)
+            } else {
+                listBean.setGasAreading(Integer.parseInt(baseGasBeans.get(i).getActualValue())); // gasAreading 校准读数(漂移)
+                listBean.setResponseAtime(Integer.parseInt(baseGasBeans.get(i).getResponseTime())); // responseAtime 响应时间(漂移)
+                listBean.setIsapass(ConstantValue.isPass_type_1); // isapass 是否通过(漂移)
+            }
+
+            liveCorrectingGasList.add(listBean);
+        }
+        correctCheckBean.setLiveCorrectingGasList(liveCorrectingGasList);
+
+        Subscribe.accessCorrecting(correctCheckBean, new OnSuccessAndFaultSub(new OnSuccessAndFaultListener() {
+            @Override
+            public void onSuccess(String result) {
+                try {
+                    BaseBean<String> baseBean = GsonUtils.fromJson(result, new TypeToken<BaseBean<String>>() {
+                    }.getType());
+
+                    if (baseBean != null) {
+                        if (baseBean.isSuccess()) {
+//                            Toasty.success(getActivity(), R.string.submit_success, Toast.LENGTH_SHORT, true).show();
+
+                        } else {
+                            Toasty.error(getActivity(), StringUtils.nullStrToEmpty(baseBean.getMessage()), Toast.LENGTH_SHORT, true).show();
+                        }
+                    } else {
+                        Toasty.error(getActivity(), R.string.return_empty, Toast.LENGTH_SHORT, true).show();
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    Toasty.error(getActivity(), R.string.parse_fail, Toast.LENGTH_SHORT, true).show();
+                }
+            }
+
+            @Override
+            public void onFault(String errorMsg) {
+                Toasty.error(getActivity(), R.string.request_fail, Toast.LENGTH_SHORT, true).show();
+
+            }
+        }, getActivity()));
+    }
+
+    /**
+     * 气象参数
+     */
+    private void accessWeather(WeatherParamsBean weatherParamsBean) {
+        weatherParamsBean.setBelongCompany(StringUtils.nullStrToEmpty(weatherParamsBean.getBelongCompany()));
+        weatherParamsBean.setTaskId(bean.getTaskId());
+        weatherParamsBean.setCreateBy(username);
+        weatherParamsBean.setWeatherDateStr(currentDate);
+        weatherParamsBean.setDetectionPeople(username);
+
+        Subscribe.accessWeather(weatherParamsBean, new OnSuccessAndFaultSub(new OnSuccessAndFaultListener() {
+            @Override
+            public void onSuccess(String result) {
+                try {
+                    BaseBean<String> baseBean = GsonUtils.fromJson(result, new TypeToken<BaseBean<String>>() {
+                    }.getType());
+
+                    if (baseBean != null) {
+                        if (baseBean.isSuccess()) {
+//                            Toasty.success(getActivity(), R.string.submit_success, Toast.LENGTH_SHORT, true).show();
+
+
+                        } else {
+                            Toasty.error(getActivity(), StringUtils.nullStrToEmpty(baseBean.getMessage()), Toast.LENGTH_SHORT, true).show();
+                        }
+                    } else {
+                        Toasty.error(getActivity(), R.string.return_empty, Toast.LENGTH_SHORT, true).show();
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    Toasty.error(getActivity(), R.string.parse_fail, Toast.LENGTH_SHORT, true).show();
+                }
+            }
+
+            @Override
+            public void onFault(String errorMsg) {
+                Toasty.error(getActivity(), R.string.request_fail, Toast.LENGTH_SHORT, true).show();
+
+            }
+        }, getActivity()));
+    }
+
+    /**
+     * 检查结果上传
+     */
+    private void accessResultList(List<TaskResultBean.Records> records) {
+        for (int i = 0; i < records.size(); i++) {
+            TaskResultBean.Records record = records.get(i);
+            record.setTaskId(bean.getTaskId());
+            record.setDetectionUser(username);
+            record.setBelongCompany(StringUtils.nullStrToEmpty(bean.getBelongCompany()));
+        }
+//        loginPostBean.captcha ="";
+//        loginPostBean.checkKey ="";
+//        loginPostBean.setUsername(etAccount.getText().toString().trim());
+//        loginPostBean.setPassword(etPassword.getText().toString().trim());
+
+//        kv.removeValuesForKeys(new String[]{Constant.token, Constant.userId, Constant.username,
+//                Constant.realname, Constant.orgCode, Constant.orgCodeTxt, Constant.telephone,
+//                Constant.post});
+
+        Subscribe.accessResultList(records, new OnSuccessAndFaultSub(new OnSuccessAndFaultListener() {
+            @Override
+            public void onSuccess(String result) {
+                try {
+                    BaseBean<String> baseBean = GsonUtils.fromJson(result, new TypeToken<BaseBean<String>>() {
+                    }.getType());
+
+                    if (baseBean != null) {
+                        if (baseBean.isSuccess()) {
+                            Toasty.success(getActivity(), R.string.upload_success, Toast.LENGTH_SHORT, true).show();
+                        } else {
+                            Toasty.error(getActivity(), StringUtils.nullStrToEmpty(baseBean.getMessage()), Toast.LENGTH_SHORT, true).show();
+                        }
+                    } else {
+                        Toasty.error(getActivity(), R.string.return_empty, Toast.LENGTH_SHORT, true).show();
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    Toasty.error(getActivity(), R.string.parse_fail, Toast.LENGTH_SHORT, true).show();
+                }
+            }
+
+            @Override
+            public void onFault(String errorMsg) {
+                Toasty.error(getActivity(), R.string.request_fail, Toast.LENGTH_SHORT, true).show();
+
+            }
+        }, getActivity()));
+    }
+
+    //订阅事件
+    @org.greenrobot.eventbus.Subscribe(threadMode = ThreadMode.MAIN)
+    public void onReceiveEvent(String event) {
+//        Log.i("zzz1", "" + event);
+//        //接收以及处理数据
+        if (!StringUtils.isNullOrEmpty(event)) {
+            if (ConstantValue.event_clear_cache.equals(event)) {
+                mList.clear();
+                adapter.notifyDataSetChanged();
+            }
+        }
+    }
 }

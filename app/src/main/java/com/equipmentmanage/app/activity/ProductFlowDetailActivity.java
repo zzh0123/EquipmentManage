@@ -10,6 +10,7 @@ import com.equipmentmanage.app.R;
 import com.equipmentmanage.app.base.BaseActivity;
 import com.equipmentmanage.app.bean.AreaManageResultBean;
 import com.equipmentmanage.app.bean.BaseBean;
+import com.equipmentmanage.app.bean.BaseStreamBean;
 import com.equipmentmanage.app.bean.ChemicalDetailBean;
 import com.equipmentmanage.app.bean.ProductFlowResultBean;
 import com.equipmentmanage.app.netapi.Constant;
@@ -36,7 +37,7 @@ import es.dmoral.toasty.Toasty;
  */
 public class ProductFlowDetailActivity extends BaseActivity {
 
-    public static void open(Context c, ProductFlowResultBean.Records bean){
+    public static void open(Context c, BaseStreamBean bean){
         Intent i = new Intent(c, ProductFlowDetailActivity.class);
         i.putExtra(Constant.productFlowBean, bean);
         c.startActivity(i);
@@ -65,7 +66,7 @@ public class ProductFlowDetailActivity extends BaseActivity {
 
     private String department, deviceType;
 
-    private ProductFlowResultBean.Records bean;
+    private BaseStreamBean bean;
 
     @Override
     protected int initLayout() {
@@ -75,7 +76,7 @@ public class ProductFlowDetailActivity extends BaseActivity {
     @Override
     protected void initView() {
 
-        bean = (ProductFlowResultBean.Records) getIntent().getSerializableExtra(Constant.productFlowBean);
+        bean = (BaseStreamBean) getIntent().getSerializableExtra(Constant.productFlowBean);
 
         titleBar.setLeftClickListener(new View.OnClickListener() {
             @SingleClick
@@ -88,8 +89,8 @@ public class ProductFlowDetailActivity extends BaseActivity {
         if (bean != null) {
             tvProName.setText(StringUtils.nullStrToEmpty(bean.getProdStreamName())); //名称
             tvProCode.setText(StringUtils.nullStrToEmpty(bean.getProdStreamCode())); //编号
-            tvBelongDevice.setText(StringUtils.nullStrToEmpty(bean.getDeviceId_dictText())); //所属装置
-            tvMediumStatus.setText(StringUtils.nullStrToEmpty(bean.getMediumState_dictText())); //介质状态
+            tvBelongDevice.setText(StringUtils.nullStrToEmpty(bean.getDeviceName())); //所属装置
+            tvMediumStatus.setText(StringUtils.nullStrToEmpty(bean.getMediumStateName())); //介质状态
 //            tvIfEffective.setText(StringUtils.nullStrToEmpty(bean.getBelongDevice_dictText())); //是否有效
         }
     }

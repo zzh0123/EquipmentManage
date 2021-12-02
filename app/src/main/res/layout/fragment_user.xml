@@ -20,7 +20,11 @@
         app:tb_sideTextPadding="@dimen/dp_20"
         app:tb_titleText="@string/lan_da"
         app:tb_titleTextSize="@dimen/sp_16"
-        app:tb_useThemeColor="false" />
+        app:tb_useThemeColor="false"
+        app:tb_leftImageResource="@null"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"/>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/cstl_user_info"
@@ -30,7 +34,7 @@
         android:paddingTop="@dimen/dp_22"
         android:paddingBottom="@dimen/dp_22"
         android:background="@color/white"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/titleBar"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent">
 
@@ -112,6 +116,53 @@
             app:layout_constraintRight_toRightOf="parent"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cstl_iv_clear_cache"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="@dimen/dp_16"
+        android:paddingTop="@dimen/dp_12"
+        android:paddingBottom="@dimen/dp_12"
+        android:background="@color/white"
+        android:layout_marginTop="@dimen/dp_12"
+        app:layout_constraintTop_toBottomOf="@+id/cstl_change_password"
+        app:layout_constraintLeft_toLeftOf="parent">
+
+        <ImageView
+            android:id="@+id/iv_clear_cache"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:scaleType="fitXY"
+            android:src="@mipmap/clear_cache"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/c_F56C6C"
+            android:textSize="@dimen/sp_16"
+            android:layout_marginLeft="@dimen/dp_16"
+            app:layout_constraintTop_toTopOf="@+id/iv_clear_cache"
+            app:layout_constraintBottom_toBottomOf="@+id/iv_clear_cache"
+            app:layout_constraintLeft_toRightOf="@+id/iv_clear_cache"
+            android:text="@string/clear_cache" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:scaleType="fitXY"
+            android:src="@mipmap/ic_arrow_right"
+            android:layout_marginRight="@dimen/dp_12"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintRight_toRightOf="parent"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
 
     <TextView
         android:id="@+id/tv_exit"

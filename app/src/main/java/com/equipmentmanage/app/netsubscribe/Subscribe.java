@@ -1,7 +1,11 @@
 package com.equipmentmanage.app.netsubscribe;
+import com.equipmentmanage.app.bean.CorrectCheckBean;
 import com.equipmentmanage.app.bean.LoginPostBean;
+import com.equipmentmanage.app.bean.PutOnRecordBean;
 import com.equipmentmanage.app.bean.TaskBean;
+import com.equipmentmanage.app.bean.TaskResultBean;
 import com.equipmentmanage.app.bean.User;
+import com.equipmentmanage.app.bean.WeatherParamsBean;
 import com.equipmentmanage.app.utils.netutils.RetrofitFactory;
 
 import java.util.List;
@@ -39,16 +43,142 @@ public class Subscribe {
     /**
      * 检查结果上传
      */
-    public static void accessResultList(List<TaskBean> records, DisposableObserver<ResponseBody> subscriber) {
+    public static void accessResultList(List<TaskResultBean.Records> records, DisposableObserver<ResponseBody> subscriber) {
         Observable<ResponseBody> observable =  RetrofitFactory.getInstance().getHttpApi().accessResultList(records);
         RetrofitFactory.getInstance().toSubscribe(observable, subscriber);
     }
+
+    /**
+     * 检测仪器校准
+     */
+    public static void accessCorrecting(CorrectCheckBean correctCheckBean, DisposableObserver<ResponseBody> subscriber) {
+        Observable<ResponseBody> observable =  RetrofitFactory.getInstance().getHttpApi().accessCorrecting(correctCheckBean);
+        RetrofitFactory.getInstance().toSubscribe(observable, subscriber);
+    }
+
+    /**
+     * 气象参数
+     */
+    public static void accessWeather(WeatherParamsBean weatherParamsBean, DisposableObserver<ResponseBody> subscriber) {
+        Observable<ResponseBody> observable =  RetrofitFactory.getInstance().getHttpApi().accessWeather(weatherParamsBean);
+        RetrofitFactory.getInstance().toSubscribe(observable, subscriber);
+    }
+
+
 
     /**
      * getDeviceTypeList
      */
     public static void getDictList(String code, DisposableObserver<ResponseBody> subscriber) {
         Observable<ResponseBody> observable =  RetrofitFactory.getInstance().getHttpApi().getDictList(code);
+        RetrofitFactory.getInstance().toSubscribe(observable, subscriber);
+    }
+
+    /**
+     * 标准气查询
+     */
+    public static void getGasList(String belongCompany, DisposableObserver<ResponseBody> subscriber) {
+        Observable<ResponseBody> observable =  RetrofitFactory.getInstance().getHttpApi().getGasList(belongCompany);
+        RetrofitFactory.getInstance().toSubscribe(observable, subscriber);
+    }
+
+    /**
+     * 阈值查询 orgCode
+     */
+    public static void getThresholdList(String orgCode, DisposableObserver<ResponseBody> subscriber) {
+        Observable<ResponseBody> observable =  RetrofitFactory.getInstance().getHttpApi().getThresholdList(orgCode);
+        RetrofitFactory.getInstance().toSubscribe(observable, subscriber);
+    }
+
+    /**
+     * 仪器查询
+     */
+    public static void getInstrumentList(String belongCompany, DisposableObserver<ResponseBody> subscriber) {
+        Observable<ResponseBody> observable =  RetrofitFactory.getInstance().getHttpApi().getInstrumentList(belongCompany);
+        RetrofitFactory.getInstance().toSubscribe(observable, subscriber);
+    }
+
+    /**
+     * 泄漏源查询
+     */
+    public static void getLeakageList(String belongCompany, DisposableObserver<ResponseBody> subscriber) {
+        Observable<ResponseBody> observable =  RetrofitFactory.getInstance().getHttpApi().getLeakageList(belongCompany);
+        RetrofitFactory.getInstance().toSubscribe(observable, subscriber);
+    }
+
+    /**
+     * 装置-基础数据不联动
+     */
+    public static void getBaseDeviceList(String belongCompany, DisposableObserver<ResponseBody> subscriber) {
+        Observable<ResponseBody> observable =  RetrofitFactory.getInstance().getHttpApi().getBaseDeviceList(belongCompany);
+        RetrofitFactory.getInstance().toSubscribe(observable, subscriber);
+    }
+
+    /**
+     * 设备
+     */
+    public static void getBaseEquipmentList(String belongCompany, DisposableObserver<ResponseBody> subscriber) {
+        Observable<ResponseBody> observable =  RetrofitFactory.getInstance().getHttpApi().getBaseEquipmentList(belongCompany);
+        RetrofitFactory.getInstance().toSubscribe(observable, subscriber);
+    }
+
+    /**
+     * 区域
+     */
+    public static void getBaseAreaList(String belongCompany, DisposableObserver<ResponseBody> subscriber) {
+        Observable<ResponseBody> observable =  RetrofitFactory.getInstance().getHttpApi().getBaseAreaList(belongCompany);
+        RetrofitFactory.getInstance().toSubscribe(observable, subscriber);
+    }
+
+    /**
+     * 产品流
+     */
+    public static void getBaseStreamList(String belongCompany, DisposableObserver<ResponseBody> subscriber) {
+        Observable<ResponseBody> observable =  RetrofitFactory.getInstance().getHttpApi().getBaseStreamList(belongCompany);
+        RetrofitFactory.getInstance().toSubscribe(observable, subscriber);
+    }
+
+    /**
+     * 装置 区域 设备联动
+     * 先选装置 LDAR_BASE_DEVICE
+     * 区域  LDAR_BASE_AREA
+     * 设备 LDAR_BASE_EQUIPMENT
+     */
+    public static void getBaseLinkList(String code, DisposableObserver<ResponseBody> subscriber) {
+        Observable<ResponseBody> observable =  RetrofitFactory.getInstance().getHttpApi().getBaseLinkList(code);
+        RetrofitFactory.getInstance().toSubscribe(observable, subscriber);
+    }
+
+    /**
+     * 化学品
+     */
+    public static void getBaseChemicalList(String belongCompany, DisposableObserver<ResponseBody> subscriber) {
+        Observable<ResponseBody> observable =  RetrofitFactory.getInstance().getHttpApi().getBaseChemicalList(belongCompany);
+        RetrofitFactory.getInstance().toSubscribe(observable, subscriber);
+    }
+
+    /**
+     * 组件类型
+     */
+    public static void getBaseComponentTypeList(String belongCompany, DisposableObserver<ResponseBody> subscriber) {
+        Observable<ResponseBody> observable =  RetrofitFactory.getInstance().getHttpApi().getBaseComponentTypeList(belongCompany);
+        RetrofitFactory.getInstance().toSubscribe(observable, subscriber);
+    }
+
+    /**
+     * 方向
+     */
+    public static void getBaseDirectionList(String belongCompany, DisposableObserver<ResponseBody> subscriber) {
+        Observable<ResponseBody> observable =  RetrofitFactory.getInstance().getHttpApi().getBaseDirectionList(belongCompany);
+        RetrofitFactory.getInstance().toSubscribe(observable, subscriber);
+    }
+
+
+    /**
+     * 建档数据上传
+     */
+    public static void putOnRecordUpload(List<PutOnRecordBean> records, DisposableObserver<ResponseBody> subscriber) {
+        Observable<ResponseBody> observable =  RetrofitFactory.getInstance().getHttpApi().putOnRecordUpload(records);
         RetrofitFactory.getInstance().toSubscribe(observable, subscriber);
     }
 
@@ -93,6 +223,26 @@ public class Subscribe {
         Observable<ResponseBody> observable =  RetrofitFactory.getInstance().getHttpApi().getTaskList(map);
         RetrofitFactory.getInstance().toSubscribe(observable, subscriber);
     }
+
+    /**
+     * 传单张图片
+     */
+    public static void uploadImg(MultipartBody.Part part, DisposableObserver<ResponseBody> subscriber) {
+        Observable<ResponseBody> observable =  RetrofitFactory.getInstance().getHttpApi().uploadImg(part);
+        RetrofitFactory.getInstance().toSubscribe(observable, subscriber);
+    }
+
+    /**
+     * 传多张图片
+     */
+    public static void uploadImgList(MultipartBody.Part[] parts, DisposableObserver<ResponseBody> subscriber) {
+        Observable<ResponseBody> observable =  RetrofitFactory.getInstance().getHttpApi().uploadImgList(parts);
+        RetrofitFactory.getInstance().toSubscribe(observable, subscriber);
+    }
+
+
+
+
 
 
 

@@ -107,15 +107,31 @@
                     app:layout_constraintLeft_toLeftOf="@+id/line_standard_gas"
                     app:layout_constraintTop_toBottomOf="@+id/line_standard_gas" />
 
-                <TextView
+<!--                <TextView-->
+<!--                    android:id="@+id/tv_std_gas_read_value"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:gravity="right"-->
+<!--                    android:paddingRight="@dimen/dp_12"-->
+<!--                    android:textColor="@color/c_303133"-->
+<!--                    android:textSize="@dimen/sp_14"-->
+<!--                    tools:text="1111"-->
+<!--                    app:layout_constraintBottom_toBottomOf="@+id/tv_std_gas_read_value_title"-->
+<!--                    app:layout_constraintRight_toRightOf="parent"-->
+<!--                    app:layout_constraintTop_toTopOf="@+id/tv_std_gas_read_value_title" />-->
+
+                <EditText
                     android:id="@+id/tv_std_gas_read_value"
-                    android:layout_width="wrap_content"
+                    android:layout_width="@dimen/dp_150"
                     android:layout_height="wrap_content"
+                    android:background="@null"
                     android:gravity="right"
+                    android:hint="@string/please_enter"
                     android:paddingRight="@dimen/dp_12"
                     android:textColor="@color/c_303133"
+                    android:textColorHint="@color/c_909399"
                     android:textSize="@dimen/sp_14"
-                    tools:text="1111"
+                    android:inputType="number|numberDecimal"
                     app:layout_constraintBottom_toBottomOf="@+id/tv_std_gas_read_value_title"
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toTopOf="@+id/tv_std_gas_read_value_title" />
@@ -141,18 +157,34 @@
                     app:layout_constraintLeft_toLeftOf="@+id/line_std_gas_read_value"
                     app:layout_constraintTop_toBottomOf="@+id/line_std_gas_read_value" />
 
-                <TextView
+<!--                <TextView-->
+<!--                    android:id="@+id/tv_ppm_threshold_value"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:gravity="right"-->
+<!--                    android:paddingRight="@dimen/dp_12"-->
+<!--                    android:textColor="@color/c_303133"-->
+<!--                    android:textSize="@dimen/sp_14"-->
+<!--                    tools:text="1111"-->
+<!--                    app:layout_constraintBottom_toBottomOf="@+id/tv_ppm_threshold_value_title"-->
+<!--                    app:layout_constraintRight_toRightOf="parent"-->
+<!--                    app:layout_constraintTop_toTopOf="@+id/tv_ppm_threshold_value_title" />-->
+
+                <EditText
                     android:id="@+id/tv_ppm_threshold_value"
-                    android:layout_width="wrap_content"
+                    android:layout_width="@dimen/dp_150"
                     android:layout_height="wrap_content"
+                    android:background="@null"
                     android:gravity="right"
+                    android:hint="@string/please_enter"
                     android:paddingRight="@dimen/dp_12"
                     android:textColor="@color/c_303133"
+                    android:textColorHint="@color/c_909399"
                     android:textSize="@dimen/sp_14"
-                    tools:text="1111"
+                    android:inputType="number|numberDecimal"
                     app:layout_constraintBottom_toBottomOf="@+id/tv_ppm_threshold_value_title"
                     app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/tv_ppm_threshold_value_title" />
+                    app:layout_constraintTop_toTopOf="@+id/tv_ppm_threshold_value_title"  />
 
                 <View
                     android:id="@+id/line_ppm_threshold_value"
@@ -196,6 +228,7 @@
                     android:textColor="@color/c_303133"
                     android:textColorHint="@color/c_909399"
                     android:textSize="@dimen/sp_14"
+                    android:inputType="number|numberDecimal"
                     app:layout_constraintBottom_toBottomOf="@+id/tv_correct_read_value_title"
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toTopOf="@+id/tv_correct_read_value_title" />
@@ -232,6 +265,7 @@
                     android:textColor="@color/c_303133"
                     android:textColorHint="@color/c_909399"
                     android:textSize="@dimen/sp_14"
+                    android:inputType="number|numberDecimal"
                     app:layout_constraintBottom_toBottomOf="@+id/tv_response_time_title"
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toTopOf="@+id/tv_response_time_title" />

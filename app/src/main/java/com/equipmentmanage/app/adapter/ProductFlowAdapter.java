@@ -5,6 +5,7 @@ import android.widget.TextView;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.viewholder.BaseViewHolder;
 import com.equipmentmanage.app.R;
+import com.equipmentmanage.app.bean.BaseStreamBean;
 import com.equipmentmanage.app.bean.EquipmentManageBean;
 import com.equipmentmanage.app.bean.ProductFlowBean;
 import com.equipmentmanage.app.bean.ProductFlowResultBean;
@@ -20,18 +21,18 @@ import java.util.List;
  * @Author: zzh
  * @CreateDate: 2021/8/12
  */
-public class ProductFlowAdapter extends BaseQuickAdapter<ProductFlowResultBean.Records, BaseViewHolder> {
-    public ProductFlowAdapter(@Nullable List<ProductFlowResultBean.Records> data) {
+public class ProductFlowAdapter extends BaseQuickAdapter<BaseStreamBean, BaseViewHolder> {
+    public ProductFlowAdapter(@Nullable List<BaseStreamBean> data) {
         super(R.layout.item_product_flow, data);
     }
 
     @Override
-    protected void convert(@NotNull BaseViewHolder holder, @Nullable ProductFlowResultBean.Records bean) {
+    protected void convert(@NotNull BaseViewHolder holder, @Nullable BaseStreamBean bean) {
         holder.setText(R.id.tv_product_flow_name, StringUtils.nullStrToEmpty(bean.getProdStreamName())); // 产品流名称
 //        holder.setText(R.id.tv_status, StringUtils.nullStrToEmpty(bean.getStatus())); // 状态
         holder.setText(R.id.tv_device_code, StringUtils.nullStrToEmpty(bean.getProdStreamCode())); // 产品流编码
-        holder.setText(R.id.tv_belong_device, StringUtils.nullStrToEmpty(bean.getDeviceId_dictText())); // 所属装置
-        holder.setText(R.id.tv_medium_status, StringUtils.nullStrToEmpty(bean.getMediumState_dictText())); // 介质状态
+        holder.setText(R.id.tv_belong_device, StringUtils.nullStrToEmpty(bean.getDeviceName())); // 所属装置
+        holder.setText(R.id.tv_medium_status, StringUtils.nullStrToEmpty(bean.getMediumStateName())); // 介质状态
 
         TextView tvStatus = holder.getView(R.id.tv_status);
 //        String status = bean.getStatus();

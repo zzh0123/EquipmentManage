@@ -15,9 +15,11 @@ import android.widget.TextView;
 import com.equipmentmanage.app.R;
 import com.equipmentmanage.app.base.BaseActivity;
 import com.equipmentmanage.app.bean.TaskBean;
+import com.equipmentmanage.app.bean.TaskResultBean;
 import com.equipmentmanage.app.fragment.PartImgsFragment;
 import com.equipmentmanage.app.fragment.PartInfoFragment;
 import com.equipmentmanage.app.netapi.Constant;
+import com.equipmentmanage.app.utils.L;
 import com.xuexiang.xaop.annotation.SingleClick;
 import com.xuexiang.xui.widget.actionbar.TitleBar;
 
@@ -34,7 +36,7 @@ import butterknife.OnClick;
  */
 public class PartCheckActivity extends BaseActivity {
 
-    public static void open(Context c, TaskBean bean) {
+    public static void open(Context c, TaskResultBean.Records bean) {
         Intent i = new Intent(c, PartCheckActivity.class);
         i.putExtra(Constant.taskBean, bean);
         c.startActivity(i);
@@ -68,7 +70,7 @@ public class PartCheckActivity extends BaseActivity {
     private String[] tabTitles = {"组件信息", "组件图片"};
     private List<Fragment> fragmentList = new ArrayList<>();
 
-    private TaskBean bean;
+    private TaskResultBean.Records bean;
 
     @Override
     protected int initLayout() {
@@ -77,7 +79,8 @@ public class PartCheckActivity extends BaseActivity {
 
     @Override
     protected void initView() {
-        bean = (TaskBean) getIntent().getSerializableExtra(Constant.taskBean);
+        bean = (TaskResultBean.Records) getIntent().getSerializableExtra(Constant.taskBean);
+        L.i("zzz1--bean0->" + bean.getTaskName());
 
 //        bean = (AreaManageResultBean.Records) getIntent().getSerializableExtra(Constant.areaBean);
 
@@ -101,7 +104,8 @@ public class PartCheckActivity extends BaseActivity {
 
     @Override
     protected void initEvent() {
-        fragmentList.add(new PartInfoFragment());
+//        fragmentList.add(new PartInfoFragment());
+        fragmentList.add(new PartImgsFragment());
         fragmentList.add(new PartImgsFragment());
 
         viewPager2.setOrientation(ViewPager2.ORIENTATION_HORIZONTAL);

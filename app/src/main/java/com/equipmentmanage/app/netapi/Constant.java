@@ -137,4 +137,53 @@ public class Constant {
     public static String detectionUser = "detectionUser";
     public static String taskSdate = "taskSdate";
 
+
+    // 建档拍照传参
+    public static String deviceTypeValue = "deviceTypeValue";
+    public static String areaTypeValue = "areaTypeValue";
+    public static String equipmentTypeValue = "equipmentTypeValue";
+//    public static String mediumState = "mediumState";
+    public static String streamTypeValue = "streamTypeValue";
+    public static String chemicalTypeValue = "chemicalTypeValue";
+    public static String directionName = "directionName";
+    public static String tagNum = "tagNum";
+    public static String reference = "reference";
+    public static String distance = "distance";
+    public static String height = "height";
+
+    public static String floorLevel = "floorLevel";
+    public static String size = "size";
+    public static String manufacturer = "manufacturer";
+    public static String productionDate = "productionDate";
+    public static String unreachable = "unreachable";
+    public static String unreachableReason = "unreachableReason";
+    public static String heatPreservation = "heatPreservation";
+
+    public static String operTemper = "operTemper";
+    public static String operPressure = "operPressure";
+    public static String barcode = "barcode";
+    public static String detectionFreq = "detectionFreq";
+    public static String leakageThreshold = "leakageThreshold";
+
+
+    public static String picCurrentPos = "picCurrentPos";
+    public static String dotCurrentPos = "dotCurrentPos";
+    public static String checkedCount = "checkedCount";
+    public static String totalCount = "totalCount";
+
+    public static String date_gas = "date_gas";
+    public static String thres_hold = "thres_hold";
+    public static String instrument = "instrument";
+    public static String leakage = "leakage";
+    public static String base_area = "base_area";
+    public static String date_base_chemical = "date_base_chemical";
+    public static String date_base_component_type = "date_base_component_type";
+    public static String date_base_direction = "date_base_direction";
+
+    public static String instrumentTypeValue = "instrumentTypeValue";
+    public static String instrumentName = "instrumentName";
+
+    public static String is_correct_checked = "is_correct_checked";
+    public static String is_weather_checked = "is_weather_checked";
+    public static String is_seal_point_checked = "is_seal_point_checked";
 }

@@ -61,4 +61,19 @@ public static java.lang.String TABLENAME;
     <init>(java.lang.Throwable);
 }
 
+-keep class com.equipmentmanage.app.bean.** {*;}
 
+#okhttp
+-dontwarn com.squareup.okhttp3.**
+-keep class com.squareup.okhttp3.** { *;}
+-dontwarn okio.**
+-dontwarn javax.annotation.Nullable
+-dontwarn javax.annotation.ParametersAreNonnullByDefault
+-dontwarn javax.annotation.**
+
+# Retrofit
+-dontwarn retrofit2.**
+-keep class retrofit2.** { *; }
+-keepattributes Exceptions
+
+-keep class com.xuexiang.xui.widget.edittext.materialedittext.** { *; }

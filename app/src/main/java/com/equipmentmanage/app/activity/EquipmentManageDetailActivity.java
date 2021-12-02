@@ -9,6 +9,7 @@ import android.widget.Toast;
 import com.equipmentmanage.app.R;
 import com.equipmentmanage.app.base.BaseActivity;
 import com.equipmentmanage.app.bean.BaseBean;
+import com.equipmentmanage.app.bean.BaseEquipmentBean;
 import com.equipmentmanage.app.bean.ChemicalDetailBean;
 import com.equipmentmanage.app.bean.DeviceManageResultBean;
 import com.equipmentmanage.app.bean.EquipmentManageResultBean;
@@ -36,7 +37,7 @@ import es.dmoral.toasty.Toasty;
  */
 public class EquipmentManageDetailActivity extends BaseActivity {
 
-    public static void open(Context c, EquipmentManageResultBean.Records bean){
+    public static void open(Context c, BaseEquipmentBean bean){
         Intent i = new Intent(c, EquipmentManageDetailActivity.class);
         i.putExtra(Constant.equipmentBean, bean);
         c.startActivity(i);
@@ -65,7 +66,7 @@ public class EquipmentManageDetailActivity extends BaseActivity {
 
     private String department, deviceType;
 
-    private EquipmentManageResultBean.Records bean;
+    private BaseEquipmentBean bean;
 
     @Override
     protected int initLayout() {
@@ -75,7 +76,7 @@ public class EquipmentManageDetailActivity extends BaseActivity {
     @Override
     protected void initView() {
 
-        bean = (EquipmentManageResultBean.Records) getIntent().getSerializableExtra(Constant.equipmentBean);
+        bean = (BaseEquipmentBean) getIntent().getSerializableExtra(Constant.equipmentBean);
 
         titleBar.setLeftClickListener(new View.OnClickListener() {
             @SingleClick
@@ -88,8 +89,8 @@ public class EquipmentManageDetailActivity extends BaseActivity {
         if (bean != null) {
             tvEquipmentName.setText(StringUtils.nullStrToEmpty(bean.getEquipmentName())); //名称
             tvEquipmentCode.setText(StringUtils.nullStrToEmpty(bean.getEquipmentCode())); //编号
-            tvBelongDevice.setText(StringUtils.nullStrToEmpty(bean.getDeviceId_dictText())); //所属装置
-            tvBelongArea.setText(StringUtils.nullStrToEmpty(bean.getAreaId_dictText())); //所属区域
+            tvBelongDevice.setText(StringUtils.nullStrToEmpty(bean.getDeviceName())); //所属装置
+            tvBelongArea.setText(StringUtils.nullStrToEmpty(bean.getAreaName())); //所属区域
 //            tvEnabled.setText(StringUtils.nullStrToEmpty(bean.getDeviceCapacity())); //是否可用
 //            tvOrder.setText(StringUtils.nullStrToEmpty(bean.getUseDate())); //顺序
 

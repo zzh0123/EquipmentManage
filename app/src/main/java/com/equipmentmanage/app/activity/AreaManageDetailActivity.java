@@ -9,6 +9,7 @@ import android.widget.Toast;
 import com.equipmentmanage.app.R;
 import com.equipmentmanage.app.base.BaseActivity;
 import com.equipmentmanage.app.bean.AreaManageResultBean;
+import com.equipmentmanage.app.bean.BaseAreaBean;
 import com.equipmentmanage.app.bean.BaseBean;
 import com.equipmentmanage.app.bean.ChemicalDetailBean;
 import com.equipmentmanage.app.bean.DeviceManageResultBean;
@@ -36,7 +37,7 @@ import es.dmoral.toasty.Toasty;
  */
 public class AreaManageDetailActivity extends BaseActivity {
 
-    public static void open(Context c, AreaManageResultBean.Records bean){
+    public static void open(Context c, BaseAreaBean bean){
         Intent i = new Intent(c, AreaManageDetailActivity.class);
         i.putExtra(Constant.areaBean, bean);
         c.startActivity(i);
@@ -68,7 +69,7 @@ public class AreaManageDetailActivity extends BaseActivity {
 
     private String department, deviceType;
 
-    private AreaManageResultBean.Records bean;
+    private BaseAreaBean bean;
 
     @Override
     protected int initLayout() {
@@ -78,7 +79,7 @@ public class AreaManageDetailActivity extends BaseActivity {
     @Override
     protected void initView() {
 
-        bean = (AreaManageResultBean.Records) getIntent().getSerializableExtra(Constant.areaBean);
+        bean = (BaseAreaBean) getIntent().getSerializableExtra(Constant.areaBean);
 
         titleBar.setLeftClickListener(new View.OnClickListener() {
             @SingleClick
@@ -91,7 +92,7 @@ public class AreaManageDetailActivity extends BaseActivity {
         if (bean != null) {
             tvAreaName.setText(StringUtils.nullStrToEmpty(bean.getAreaName())); //名称
             tvAreaCode.setText(StringUtils.nullStrToEmpty(bean.getAreaCode())); //编号
-            tvBelongDevice.setText(StringUtils.nullStrToEmpty(bean.getBelongDevice_dictText())); //所属装置
+            tvBelongDevice.setText(StringUtils.nullStrToEmpty(bean.getDeviceName())); //所属装置
 //            tvEnabled.setText(StringUtils.nullStrToEmpty(bean.getDeviceName())); //是否可用
         }
 
