@@ -42,4 +42,6 @@ public class BaseDeviceBean implements Serializable {
     private String chemicalName;
 
     private String belongCompany;
+
+    private boolean isSelected;
 }

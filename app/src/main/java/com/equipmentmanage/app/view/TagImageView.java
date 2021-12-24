@@ -16,6 +16,7 @@ import com.equipmentmanage.app.R;
 import com.equipmentmanage.app.bean.TagGroupModel;
 import com.equipmentmanage.app.utils.AnimatorUtils;
 import com.equipmentmanage.app.utils.DirectionUtils;
+import com.equipmentmanage.app.utils.L;
 import com.licrafter.tagview.DIRECTION;
 import com.licrafter.tagview.TagAdapter;
 import com.licrafter.tagview.TagViewGroup;
@@ -99,19 +100,28 @@ public class TagImageView extends FrameLayout {
         tagViewGroup.setTagAdapter(new TagAdapter() {
             @Override
             public int getCount() {
-                return model.getTags().size() + 1;
+                return model.getTags().size();
+//                return model.getTags().size() + 1;
+            }
+
+            @Override
+            public boolean getData() {
+                return model.isLastest();
             }
 
             @Override
             public ITagView getItem(int position) {
-                if (position < model.getTags().size()) {
-                    return makeTagTextView(model.getTags().get(position));
-                } else {
-                    return makeRippleView();
-                }
+                L.i("zzz1--position->" + position + "--getTags.size--" + model.getTags().size());
+                return makeTagTextView(model.getTags().get(position));
+//                return makeRippleView();
+//                if (position < model.getTags().size()) {
+//                    return makeTagTextView(model.getTags().get(position));
+//                } else {
+//                    return makeRippleView();
+//                }
             }
         });
-        tagViewGroup.setPercent(model.getPercentX(), model.getPercentY());
+        tagViewGroup.setPercent(model.getPercentX(), model.getPercentY(), model.getPercentX1(), model.getPercentY1());
         return tagViewGroup;
     }
 
@@ -119,6 +129,7 @@ public class TagImageView extends FrameLayout {
         RippleView rippleView = new RippleView(getContext());
         rippleView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         rippleView.setDirection(DIRECTION.CENTER);
+//        rippleView.setVisibility(GONE);
         return rippleView;
     }
 
@@ -126,6 +137,7 @@ public class TagImageView extends FrameLayout {
         TagTextView tagTextView = new TagTextView(getContext());
 //        tagTextView.setTextColor(getResources().getColor(R.color.c_409EFF));
         tagTextView.setDirection(DirectionUtils.getDirection(tag.getDirection()));
+        tagTextView.setBackgroundColor(getResources().getColor(R.color.c_409EFF));
         tagTextView.setText(tag.getName());
         return tagTextView;
     }
@@ -169,9 +181,11 @@ public class TagImageView extends FrameLayout {
         group.getTagAdapter().notifyDataSetChanged();
     }
 
-    public void onDrag(TagViewGroup group, float percentX, float percentY) {
+    public void onDrag(TagViewGroup group, float percentX, float percentY, float percentX1, float percentY1) {
         mTagGroupModelList.get(mTagGroupViewList.indexOf(group)).setPercentX(percentX);
         mTagGroupModelList.get(mTagGroupViewList.indexOf(group)).setPercentY(percentY);
+        mTagGroupModelList.get(mTagGroupViewList.indexOf(group)).setPercentX1(percentX1);
+        mTagGroupModelList.get(mTagGroupViewList.indexOf(group)).setPercentY1(percentY1);
     }
 
     public void setEditMode(boolean editMode) {

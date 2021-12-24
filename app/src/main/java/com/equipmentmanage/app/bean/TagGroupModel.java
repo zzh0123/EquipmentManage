@@ -13,6 +13,12 @@ public class TagGroupModel {
     private float percentX;
     private float percentY;
 
+    private float percentX1;
+    private float percentY1;
+
+    private boolean isLastest;
+
+
     public List<Tag> getTags() {
         return tags;
     }
@@ -35,6 +41,30 @@ public class TagGroupModel {
 
     public void setPercentY(float percentY) {
         this.percentY = percentY;
+    }
+
+    public float getPercentX1() {
+        return percentX1;
+    }
+
+    public void setPercentX1(float percentX1) {
+        this.percentX1 = percentX1;
+    }
+
+    public float getPercentY1() {
+        return percentY1;
+    }
+
+    public void setPercentY1(float percentY1) {
+        this.percentY1 = percentY1;
+    }
+
+    public boolean isLastest() {
+        return isLastest;
+    }
+
+    public void setLastest(boolean lastest) {
+        isLastest = lastest;
     }
 
     public static class Tag {

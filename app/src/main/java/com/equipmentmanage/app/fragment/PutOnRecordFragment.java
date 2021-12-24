@@ -16,7 +16,7 @@ import androidx.appcompat.widget.AppCompatImageView;
 import com.equipmentmanage.app.R;
 import com.equipmentmanage.app.activity.AreaManageActivity;
 import com.equipmentmanage.app.activity.BaseDataActivity;
-import com.equipmentmanage.app.activity.SealPointOnRecordActivity;
+import com.equipmentmanage.app.activity.NewRecordAreaActivity;
 import com.equipmentmanage.app.activity.DeviceManageActivity;
 import com.equipmentmanage.app.activity.EquipmentManageActivity;
 import com.equipmentmanage.app.activity.ProductFlowActivity;
@@ -42,7 +42,6 @@ import com.xuexiang.xui.widget.actionbar.TitleBar;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Timer;
 
 import butterknife.BindView;
 import es.dmoral.toasty.Toasty;
@@ -148,7 +147,8 @@ public class PutOnRecordFragment extends LazyFragment {
                         break;
                     case 5:
                         // 密封点建档(组件管理)
-                        SealPointOnRecordActivity.open(getActivity());
+//                        SealPointOnRecordActivity.open(getActivity());
+                        NewRecordAreaActivity.open(getActivity());
                         break;
                     case 6:
                         // 上传
@@ -353,35 +353,35 @@ public class PutOnRecordFragment extends LazyFragment {
 //                Constant.post});
 
         Log.i("zzz1-RecordtoJson-->", GsonUtils.toJson(records));
-        Subscribe.putOnRecordUpload(records, new OnSuccessAndFaultSub(new OnSuccessAndFaultListener() {
-            @Override
-            public void onSuccess(String result) {
-                try {
-                    Log.i("zzz1-Recordresult-->", result);
-                    BaseBean<String> baseBean = GsonUtils.fromJson(result, new TypeToken<BaseBean<String>>() {
-                    }.getType());
-
-                    if (baseBean != null) {
-                        if (baseBean.isSuccess()) {
-                            Toasty.success(getActivity(), "上传成功", Toast.LENGTH_SHORT, true).show();
-                        } else {
-                            Toasty.error(getActivity(), "上传失败", Toast.LENGTH_SHORT, true).show();
-                        }
-                    } else {
-                        Toasty.error(getActivity(), R.string.return_empty, Toast.LENGTH_SHORT, true).show();
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    Toasty.error(getActivity(), R.string.parse_fail, Toast.LENGTH_SHORT, true).show();
-                }
-            }
-
-            @Override
-            public void onFault(String errorMsg) {
-                Toasty.error(getActivity(), R.string.request_fail, Toast.LENGTH_SHORT, true).show();
-
-            }
-        }, getActivity()));
+//        Subscribe.putOnRecordUpload(records, new OnSuccessAndFaultSub(new OnSuccessAndFaultListener() {
+//            @Override
+//            public void onSuccess(String result) {
+//                try {
+//                    Log.i("zzz1-Recordresult-->", result);
+//                    BaseBean<String> baseBean = GsonUtils.fromJson(result, new TypeToken<BaseBean<String>>() {
+//                    }.getType());
+//
+//                    if (baseBean != null) {
+//                        if (baseBean.isSuccess()) {
+//                            Toasty.success(getActivity(), "上传成功", Toast.LENGTH_SHORT, true).show();
+//                        } else {
+//                            Toasty.error(getActivity(), "上传失败", Toast.LENGTH_SHORT, true).show();
+//                        }
+//                    } else {
+//                        Toasty.error(getActivity(), R.string.return_empty, Toast.LENGTH_SHORT, true).show();
+//                    }
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                    Toasty.error(getActivity(), R.string.parse_fail, Toast.LENGTH_SHORT, true).show();
+//                }
+//            }
+//
+//            @Override
+//            public void onFault(String errorMsg) {
+//                Toasty.error(getActivity(), R.string.request_fail, Toast.LENGTH_SHORT, true).show();
+//
+//            }
+//        }, getActivity()));
     }
 
 

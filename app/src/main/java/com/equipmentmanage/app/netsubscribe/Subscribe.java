@@ -1,6 +1,7 @@
 package com.equipmentmanage.app.netsubscribe;
 import com.equipmentmanage.app.bean.CorrectCheckBean;
 import com.equipmentmanage.app.bean.LoginPostBean;
+import com.equipmentmanage.app.bean.NewRecordBean;
 import com.equipmentmanage.app.bean.PutOnRecordBean;
 import com.equipmentmanage.app.bean.TaskBean;
 import com.equipmentmanage.app.bean.TaskResultBean;
@@ -177,7 +178,7 @@ public class Subscribe {
     /**
      * 建档数据上传
      */
-    public static void putOnRecordUpload(List<PutOnRecordBean> records, DisposableObserver<ResponseBody> subscriber) {
+    public static void putOnRecordUpload(List<NewRecordBean> records, DisposableObserver<ResponseBody> subscriber) {
         Observable<ResponseBody> observable =  RetrofitFactory.getInstance().getHttpApi().putOnRecordUpload(records);
         RetrofitFactory.getInstance().toSubscribe(observable, subscriber);
     }
@@ -241,7 +242,13 @@ public class Subscribe {
     }
 
 
-
+    /**
+     * 所属公司
+     */
+    public static void getBaseCompanyList(Map<String, Object> map, DisposableObserver<ResponseBody> subscriber) {
+        Observable<ResponseBody> observable =  RetrofitFactory.getInstance().getHttpApi().getBaseCompanyList(map);
+        RetrofitFactory.getInstance().toSubscribe(observable, subscriber);
+    }
 
 
 

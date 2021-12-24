@@ -1,0 +1,9 @@
+ext{
+    supportLib = '28.0.0'
+    buildTool = '28.0.3'
+    targetVersion = 28
+    minVersion = 15
+    picasso = '2.5.2'
+    junit = '4.12'
+    tagViewGroup = '-SNAPSHOT'
+}

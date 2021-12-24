@@ -19,24 +19,38 @@ import androidx.viewpager2.widget.ViewPager2;
 
 import com.equipmentmanage.app.R;
 import com.equipmentmanage.app.base.BaseActivity;
+import com.equipmentmanage.app.bean.BaseBean;
+import com.equipmentmanage.app.bean.BaseCompanyResultBean;
+import com.equipmentmanage.app.bean.BaseCompanyTableBean;
 import com.equipmentmanage.app.bean.ResultInfo;
+import com.equipmentmanage.app.dao.AppDatabase;
 import com.equipmentmanage.app.fragment.PutOnRecordFragment;
+import com.equipmentmanage.app.fragment.PutOnRecordFragment1;
 import com.equipmentmanage.app.fragment.SearchFragment;
 import com.equipmentmanage.app.fragment.TaskFragment;
 import com.equipmentmanage.app.fragment.UpDownLoadFragment;
 import com.equipmentmanage.app.fragment.UserFragment;
+import com.equipmentmanage.app.netapi.Constant;
+import com.equipmentmanage.app.netapi.ConstantValue;
 import com.equipmentmanage.app.netsubscribe.Subscribe;
 import com.equipmentmanage.app.utils.GsonUtils1;
 import com.equipmentmanage.app.utils.L;
+import com.equipmentmanage.app.utils.gson.GsonUtils;
 import com.equipmentmanage.app.utils.netutils.OnSuccessAndFaultListener;
 import com.equipmentmanage.app.utils.netutils.OnSuccessAndFaultSub;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
+import com.google.gson.reflect.TypeToken;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
+import es.dmoral.toasty.Toasty;
 
 public class MainActivity extends BaseActivity implements NavigationBarView.OnItemSelectedListener {
 
@@ -55,6 +69,8 @@ public class MainActivity extends BaseActivity implements NavigationBarView.OnIt
 
     private List<Fragment> fragmentList = new ArrayList<>();
 
+    private int pageNo = 1, pageSize = 2000;
+
     @Override
     protected int initLayout() {
         return R.layout.activity_main;
@@ -72,7 +88,7 @@ public class MainActivity extends BaseActivity implements NavigationBarView.OnIt
         bottomNavigationView.setOnItemSelectedListener(this);
 
         fragmentList.add(new TaskFragment());
-        fragmentList.add(new PutOnRecordFragment());
+        fragmentList.add(new PutOnRecordFragment1());
 //        fragmentList.add(new UpDownLoadFragment());
         fragmentList.add(new SearchFragment());
         fragmentList.add(new UserFragment());
@@ -113,6 +129,8 @@ public class MainActivity extends BaseActivity implements NavigationBarView.OnIt
     @Override
     protected void initData() {
 //        getUserList();
+
+        getBaseCompanyList();
     }
 
     @Override
@@ -162,4 +180,68 @@ public class MainActivity extends BaseActivity implements NavigationBarView.OnIt
         }, MainActivity.this));
     }
 
+    /**
+     * 所属公司
+     */
+    private void getBaseCompanyList() {
+        Map<String, Object> params = new HashMap<>();
+        params.put(Constant.pageNo, "" + pageNo); // pageNo
+        params.put(Constant.pageSize, "" + pageSize); // pageSize
+        Subscribe.getBaseCompanyList(params, new OnSuccessAndFaultSub(new OnSuccessAndFaultListener() {
+            @Override
+            public void onSuccess(String result) {
+                //成功
+                try {
+                    BaseBean<BaseCompanyResultBean> baseBean = GsonUtils.fromJson(result, new TypeToken<BaseBean<BaseCompanyResultBean>>() {
+                    }.getType());
+
+                    if (null != baseBean) {
+                        if (baseBean.isSuccess()) {
+                            BaseCompanyResultBean resultBean = baseBean.getResult();
+                            if (resultBean != null) {
+                                List<BaseCompanyResultBean.Records> dataList = resultBean.getRecords();
+                                if (dataList != null && dataList.size() > 0) {
+                                    BaseCompanyTableBean baseCompanyTableBean = new BaseCompanyTableBean();
+                                    baseCompanyTableBean.id = "1";
+                                    baseCompanyTableBean.content = GsonUtils.toJson(dataList);
+                                    Long rowId = AppDatabase.getInstance(MainActivity.this).baseCompanyTableDao().insert(baseCompanyTableBean);
+                                    if (rowId != null){
+                                        EventBus.getDefault().post(ConstantValue.event_belong_company);
+                                        Toasty.success(MainActivity.this, R.string.download_success, Toast.LENGTH_SHORT, true).show();
+                                    } else {
+                                        Toasty.error(MainActivity.this, R.string.download_fail, Toast.LENGTH_SHORT, true).show();
+                                    }
+
+                                } else {
+                                    int row = AppDatabase.getInstance(MainActivity.this).baseAreaTableDao().deleteAll();
+                                    L.i("zzz1-Company-row-->" + row);
+                                    Toasty.error(MainActivity.this, R.string.return_empty, Toast.LENGTH_SHORT, true).show();
+                                }
+                            } else {
+                                Toasty.error(MainActivity.this, R.string.return_empty, Toast.LENGTH_SHORT, true).show();
+                            }
+//
+//                            adapter.notifyDataSetChanged();
+                        } else {
+                            Toasty.error(MainActivity.this, R.string.search_fail, Toast.LENGTH_SHORT, true).show();
+                        }
+                    } else {
+                        Toasty.error(MainActivity.this, R.string.return_empty, Toast.LENGTH_SHORT, true).show();
+
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    Toasty.error(MainActivity.this, R.string.parse_fail, Toast.LENGTH_SHORT, true).show();
+
+                }
+
+            }
+
+            @Override
+            public void onFault(String errorMsg) {
+                //失败
+                Toasty.error(MainActivity.this, R.string.request_fail, Toast.LENGTH_SHORT, true).show();
+            }
+        }, MainActivity.this));
+    }
 }

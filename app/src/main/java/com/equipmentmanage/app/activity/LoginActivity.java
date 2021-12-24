@@ -17,12 +17,17 @@ import android.widget.Toast;
 
 import com.equipmentmanage.app.R;
 import com.equipmentmanage.app.base.BaseActivity;
+import com.equipmentmanage.app.bean.AreaManageResultBean;
+import com.equipmentmanage.app.bean.BaseAreaTableBean;
 import com.equipmentmanage.app.bean.BaseBean;
+import com.equipmentmanage.app.bean.BaseCompanyResultBean;
+import com.equipmentmanage.app.bean.BaseCompanyTableBean;
 import com.equipmentmanage.app.bean.DeviceManageBean;
 import com.equipmentmanage.app.bean.LoginPostBean;
 import com.equipmentmanage.app.bean.LoginResultBean;
 import com.equipmentmanage.app.bean.ResultInfo;
 import com.equipmentmanage.app.bean.UserInfoBean;
+import com.equipmentmanage.app.dao.AppDatabase;
 import com.equipmentmanage.app.netapi.BaseConstant;
 import com.equipmentmanage.app.netapi.Constant;
 import com.equipmentmanage.app.netsubscribe.Subscribe;
@@ -75,7 +80,6 @@ public class LoginActivity extends BaseActivity {
 
     private MMKV kv = MMKV.defaultMMKV();
 
-
     @Override
     protected int initLayout() {
         return R.layout.activity_login;
@@ -83,9 +87,11 @@ public class LoginActivity extends BaseActivity {
 
     @Override
     protected void initView() {
+        // xlhx2021/123456  登录后 切换公司 到信联化学 然后点下载数据
         // 20001 123456 taorui1     Aa123456!
 //        etAccount.setText("ygp2021");
-        etAccount.setText("wksw2021");
+//        etAccount.setText("wksw2021");
+        etAccount.setText("xlhx2021");
 //        etAccount.setText("20001");
 //        etAccount.setText("ygp2021");
         etPassword.setText("123456");

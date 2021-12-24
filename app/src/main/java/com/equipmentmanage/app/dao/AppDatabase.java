@@ -10,6 +10,7 @@ import androidx.sqlite.db.SupportSQLiteDatabase;
 
 import com.equipmentmanage.app.bean.BaseAreaTableBean;
 import com.equipmentmanage.app.bean.BaseChemicalTableBean;
+import com.equipmentmanage.app.bean.BaseCompanyTableBean;
 import com.equipmentmanage.app.bean.BaseComponentTypeTableBean;
 import com.equipmentmanage.app.bean.BaseDeviceTableBean;
 import com.equipmentmanage.app.bean.BaseDirectionTableBean;
@@ -19,8 +20,11 @@ import com.equipmentmanage.app.bean.DeviceTableBean;
 import com.equipmentmanage.app.bean.EquipmentManageTableBean;
 import com.equipmentmanage.app.bean.GasTableBean;
 import com.equipmentmanage.app.bean.ImgTableBean;
+import com.equipmentmanage.app.bean.ImgTableBean1;
 import com.equipmentmanage.app.bean.InstrumentTableBean;
 import com.equipmentmanage.app.bean.LeakageTableBean;
+import com.equipmentmanage.app.bean.NewAreaTableBean;
+import com.equipmentmanage.app.bean.NewEquipTableBean;
 import com.equipmentmanage.app.bean.TaskRecordsTableBean;
 import com.equipmentmanage.app.bean.TaskTableBean;
 import com.equipmentmanage.app.bean.ThresholdTableBean;
@@ -39,7 +43,9 @@ import com.equipmentmanage.app.bean.WeatherParamsTableBean;
         BaseStreamTableBean.class,
         ImgTableBean.class,
         BaseComponentTypeTableBean.class, BaseChemicalTableBean.class, BaseDirectionTableBean.class,
-        WeatherParamsTableBean.class, TaskRecordsTableBean.class
+        WeatherParamsTableBean.class, TaskRecordsTableBean.class, BaseCompanyTableBean.class,
+        NewAreaTableBean.class, NewEquipTableBean.class,
+        ImgTableBean1.class
         }, version = 1)
 public abstract class AppDatabase extends RoomDatabase {
 
@@ -62,7 +68,11 @@ public abstract class AppDatabase extends RoomDatabase {
     public abstract BaseChemicalTableDao baseChemicalTableDao();
     public abstract WeatherParamsTableDao weatherParamsTableDao();
     public abstract TaskRecordsTableDao taskRecordsTableDao();
+    public abstract BaseCompanyTableDao baseCompanyTableDao();
 
+    public abstract NewAreaTableDao newAreaTableDao();
+    public abstract NewEquipTableDao newEquipTableDao();
+    public abstract ImgTableDao1 imgTableDao1();
 
 
 

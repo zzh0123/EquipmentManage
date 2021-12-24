@@ -26,10 +26,26 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.EquipmentManage"
         android:usesCleartextTraffic="true">
-        <activity android:name=".activity.PartImgsActivity"></activity>
+        <activity
+            android:name=".activity.NewRecordAreaActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".activity.NewRecordEquipActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activity.NewRecordTagActivity"
+            android:exported="false" />
+
+
+        <activity android:name=".activity.PartImgsActivity" />
         <activity android:name=".activity.TakePhotoActivity" />
+        <activity android:name=".activity.TakePhotoActivity1" />
         <activity android:name=".activity.BaseDataActivity" />
         <activity android:name=".activity.SealPointOnRecordActivity" />
+        <activity android:name=".activity.SealPointOnRecordActivity1"
+            android:windowSoftInputMode="adjustPan"/>
+
         <activity android:name=".activity.UploadActivity" /> <!-- 沉浸式 -->
         <meta-data
             android:name="android.max_aspect"

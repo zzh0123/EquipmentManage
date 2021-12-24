@@ -2,6 +2,7 @@ package com.equipmentmanage.app.netapi;
 
 import com.equipmentmanage.app.bean.CorrectCheckBean;
 import com.equipmentmanage.app.bean.LoginPostBean;
+import com.equipmentmanage.app.bean.NewRecordBean;
 import com.equipmentmanage.app.bean.PutOnRecordBean;
 import com.equipmentmanage.app.bean.TaskBean;
 import com.equipmentmanage.app.bean.TaskResultBean;
@@ -37,14 +38,17 @@ import retrofit2.http.Url;
  */
 public interface HttpApi {
 
+    // prefix
+    String PREFIX = "/jeecg-boot";
+
     // 登录， post请求
 //    @POST("/jeecg-boot/sys/mLogin")
-    @POST("/sys/mLogin")
+    @POST(PREFIX + "/sys/mLogin")
     Observable<ResponseBody> login(@Body LoginPostBean loginPostBean);
 
     // 登出， post请求
 //    @POST("/jeecg-boot/sys/logout")
-    @POST("/sys/logout")
+    @POST(PREFIX + "/sys/logout")
     Observable<ResponseBody> logout(@Body LoginPostBean loginPostBean);
 
     // get请求
@@ -52,32 +56,32 @@ public interface HttpApi {
 //    Observable<ResponseBody> getUserList();
     // /sys/dict/getDictItems/${code}   下拉框通过这个接口，获取字典值
 //    @GET("/jeecg-boot/sys/dict/getDictItems/{code}")
-    @GET("/sys/dict/getDictItems/{code}")
+    @GET(PREFIX + "/sys/dict/getDictItems/{code}")
     Observable<ResponseBody> getDeviceTypeList(@Path("code") String code);
 
     // 装置管理
 //    @GET("/jeecg-boot/ldar/ldarBaseDevice/list")
-    @GET("/ldar/ldarBaseDevice/list")
+    @GET(PREFIX + "/ldar/ldarBaseDevice/list")
     Observable<ResponseBody> getDeviceList(@QueryMap Map<String, Object> map);
 
     // getChemicalDetailList
 //    @GET("/jeecg-boot/sys/dict/getDictItems/{code}")
-    @GET("/sys/dict/getDictItems/{code}")
+    @GET(PREFIX + "/sys/dict/getDictItems/{code}")
     Observable<ResponseBody> getDictList(@Path("code") String code);
 
     // 获取设备管理列表
 //    @GET("/jeecg-boot/ldar/baseEquipment/list")
-    @GET("/ldar/baseEquipment/list")
+    @GET(PREFIX + "/ldar/baseEquipment/list")
     Observable<ResponseBody> getEquipmentList(@QueryMap Map<String, Object> map);
 
     // 获取区域管理列表
 //    @GET("/jeecg-boot/ldar/baseArea/list")
-    @GET("/ldar/baseArea/list")
+    @GET(PREFIX + "/ldar/baseArea/list")
     Observable<ResponseBody> getAreaList(@QueryMap Map<String, Object> map);
 
     // 获取产品流列表
 //    @GET("/jeecg-boot/ldar/baseProdStream/list")
-    @GET("/ldar/baseProdStream/list")
+    @GET(PREFIX + "/ldar/baseProdStream/list")
     Observable<ResponseBody> getProductFlowist(@QueryMap Map<String, Object> map);
 
     // 获取任务清单列表-废弃
@@ -86,22 +90,22 @@ public interface HttpApi {
 
     // 获取任务清单列表
 //    @GET("/jeecg-boot/ldar/app/liveTaskApp/downLoadTaskList")
-    @GET("/ldar/app/liveTaskApp/downLoadTaskList")
+    @GET(PREFIX + "/ldar/app/liveTaskApp/downLoadTaskList")
     Observable<ResponseBody> getTaskList(@QueryMap Map<String, Object> map);
 
     // 检查结果上传， post请求
 //    @POST("/jeecg-boot/ldar/app/liveTaskApp/accessResultList")
-    @POST("/ldar/app/liveTaskApp/accessResultList")
+    @POST(PREFIX + "/ldar/app/liveTaskApp/accessResultList")
     Observable<ResponseBody> accessResultList(@Body List<TaskResultBean.Records> records);
 
     // 检测仪器校准， post请求
 //    @POST("/jeecg-boot/ldar/app/liveTaskApp/accessCorrecting")
-    @POST("/ldar/app/liveTaskApp/accessCorrecting")
+    @POST(PREFIX + "/ldar/app/liveTaskApp/accessCorrecting")
     Observable<ResponseBody> accessCorrecting(@Body CorrectCheckBean correctCheckBean);
 
     // 气象参数， post请求
 //    @POST("/jeecg-boot/ldar/app/liveTaskApp/accessWeather")
-    @POST("/ldar/app/liveTaskApp/accessWeather")
+    @POST(PREFIX + "/ldar/app/liveTaskApp/accessWeather")
     Observable<ResponseBody> accessWeather(@Body WeatherParamsBean weatherParamsBean);
 
 
@@ -109,42 +113,42 @@ public interface HttpApi {
 
     // 标准气查询
 //    @GET("/jeecg-boot/ldar/app/baseApp/queryGasList")
-    @GET("/ldar/app/baseApp/queryGasList")
+    @GET(PREFIX + "/ldar/app/baseApp/queryGasList")
     Observable<ResponseBody> getGasList(@Query("belongCompany") String belongCompany);
 
     // 阈值查询
 //    @GET("/jeecg-boot/ldar/app/baseApp/queryCompanyList")
-    @GET("/ldar/app/baseApp/queryCompanyList")
+    @GET(PREFIX + "/ldar/app/baseApp/queryCompanyList")
     Observable<ResponseBody> getThresholdList(@Query("orgCode") String orgCode);
 
     // 仪器查询
 //    @GET("/jeecg-boot/ldar/app/baseApp/queryInstrumentList")
-    @GET("/ldar/app/baseApp/queryInstrumentList")
+    @GET(PREFIX + "/ldar/app/baseApp/queryInstrumentList")
     Observable<ResponseBody> getInstrumentList(@Query("belongCompany") String belongCompany);
 
     // 泄漏源查询
 //    @GET("/jeecg-boot/ldar/app/baseApp/queryLeakingList")
-    @GET("/ldar/app/baseApp/queryLeakingList")
+    @GET(PREFIX + "/ldar/app/baseApp/queryLeakingList")
     Observable<ResponseBody> getLeakageList(@Query("belongCompany") String belongCompany);
 
     // 装置
 //    @GET("/jeecg-boot/ldar/app/baseApp/queryDeviceList")
-    @GET("/ldar/app/baseApp/queryDeviceList")
+    @GET(PREFIX + "/ldar/app/baseApp/queryDeviceList")
     Observable<ResponseBody> getBaseDeviceList(@Query("belongCompany") String belongCompany);
 
     // 设备
 //    @GET("/jeecg-boot/ldar/app/baseApp/queryEquipmentList")
-    @GET("/ldar/app/baseApp/queryEquipmentList")
+    @GET(PREFIX + "/ldar/app/baseApp/queryEquipmentList")
     Observable<ResponseBody> getBaseEquipmentList(@Query("belongCompany") String belongCompany);
 
     // 区域
 //    @GET("/jeecg-boot/ldar/app/baseApp/queryAreaList")
-    @GET("/ldar/app/baseApp/queryAreaList")
+    @GET(PREFIX + "/ldar/app/baseApp/queryAreaList")
     Observable<ResponseBody> getBaseAreaList(@Query("belongCompany") String belongCompany);
 
     // 产品流
 //    @GET("/jeecg-boot/ldar/app/baseApp/queryStreamList")
-    @GET("/ldar/app/baseApp/queryStreamList")
+    @GET(PREFIX + "/ldar/app/baseApp/queryStreamList")
     Observable<ResponseBody> getBaseStreamList(@Query("belongCompany") String belongCompany);
 
     // 装置 区域 设备联动
@@ -155,22 +159,22 @@ public interface HttpApi {
      * 设备 LDAR_BASE_EQUIPMENT
      */
 //    @GET("/jeecg-boot/sys/dict/getDictItems/{code}")
-    @GET("/sys/dict/getDictItems/{code}")
+    @GET(PREFIX + "/sys/dict/getDictItems/{code}")
     Observable<ResponseBody> getBaseLinkList(@Path("code") String code);
 
     // 化学品
 //    @GET("/jeecg-boot/ldar/app/baseApp/queryChemicalManagList")
-    @GET("/ldar/app/baseApp/queryChemicalManagList")
+    @GET(PREFIX + "/ldar/app/baseApp/queryChemicalManagList")
     Observable<ResponseBody> getBaseChemicalList(@Query("belongCompany") String belongCompany);
 
     // 组件类型
 //    @GET("/jeecg-boot/ldar/app/baseApp/queryComponentTypeList")
-    @GET("/ldar/app/baseApp/queryComponentTypeList")
+    @GET(PREFIX + "/ldar/app/baseApp/queryComponentTypeList")
     Observable<ResponseBody> getBaseComponentTypeList(@Query("belongCompany") String belongCompany);
 
     // 方向
 //    @GET("/jeecg-boot/ldar/app/baseApp/queryDirectionList")
-    @GET("/ldar/app/baseApp/queryDirectionList")
+    @GET(PREFIX + "/ldar/app/baseApp/queryDirectionList")
     Observable<ResponseBody> getBaseDirectionList(@Query("belongCompany") String belongCompany);
 
 
@@ -178,23 +182,27 @@ public interface HttpApi {
     // /sys/common/upload
     // 传单张图片
 //    @POST("/jeecg-boot/sys/common/upload")
-    @POST("/sys/common/upload")
+    @POST(PREFIX + "/sys/common/upload")
     @Multipart
     Observable<ResponseBody> uploadImg(@Part MultipartBody.Part part);
 
     // 传多张图片
 //    @POST("/jeecg-boot/ldar/app/liveTaskApp/accessBookBuildPics")
-    @POST("/ldar/app/liveTaskApp/accessBookBuildPics")
+    @POST(PREFIX + "/ldar/app/liveTaskApp/accessBookBuildPics")
     @Multipart
     Observable<ResponseBody> uploadImgList(@Part MultipartBody.Part[] parts);
 
     // 建档数据上传， post请求
 //    @POST("/jeecg-boot/ldar/app/liveTaskApp/accessBookBuildList")
-    @POST("/ldar/app/liveTaskApp/accessBookBuildList")
-    Observable<ResponseBody> putOnRecordUpload(@Body List<PutOnRecordBean> records);
+    @POST(PREFIX + "/ldar/app/liveTaskApp/accessBookBuildList")
+    Observable<ResponseBody> putOnRecordUpload(@Body List<NewRecordBean> records);
 
 
-
+    // 所属公司
+    // /ldar/baseCompany/list  这个接口
+//    @GET("/jeecg-boot/ldar/ldarBaseDevice/list")
+    @GET(PREFIX + "/ldar/baseCompany/list")
+    Observable<ResponseBody> getBaseCompanyList(@QueryMap Map<String, Object> map);
 
 
 

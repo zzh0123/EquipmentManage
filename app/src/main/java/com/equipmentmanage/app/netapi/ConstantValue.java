@@ -65,6 +65,12 @@ public class ConstantValue {
 
     public static String belongCompany1 = "A01A04"; // A01A01
 
+    /**
+     * 半层   0 否, 1 是
+     */
+    public static String half_type = "half_type";
+    public static String half_type_0 = "0";
+    public static String half_type_1 = "1";
 
     /**
      * 不可达   0 否, 1 是
@@ -107,6 +113,12 @@ public class ConstantValue {
     public static String event_drift_save = "event_drift_save";
     public static String event_weather_save = "event_weather_save";
     public static String event_clear_cache = "event_clear_cache";
+
+    public static String event_belong_company = "event_belong_company";
+
+    public static String event_photo_save = "event_photo_save";
+
+    public static String tag_num = "L-0000";
 
     // 校准 1 通过  0 不通过
     public static String correct_pass_1 = "1";

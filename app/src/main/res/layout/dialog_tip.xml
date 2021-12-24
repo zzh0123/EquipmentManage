@@ -59,7 +59,7 @@
             android:paddingTop="@dimen/dp_13"
             android:paddingBottom="@dimen/dp_13"
             android:text="@string/cancel"
-            android:textColor="@color/c_303133"
+            android:textColor="@color/c_409EFF"
             android:textSize="@dimen/sp_16"
             android:layout_gravity="center_horizontal"
             android:textStyle="bold" />
@@ -78,7 +78,7 @@
             android:paddingTop="@dimen/dp_13"
             android:paddingBottom="@dimen/dp_13"
             android:text="@string/confirm"
-            android:textColor="@color/c_303133"
+            android:textColor="@color/c_409EFF"
             android:textSize="@dimen/sp_16"
             android:layout_gravity="center_horizontal"
             android:textStyle="bold" />

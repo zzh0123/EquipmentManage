@@ -3,6 +3,7 @@
     <string name="device_manage">装置管理</string>
     <string name="device_detail">装置详情</string>
     <string name="equipment_manage">设备管理</string>
+    <string name="tag_manage">标签管理</string>
     <string name="component_manage">组件管理</string>
     <string name="component_manage1">密封点建档</string>
 
@@ -173,6 +174,8 @@
     <string name="user">用户</string>
     <string name="tip">提示</string>
     <string name="download_tip">再次下载将会覆盖历史任务信息，是否确认下载？</string>
+    <string name="continue_position">位置延续</string>
+    <string name="continue_last">延续上次</string>
     <string name="cancel">取消</string>
     <string name="confirm">确认</string>
     <string name="please_enter">请输入</string>

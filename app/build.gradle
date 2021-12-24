@@ -3,7 +3,7 @@ plugins {
 }
 //apply plugin: 'android-aspectjx'
 apply plugin: 'org.greenrobot.greendao' // apply plugin
-
+apply from: new File('../dependence.gradle')
 
 android {
     compileSdkVersion 30
@@ -20,6 +20,13 @@ android {
         multiDexEnabled true
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        //指定room.schemaLocation生成的文件路径
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments = ["room.schemaLocation": "$projectDir/schemas".toString()]
+            }
+        }
     }
 
     signingConfigs {
@@ -159,7 +166,7 @@ dependencies {
     //greendao
     implementation 'org.greenrobot:greendao:3.3.0' // add library
     //TagViewGroup
-    implementation 'com.github.shellljx:TagViewGroup:-SNAPSHOT'
+//    implementation 'com.github.shellljx:TagViewGroup:-SNAPSHOT'
     // eventbus
     implementation 'org.greenrobot:eventbus:3.2.0'
 
@@ -188,6 +195,10 @@ dependencies {
 
     // Test helpers
     testImplementation "androidx.room:room-testing:$room_version"
+
+    implementation 'com.zhouyou:signseekbar:1.0.6'
+
+    implementation project(path: ':library')
 
 }
 

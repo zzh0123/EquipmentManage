@@ -43,6 +43,7 @@ import com.equipmentmanage.app.bean.BaseStreamBean;
 import com.equipmentmanage.app.bean.BaseStreamTableBean;
 import com.equipmentmanage.app.bean.DepartmentBean;
 import com.equipmentmanage.app.dao.AppDatabase;
+import com.equipmentmanage.app.netapi.Constant;
 import com.equipmentmanage.app.netapi.ConstantValue;
 import com.equipmentmanage.app.netsubscribe.Subscribe;
 import com.equipmentmanage.app.utils.DateUtil;
@@ -72,8 +73,18 @@ import es.dmoral.toasty.Toasty;
  */
 public class SealPointOnRecordActivity extends BaseActivity {
 
-    public static void open(Context c) {
+    public static void open(Context c,  String deviceCode, String deviceName, String deviceType,
+                            String areaCode, String areaName,
+                            String equipCode, String equipName) {
         Intent i = new Intent(c, SealPointOnRecordActivity.class);
+        i.putExtra(Constant.deviceCode, deviceCode);
+        i.putExtra(Constant.deviceName, deviceName);
+        i.putExtra(Constant.deviceType, deviceType);
+
+        i.putExtra(Constant.areaCode, areaCode);
+        i.putExtra(Constant.areaName, areaName);
+        i.putExtra(Constant.equipCode, equipCode);
+        i.putExtra(Constant.equipName, equipName);
         c.startActivity(i);
     }
 
@@ -291,7 +302,9 @@ public class SealPointOnRecordActivity extends BaseActivity {
     private String componentType;
 
     // et_tag_num
-
+    private String deviceCode, deviceName, deviceType;
+    private String areaCode, areaName;
+    private String equipCode, equipName;
 
     @Override
     protected int initLayout() {
@@ -300,6 +313,15 @@ public class SealPointOnRecordActivity extends BaseActivity {
 
     @Override
     protected void initView() {
+        deviceCode = getIntent().getStringExtra(Constant.deviceCode);
+        deviceName = getIntent().getStringExtra(Constant.deviceName);
+        deviceType = getIntent().getStringExtra(Constant.deviceType);
+
+        areaCode = getIntent().getStringExtra(Constant.areaCode);
+        areaName = getIntent().getStringExtra(Constant.areaName);
+        equipCode = getIntent().getStringExtra(Constant.equipCode);
+        equipName = getIntent().getStringExtra(Constant.equipName);
+
         titleBar.setLeftClickListener(new View.OnClickListener() {
             @SingleClick
             @Override
@@ -801,7 +823,8 @@ public class SealPointOnRecordActivity extends BaseActivity {
 //                    return;
 //                }
 
-                TakePhotoActivity.open(this, deviceTypeValue, areaTypeValue, equipmentTypeValue,
+                TakePhotoActivity.open(this, deviceCode, deviceName, deviceType,
+                        areaCode, areaName, equipCode, equipName,
                         mediumState, streamTypeValue, chemicalName, chemicalTypeValue, directionTypeName,
                         et_tag_num.getText().toString().trim(), et_reference.getText().toString().trim(),
                         et_distance.getText().toString().trim(), et_height.getText().toString().trim(),

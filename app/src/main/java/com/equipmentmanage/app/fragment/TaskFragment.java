@@ -3,6 +3,7 @@ package com.equipmentmanage.app.fragment;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.ListPopupWindow;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -14,12 +15,17 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.listener.OnItemChildClickListener;
 import com.chad.library.adapter.base.listener.OnItemClickListener;
 import com.equipmentmanage.app.R;
+import com.equipmentmanage.app.activity.AreaManageActivity;
 import com.equipmentmanage.app.activity.TaskDetailActivity;
 import com.equipmentmanage.app.adapter.DepartmentAdapter;
 import com.equipmentmanage.app.adapter.DeviceTypeAdapter;
 import com.equipmentmanage.app.adapter.TaskAdapter;
 import com.equipmentmanage.app.base.LazyFragment;
+import com.equipmentmanage.app.bean.AreaManageResultBean;
+import com.equipmentmanage.app.bean.BarcodeTypeBean;
 import com.equipmentmanage.app.bean.BaseBean;
+import com.equipmentmanage.app.bean.BaseCompanyResultBean;
+import com.equipmentmanage.app.bean.BaseCompanyTableBean;
 import com.equipmentmanage.app.bean.BaseGasBean;
 import com.equipmentmanage.app.bean.CorrectCheckBean;
 import com.equipmentmanage.app.bean.DepartmentBean;
@@ -42,6 +48,7 @@ import com.equipmentmanage.app.utils.Util;
 import com.equipmentmanage.app.utils.gson.GsonUtils;
 import com.equipmentmanage.app.utils.netutils.OnSuccessAndFaultListener;
 import com.equipmentmanage.app.utils.netutils.OnSuccessAndFaultSub;
+import com.equipmentmanage.app.view.CompanyPopup;
 import com.equipmentmanage.app.view.TipDialog;
 import com.google.gson.reflect.TypeToken;
 import com.scwang.smart.refresh.layout.SmartRefreshLayout;
@@ -50,6 +57,8 @@ import com.scwang.smart.refresh.layout.listener.OnLoadMoreListener;
 import com.scwang.smart.refresh.layout.listener.OnRefreshListener;
 import com.tencent.mmkv.MMKV;
 import com.xuexiang.xui.widget.actionbar.TitleBar;
+import com.xuexiang.xui.widget.popupwindow.easypopup.HorizontalGravity;
+import com.xuexiang.xui.widget.popupwindow.easypopup.VerticalGravity;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.ThreadMode;
@@ -119,6 +128,10 @@ public class TaskFragment extends LazyFragment {
     private String is_daily_checked, is_drift_checked,
             is_weather_checked, is_seal_point_checked;
 
+    private CompanyPopup companyPopup;
+    private List<BarcodeTypeBean> barcodeTypeBeanList = new ArrayList<>();
+    private String belongCompany;
+
     public TaskFragment() {
         // Required empty public constructor
     }
@@ -154,12 +167,17 @@ public class TaskFragment extends LazyFragment {
         L.i("zzz1---username->" + username);
         currentDate = DateUtil.getCurentTime();
         L.i("zzz1---currentDate->" + currentDate);
-//        titleBar.setLeftClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                L.i("zzz1---setLeftClickListener->");
-//            }
-//        });
+        titleBar.setLeftClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                L.i("zzz1---setLeftClickListener->");
+//                getBaseCompanyList();
+//                readCompanyCache();
+//                readCompanyCache();
+                companyPopup.showAtAnchorView(titleBar, VerticalGravity.ABOVE, HorizontalGravity.CENTER);
+            }
+        });
+
         titleBar.addAction(new TitleBar.Action() {
             @Override
             public String getText() {
@@ -273,6 +291,27 @@ public class TaskFragment extends LazyFragment {
             }
         });
 
+
+        // 所属公司
+        companyPopup = new CompanyPopup(getActivity());
+        companyPopup.createPopup();
+        companyPopup.setOnKeshiItemClick(new CompanyPopup.OnKeshiItemClick() {
+            @Override
+            public void onItemClick(BaseQuickAdapter adapter, View view, int position, List<BarcodeTypeBean> list) {
+                belongCompany = list.get(position).getType();
+                titleBar.setLeftText(list.get(position).getName());
+                ConstantValue.belongCompany1 = belongCompany;
+                companyPopup.dismiss();
+            }
+
+        });
+        companyPopup.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                companyPopup.setEmpty();
+            }
+        });
+
     }
 
     private View getEmptyDataView() {
@@ -298,6 +337,7 @@ public class TaskFragment extends LazyFragment {
 //        refresh();
 
         readTaskListCache();
+//        readCompanyCache();
     }
 
     private void refresh() {
@@ -318,6 +358,39 @@ public class TaskFragment extends LazyFragment {
                 L.i("zzz1-getAll->" + GsonUtils.toJson(list));
                 break;
         }
+    }
+
+    /**
+     * 所属公司-缓存
+     */
+    private void readCompanyCache() {
+        barcodeTypeBeanList.clear();
+        BaseCompanyTableBean list = AppDatabase.getInstance(getActivity()).baseCompanyTableDao().loadById("1");
+        if (list != null) {
+            List<BaseCompanyResultBean.Records> companyBeanList = GsonUtils.fromJson(list.content, new TypeToken<List<BaseCompanyResultBean.Records>>() {
+            }.getType());
+
+            L.i("zzz1-companyBeanList.size--->" + companyBeanList.size());
+
+            if (companyBeanList != null && companyBeanList.size() > 0) {
+                for (int i = 0; i < companyBeanList.size(); i++) {
+                    BaseCompanyResultBean.Records bean = companyBeanList.get(i);
+                    BarcodeTypeBean typeBean = new BarcodeTypeBean(bean.getSysOrgCode(),
+                            bean.getCompanyName());
+                    barcodeTypeBeanList.add(typeBean);
+                }
+                belongCompany = barcodeTypeBeanList.get(0).getType();
+                titleBar.setLeftText(barcodeTypeBeanList.get(0).getName());
+                ConstantValue.belongCompany1 = belongCompany;
+            } else {
+                Toasty.warning(getActivity(), "所属公司数据为空！", Toast.LENGTH_SHORT, true).show();
+            }
+        } else {
+            Toasty.warning(getActivity(), "所属公司数据为空！", Toast.LENGTH_SHORT, true).show();
+        }
+
+        companyPopup.setData(barcodeTypeBeanList);
+
     }
 
     /**
@@ -845,6 +918,12 @@ public class TaskFragment extends LazyFragment {
         }, getActivity()));
     }
 
+    @Override
+    public void onDestroy() {
+        EventBus.getDefault().unregister(this);
+        super.onDestroy();
+    }
+
     //订阅事件
     @org.greenrobot.eventbus.Subscribe(threadMode = ThreadMode.MAIN)
     public void onReceiveEvent(String event) {
@@ -854,6 +933,8 @@ public class TaskFragment extends LazyFragment {
             if (ConstantValue.event_clear_cache.equals(event)) {
                 mList.clear();
                 adapter.notifyDataSetChanged();
+            } else if (ConstantValue.event_belong_company.equals(event)) {
+                readCompanyCache();
             }
         }
     }

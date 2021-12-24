@@ -78,8 +78,10 @@ public class TakePhotoActivity extends BaseActivity implements View.OnTouchListe
     //                        et_oper_temper.getText().toString().trim(), et_oper_pressure.getText().toString().trim(),
     //                        et_barcode.getText().toString().trim(), et_detection_freq.getText().toString().trim(),
     //                        et_detection_freq.getText().toString().trim(), et_leakage_threshold.getText().toString().trim());
-    public static void open(Context c, String deviceTypeValue, String areaTypeValue, String equipmentTypeValue,
-                            String mediumState, String streamTypeValue, String chemicalName, String chemicalTypeValue,String directionName,
+    public static void open(Context c, String deviceCode, String deviceName, String deviceType,
+                            String areaCode, String areaName,
+                            String equipCode, String equipName,
+                            String mediumState, String streamTypeValue, String chemicalName, String chemicalTypeValue, String directionName,
                             String tagNum, String reference, String distance, String height,
                             String floorLevel, String size,
                             String manufacturer, String productionDate,
@@ -87,9 +89,15 @@ public class TakePhotoActivity extends BaseActivity implements View.OnTouchListe
                             String operTemper, String operPressure,
                             String barcode) {
         Intent i = new Intent(c, TakePhotoActivity.class);
-        i.putExtra(Constant.deviceTypeValue, deviceTypeValue);
-        i.putExtra(Constant.areaTypeValue, areaTypeValue);
-        i.putExtra(Constant.equipmentTypeValue, equipmentTypeValue);
+        i.putExtra(Constant.deviceCode, deviceCode);
+        i.putExtra(Constant.deviceName, deviceName);
+        i.putExtra(Constant.deviceType, deviceType);
+
+        i.putExtra(Constant.areaCode, areaCode);
+        i.putExtra(Constant.areaName, areaName);
+        i.putExtra(Constant.equipCode, equipCode);
+        i.putExtra(Constant.equipName, equipName);
+
         i.putExtra(Constant.mediumState, mediumState);
         i.putExtra(Constant.streamTypeValue, streamTypeValue);
         i.putExtra(Constant.chemicalName, chemicalName);
@@ -117,12 +125,13 @@ public class TakePhotoActivity extends BaseActivity implements View.OnTouchListe
         c.startActivity(i);
     }
 
-    private String deviceTypeValue, areaTypeValue, equipmentTypeValue,
+    private String deviceCode, deviceName, deviceType, deviceId,
+            areaCode, areaName, equipCode, equipName,
             mediumState, streamTypeValue, chemicalName, chemicalTypeValue, directionName;
 
     private String tagNum, reference, distance, height, floorLevel,
             size, manufacturer, productionDate, unreachable, unreachableReason, heatPreservation,
-            operTemper, operPressure, barcode, detectionFreq,leakageThreshold;
+            operTemper, operPressure, barcode, detectionFreq, leakageThreshold;
 
     @BindView(R.id.titleBar)
     TitleBar titleBar; //标题栏
@@ -170,10 +179,17 @@ public class TakePhotoActivity extends BaseActivity implements View.OnTouchListe
 
     @Override
     protected void initView() {
+
         currentDate = DateUtil.getCurentTime1(); // 2021-11-20
-        deviceTypeValue = getIntent().getStringExtra(Constant.deviceTypeValue);
-        areaTypeValue = getIntent().getStringExtra(Constant.areaTypeValue);
-        equipmentTypeValue = getIntent().getStringExtra(Constant.equipmentTypeValue);
+        deviceCode = getIntent().getStringExtra(Constant.deviceCode);
+        deviceName = getIntent().getStringExtra(Constant.deviceName);
+        deviceType = getIntent().getStringExtra(Constant.deviceType);
+
+        areaCode = getIntent().getStringExtra(Constant.areaCode);
+        areaName = getIntent().getStringExtra(Constant.areaName);
+        equipCode = getIntent().getStringExtra(Constant.equipCode);
+        equipName = getIntent().getStringExtra(Constant.equipName);
+
         mediumState = getIntent().getStringExtra(Constant.mediumState);
         streamTypeValue = getIntent().getStringExtra(Constant.streamTypeValue);
         chemicalName = getIntent().getStringExtra(Constant.chemicalName);
@@ -280,7 +296,7 @@ public class TakePhotoActivity extends BaseActivity implements View.OnTouchListe
                 break;
 
             case R.id.sb_recall:
-                if (tagGroupList != null && tagGroupList.size() > 0){
+                if (tagGroupList != null && tagGroupList.size() > 0) {
                     index--;
                     tagGroupList.remove(index);
                     tagImageView.setTagList(tagGroupList);
@@ -293,8 +309,8 @@ public class TakePhotoActivity extends BaseActivity implements View.OnTouchListe
     }
 
     private void save() {
-        if (StringUtils.isNullOrEmpty(deviceTypeValue) || StringUtils.isNullOrEmpty(areaTypeValue)
-                || StringUtils.isNullOrEmpty(equipmentTypeValue)) {
+        if (StringUtils.isNullOrEmpty(deviceCode) || StringUtils.isNullOrEmpty(areaCode)
+                || StringUtils.isNullOrEmpty(equipCode)) {
             Toasty.warning(TakePhotoActivity.this, "请先选择装置、区域、设备！", Toast.LENGTH_SHORT, true).show();
             return;
         }
@@ -304,9 +320,9 @@ public class TakePhotoActivity extends BaseActivity implements View.OnTouchListe
             imgTableBean.fileName = fileName;
             imgTableBean.localPath = compressPath;
             imgTableBean.content = GsonUtils.toJson(pointBeanList);
-            imgTableBean.deviceId = deviceTypeValue;
-            imgTableBean.areaId = areaTypeValue;
-            imgTableBean.equipmentId = equipmentTypeValue;
+            imgTableBean.deviceId = deviceCode;
+            imgTableBean.areaId = areaCode;
+            imgTableBean.equipmentId = equipCode;
             imgTableBean.mediumState = mediumState;
             imgTableBean.prodStream = streamTypeValue;
             imgTableBean.componentType = componentType;

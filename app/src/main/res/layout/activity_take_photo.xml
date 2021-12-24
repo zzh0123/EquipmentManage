@@ -37,7 +37,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_gravity="bottom|center_horizontal">
+            android:layout_gravity="bottom|center_horizontal"
+            android:visibility="visible">
 
             <com.xuexiang.xui.widget.textview.supertextview.SuperButton
                 android:id="@+id/sb_recall"
@@ -53,7 +54,8 @@
                 app:sSelectorNormalColor="@color/c_409EFF"
                 app:sSelectorPressedColor="@color/c_80409EFF"
                 app:sStrokeColor="@color/c_FF9900"
-                app:sStrokeWidth="@dimen/dp_1" />
+                app:sStrokeWidth="@dimen/dp_1"
+                android:visibility="gone"/>
 
             <com.xuexiang.xui.widget.textview.supertextview.SuperButton
                 android:id="@+id/sb_save"
@@ -69,7 +71,8 @@
                 app:sSelectorNormalColor="@color/c_409EFF"
                 app:sSelectorPressedColor="@color/c_80409EFF"
                 app:sStrokeColor="@color/c_409EFF"
-                app:sStrokeWidth="@dimen/dp_1" />
+                app:sStrokeWidth="@dimen/dp_1"
+                android:visibility="visible"/>
 
         </LinearLayout>
 

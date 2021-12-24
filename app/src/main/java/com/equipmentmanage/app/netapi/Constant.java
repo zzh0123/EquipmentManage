@@ -27,6 +27,13 @@ public class Constant {
     public static String createTime = "createTime";
     public static String deviceCapacity = "deviceCapacity";
 
+    public static String isNewAdd = "isNewAdd";
+    public static String fileName = "fileName";
+    public static String localPath = "localPath";
+    public static String content = "content";
+
+    public static String imgTableBean1 = "imgTableBean1";
+
     public static String deviceCode = "deviceCode";
     public static String deviceName = "deviceName";
     public static String deviceType = "deviceType";
@@ -146,6 +153,10 @@ public class Constant {
     public static String streamTypeValue = "streamTypeValue";
     public static String chemicalTypeValue = "chemicalTypeValue";
     public static String directionName = "directionName";
+    public static String directionTypeValue = "directionTypeValue";
+    public static String directionName1 = "directionName1";
+    public static String directionTypeValue1 = "directionTypeValue1";
+
     public static String tagNum = "tagNum";
     public static String reference = "reference";
     public static String distance = "distance";
@@ -157,6 +168,8 @@ public class Constant {
     public static String productionDate = "productionDate";
     public static String unreachable = "unreachable";
     public static String unreachableReason = "unreachableReason";
+    public static String remark = "remark";
+
     public static String heatPreservation = "heatPreservation";
 
     public static String operTemper = "operTemper";
@@ -186,4 +199,38 @@ public class Constant {
     public static String is_correct_checked = "is_correct_checked";
     public static String is_weather_checked = "is_weather_checked";
     public static String is_seal_point_checked = "is_seal_point_checked";
+
+    public static String newAreaBeanList = "newAreaBeanList";
+    public static String newEquipBeanList = "newEquipBeanList";
+    public static String pos = "pos";
+
+    public static String equipCode = "equipCode";
+    public static String equipName = "equipName";
+
+    public static String tag_num = "tag_num";
+
+    public static String select_type = "select_type";
+    public static String select_heatpre = "select_heatpre";
+    public static String select_size = "select_size";
+    public static String select_count = "select_count";
+
+
+    public static String imgtabbean1_tag_num = "imgtabbean1_tag_num";
+    public static String imgtabbean1_ref = "imgtabbean1_ref";
+    public static String imgtabbean1_direction_value = "imgtabbean1_direction_value";
+    public static String imgtabbean1_direction_name = "imgtabbean1_direction_name";
+    public static String imgtabbean1_direction_pos_value = "imgtabbean1_direction_pos_value";
+    public static String imgtabbean1_direction_pos_name = "imgtabbean1_direction_pos_name";
+
+    public static String imgtabbean1_distance = "imgtabbean1_distance";
+    public static String imgtabbean1_height = "imgtabbean1_height";
+    public static String imgtabbean1_floor_level = "imgtabbean1_floor_level";
+    public static String imgtabbean1_remark = "imgtabbean1_remark";
+    public static String imgtabbean1_medium_state = "imgtabbean1_medium_state";
+    public static String imgtabbean1_prod_stream = "imgtabbean1_prod_stream";
+    public static String imgtabbean1_prod_stream_name = "imgtabbean1_prod_stream_name";
+    public static String imgtabbean1_unreachable = "imgtabbean1_unreachable";
+    public static String imgtabbean1_unreachable_desc = "imgtabbean1_unreachable_desc";
+    public static String imgtabbean1_main_medium = "imgtabbean1_main_medium";
+    public static String imgtabbean1_chemicalName = "imgtabbean1_chemicalName";
 }
