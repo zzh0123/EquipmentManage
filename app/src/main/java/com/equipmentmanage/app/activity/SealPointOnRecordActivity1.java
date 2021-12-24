@@ -1854,7 +1854,7 @@ public class SealPointOnRecordActivity1 extends BaseActivity {
 //                .setPictureCropStyle(mCropParameterStyle)// 动态自定义裁剪主题
                 .setPictureWindowAnimationStyle(mWindowAnimationStyle)// 自定义相册启动退出动画
                 .maxSelectNum(maxSelectNum)// 最大图片选择数量
-                .isUseCustomCamera(true)// 是否使用自定义相机
+                .isUseCustomCamera(false)// 是否使用自定义相机
                 //.setOutputCameraPath()// 自定义相机输出目录
                 .minSelectNum(1)// 最小选择数量
                 //.querySpecifiedFormatSuffix(PictureMimeType.ofPNG())// 查询指定后缀格式资源
