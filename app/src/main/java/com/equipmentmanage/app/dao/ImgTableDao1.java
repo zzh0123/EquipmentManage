@@ -68,4 +68,12 @@ public interface ImgTableDao1 {
     int deleteByTagNum(String currentDate, String deviceId,
                         String areaCode, String equipmentCode,
                         String tagNum);
+
+    @Query("DELETE FROM tb_base_img1 WHERE `device_id` ==(:deviceId) "
+            + "AND `area_code` ==(:areaCode) AND `equipment_code` ==(:equipmentCode)")
+    int deleteByEquipCode(String deviceId, String areaCode, String equipmentCode);
+
+    @Query("DELETE FROM tb_base_img1 WHERE `device_id` ==(:deviceId) "
+            + "AND `area_code` ==(:areaCode)")
+    int deleteByAreaCode(String deviceId, String areaCode);
 }

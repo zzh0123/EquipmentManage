@@ -15,6 +15,7 @@ import com.equipmentmanage.app.bean.BaseComponentTypeTableBean;
 import com.equipmentmanage.app.bean.BaseDeviceTableBean;
 import com.equipmentmanage.app.bean.BaseDirectionTableBean;
 import com.equipmentmanage.app.bean.BaseEquipmentTableBean;
+import com.equipmentmanage.app.bean.BaseMediumStateTableBean;
 import com.equipmentmanage.app.bean.BaseStreamTableBean;
 import com.equipmentmanage.app.bean.DeviceTableBean;
 import com.equipmentmanage.app.bean.EquipmentManageTableBean;
@@ -45,7 +46,8 @@ import com.equipmentmanage.app.bean.WeatherParamsTableBean;
         BaseComponentTypeTableBean.class, BaseChemicalTableBean.class, BaseDirectionTableBean.class,
         WeatherParamsTableBean.class, TaskRecordsTableBean.class, BaseCompanyTableBean.class,
         NewAreaTableBean.class, NewEquipTableBean.class,
-        ImgTableBean1.class
+        ImgTableBean1.class,
+        BaseMediumStateTableBean.class
         }, version = 1)
 public abstract class AppDatabase extends RoomDatabase {
 
@@ -73,7 +75,7 @@ public abstract class AppDatabase extends RoomDatabase {
     public abstract NewAreaTableDao newAreaTableDao();
     public abstract NewEquipTableDao newEquipTableDao();
     public abstract ImgTableDao1 imgTableDao1();
-
+    public abstract BaseMediumStateTableDao baseMediumStateTableDao();
 
 
 

@@ -24,6 +24,8 @@ import com.equipmentmanage.app.bean.BaseGasBean;
 import com.equipmentmanage.app.bean.BaseInstrumentBean;
 import com.equipmentmanage.app.bean.BaseLeakageBean;
 import com.equipmentmanage.app.bean.BaseComponentTypeBean;
+import com.equipmentmanage.app.bean.BaseMediumStateBean;
+import com.equipmentmanage.app.bean.BaseMediumStateTableBean;
 import com.equipmentmanage.app.bean.DictItemBean;
 import com.equipmentmanage.app.bean.GasTableBean;
 import com.equipmentmanage.app.bean.InstrumentTableBean;
@@ -83,6 +85,9 @@ public class BaseDataActivity extends BaseActivity {
 
     @BindView(R.id.tv_dl_main_medium)
     TextView tv_dl_main_medium; //主要介质
+
+    @BindView(R.id.tv_last_main_medium)
+    TextView tv_last_main_medium; //主要介质
 
     @BindView(R.id.tv_dl_instrument)
     TextView tv_dl_instrument; //仪器
@@ -156,6 +161,9 @@ public class BaseDataActivity extends BaseActivity {
         String dateThreshold= kv.getString(Constant.thres_hold, "");
         tv_last_date_threshold.setText(last_time + dateThreshold);
 
+        String date_mediumState = kv.getString(Constant.date_mediumState, "");
+        tv_last_main_medium.setText(last_time + date_mediumState);
+
         String dateInstrument = kv.getString(Constant.instrument, "");
         tv_last_date_instrument.setText(last_time + dateInstrument);
 
@@ -204,7 +212,7 @@ public class BaseDataActivity extends BaseActivity {
                 getThresholdList();
                 break;
             case R.id.tv_dl_main_medium: // 主要介质
-
+                getDictList_MediumState();
                 break;
             case R.id.tv_dl_instrument: // 仪器
                 getInstrumentList();
@@ -435,6 +443,58 @@ public class BaseDataActivity extends BaseActivity {
         }, BaseDataActivity.this));
     }
 
+
+    /**
+     * 主要介质
+     */
+    private void getDictList_MediumState() {
+        Subscribe.getDictList("ldar_mediumState", new OnSuccessAndFaultSub(new OnSuccessAndFaultListener() {
+            @Override
+            public void onSuccess(String result) {
+                //成功
+                try {
+                    BaseBean<List<BaseMediumStateBean>> baseBean = GsonUtils.fromJson(result, new TypeToken<BaseBean<List<BaseMediumStateBean>>>() {
+                    }.getType());
+
+                    if (null != baseBean) {
+                        if (baseBean.isSuccess()) {
+//                            deviceTypeBeanList.clear();
+                            List<BaseMediumStateBean> dataList = baseBean.getResult();
+                            if (dataList != null && dataList.size() > 0) {
+                                BaseMediumStateTableBean baseMediumStateTableBean = new BaseMediumStateTableBean();
+                                baseMediumStateTableBean.id = "1";
+                                baseMediumStateTableBean.content = GsonUtils.toJson(dataList);
+                                AppDatabase.getInstance(BaseDataActivity.this).baseMediumStateTableDao().insert(baseMediumStateTableBean);
+                                Toasty.success(BaseDataActivity.this, R.string.download_success, Toast.LENGTH_SHORT, true).show();
+
+                                setLastTime(Constant.date_mediumState, tv_last_main_medium);
+                            } else {
+                                Toasty.error(BaseDataActivity.this, R.string.return_empty, Toast.LENGTH_SHORT, true).show();
+                            }
+
+//                            deviceTypeAdapter.notifyDataSetChanged();
+
+                        } else {
+                            Toasty.error(BaseDataActivity.this, R.string.search_fail, Toast.LENGTH_SHORT, true).show();
+                        }
+                    } else {
+                        Toasty.error(BaseDataActivity.this, R.string.return_empty, Toast.LENGTH_SHORT, true).show();
+
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    Toasty.error(BaseDataActivity.this, R.string.parse_fail, Toast.LENGTH_SHORT, true).show();
+
+                }
+
+            }
+
+            @Override
+            public void onFault(String errorMsg) {
+                Toasty.error(BaseDataActivity.this, R.string.request_fail, Toast.LENGTH_SHORT, true).show();
+            }
+        }, BaseDataActivity.this));
+    }
 
     /**
      * 仪器查询

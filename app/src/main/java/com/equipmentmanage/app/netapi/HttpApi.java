@@ -1,5 +1,6 @@
 package com.equipmentmanage.app.netapi;
 
+import com.equipmentmanage.app.bean.BaseStreamBean;
 import com.equipmentmanage.app.bean.CorrectCheckBean;
 import com.equipmentmanage.app.bean.LoginPostBean;
 import com.equipmentmanage.app.bean.NewRecordBean;
@@ -58,6 +59,9 @@ public interface HttpApi {
 //    @GET("/jeecg-boot/sys/dict/getDictItems/{code}")
     @GET(PREFIX + "/sys/dict/getDictItems/{code}")
     Observable<ResponseBody> getDeviceTypeList(@Path("code") String code);
+
+    @GET(PREFIX + "/sys/dict/getDictItems/{code}")
+    Observable<ResponseBody> getDictItems(@Path("code") String code);
 
     // 装置管理
 //    @GET("/jeecg-boot/ldar/ldarBaseDevice/list")
@@ -196,6 +200,12 @@ public interface HttpApi {
 //    @POST("/jeecg-boot/ldar/app/liveTaskApp/accessBookBuildList")
     @POST(PREFIX + "/ldar/app/liveTaskApp/accessBookBuildList")
     Observable<ResponseBody> putOnRecordUpload(@Body List<NewRecordBean> records);
+
+    //上传产品流， post请求
+//    @POST("/jeecg-boot/ldar/app/liveTaskApp/accessBookBuildProdStream")
+    @POST(PREFIX + "/ldar/app/liveTaskApp/accessBookBuildProdStream")
+    Observable<ResponseBody> upLoadProdStream(@Body List<BaseStreamBean> streamBeans);
+
 
 
     // 所属公司

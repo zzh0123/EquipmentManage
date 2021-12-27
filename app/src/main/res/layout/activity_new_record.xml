@@ -65,7 +65,7 @@
             android:divider="@android:color/transparent"
             android:scrollbars="none" />
 
-        <androidx.recyclerview.widget.RecyclerView
+        <com.yanzhenjie.recyclerview.SwipeRecyclerView
             android:id="@+id/rvArea"
             android:layout_width="0dp"
             android:layout_height="match_parent"

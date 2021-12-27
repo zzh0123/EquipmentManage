@@ -48,6 +48,8 @@ import com.equipmentmanage.app.bean.BaseChemicalBean;
 import com.equipmentmanage.app.bean.BaseChemicalTableBean;
 import com.equipmentmanage.app.bean.BaseComponentTypeBean;
 import com.equipmentmanage.app.bean.BaseComponentTypeTableBean;
+import com.equipmentmanage.app.bean.BaseDeviceBean;
+import com.equipmentmanage.app.bean.BaseDeviceTableBean;
 import com.equipmentmanage.app.bean.BaseDirectionBean;
 import com.equipmentmanage.app.bean.BaseDirectionTableBean;
 import com.equipmentmanage.app.bean.BaseStreamBean;
@@ -69,6 +71,8 @@ import com.equipmentmanage.app.utils.gson.GsonUtils;
 import com.equipmentmanage.app.utils.netutils.OnSuccessAndFaultListener;
 import com.equipmentmanage.app.utils.netutils.OnSuccessAndFaultSub;
 import com.equipmentmanage.app.view.AddFloorDialog;
+import com.equipmentmanage.app.view.AddProductDialog;
+import com.equipmentmanage.app.view.TipDialog;
 import com.google.gson.reflect.TypeToken;
 import com.luck.picture.lib.PictureSelector;
 import com.luck.picture.lib.app.PictureAppMaster;
@@ -86,6 +90,7 @@ import com.xuexiang.xui.utils.ResUtils;
 import com.xuexiang.xui.utils.ThemeUtils;
 import com.xuexiang.xui.widget.actionbar.TitleBar;
 import com.xuexiang.xui.widget.button.ButtonView;
+import com.xuexiang.xui.widget.imageview.RadiusImageView;
 import com.yalantis.ucrop.view.OverlayView;
 import com.zhouyou.view.seekbar.SignSeekBar;
 
@@ -403,6 +408,12 @@ public class SealPointOnRecordActivity1 extends BaseActivity {
     private int maxSelectNum = 1;
     private String compressPath;
 
+    // 新增产品流
+    @BindView(R.id.iv_add_product)
+    RadiusImageView iv_add_product;
+
+    private AddProductDialog addProductDialog;
+
     private MMKV kv = MMKV.defaultMMKV();
 
     @Override
@@ -468,6 +479,14 @@ public class SealPointOnRecordActivity1 extends BaseActivity {
 //                return 0;
 //            }
 //        });
+
+        addProductDialog = new AddProductDialog(this);
+        addProductDialog.setOnConfirmListener(new AddProductDialog.OnConfirmListener() {
+            @Override
+            public void onConfirm(String code, String name) {
+
+            }
+        });
 
 //        llType = findViewById(R.id.ll_type);
         // 装置,区域,设备
@@ -664,6 +683,13 @@ public class SealPointOnRecordActivity1 extends BaseActivity {
 //        }
     }
 
+    private void showAddProductDialog() {
+        if (addProductDialog == null) {
+            addProductDialog = new AddProductDialog(this);
+        }
+        addProductDialog.show();
+    }
+
     private void setView() {
 //        String currentDate = DateUtil.getCurentTime1();
 //        List<ImgTableBean1> list = AppDatabase.getInstance(SealPointOnRecordActivity1.this)
@@ -781,7 +807,8 @@ public class SealPointOnRecordActivity1 extends BaseActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 BaseStreamBean bean = baseStreamBeanList.get(position);
                 if (bean != null) {
-                    streamTypeValue = bean.getId();
+//                    streamTypeValue = bean.getId();
+                    streamTypeValue = bean.getProdStreamCode();
                     prodStreamName = bean.getProdStreamName();
                     mediumState = bean.getMediumState();
                     tv_stream_type_name.setText(StringUtils.nullStrToEmpty(bean.getProdStreamName()));
@@ -860,7 +887,7 @@ public class SealPointOnRecordActivity1 extends BaseActivity {
         // 高度
         seek_bar_height.getConfigBuilder()
                 .min(0)
-                .max(10)
+                .max(5)
                 .progress(0)
                 .sectionCount(4)
                 .trackColor(ContextCompat.getColor(this, R.color.color_gray))
@@ -1141,7 +1168,7 @@ public class SealPointOnRecordActivity1 extends BaseActivity {
     //    ImageView iv_unselect1;
     // R.id.sb_sure
     @SingleClick
-    @OnClick({R.id.ll_unreachable_reason, R.id.ll_select_half, R.id.tv_distance_change, R.id.ll_device_type, R.id.ll_area_type, R.id.ll_equipment_type, R.id.ll_stream_type, R.id.test,
+    @OnClick({R.id.iv_add_product, R.id.ll_unreachable_reason, R.id.ll_select_half, R.id.tv_distance_change, R.id.ll_device_type, R.id.ll_area_type, R.id.ll_equipment_type, R.id.ll_stream_type, R.id.test,
             R.id.ll_chemical_type, R.id.ll_direction_type,
             R.id.ll_production_date, R.id.ll_heat_preservation,
             R.id.bt_continue_position, R.id.bt_save, R.id.bt_take_photo,
@@ -1149,6 +1176,10 @@ public class SealPointOnRecordActivity1 extends BaseActivity {
             R.id.ll_select1, R.id.ll_unselect1})
     public void onClick(View v) {
         switch (v.getId()) {
+            case R.id.iv_add_product:  //新增产品流
+                showAddProductDialog();
+                break;
+
             case R.id.ll_unreachable_reason:  //不可达原因
                 unreachReasonPopupWindow.show();
                 break;
@@ -1378,6 +1409,8 @@ public class SealPointOnRecordActivity1 extends BaseActivity {
 //        clearCache();
 
     }
+
+
 
     private boolean isValid() {
         boolean isRight = true;
@@ -1757,9 +1790,11 @@ public class SealPointOnRecordActivity1 extends BaseActivity {
             et_tag_num.setText("" + tagNum);
         }
 
-        String ref = kv.getString(Constant.imgtabbean1_ref, "");
-        et_reference.setText(ref);
         directionTypeValue = kv.getString(Constant.imgtabbean1_direction_value, "");
+        if (StringUtils.isNullOrEmpty(directionTypeValue)){
+            Toasty.warning(context, "没有可延续的数据！", Toast.LENGTH_SHORT, true).show();
+            return;
+        }
         directionTypeName = kv.getString(Constant.imgtabbean1_direction_name, "");
         tv_direction_type_name.setText(directionTypeName);
         if (!StringUtils.isNullOrEmpty(directionTypeValue)) {
@@ -1787,6 +1822,9 @@ public class SealPointOnRecordActivity1 extends BaseActivity {
                 }
             }
         }
+
+        String ref = kv.getString(Constant.imgtabbean1_ref, "");
+        et_reference.setText(ref);
 
 
         String distance = kv.getString(Constant.imgtabbean1_distance, "");

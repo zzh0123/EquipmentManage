@@ -14,6 +14,7 @@ import lombok.Data;
 public class NewTagBean implements Serializable {
     private String tagNum;
     private String count;
+    private String pointCount;
     public String localPath;
     private boolean isSelected;
 }

@@ -186,6 +186,7 @@ public class Constant {
 
     public static String date_gas = "date_gas";
     public static String thres_hold = "thres_hold";
+    public static String date_mediumState = "date_mediumState";
     public static String instrument = "instrument";
     public static String leakage = "leakage";
     public static String base_area = "base_area";

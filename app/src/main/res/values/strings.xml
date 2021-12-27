@@ -136,6 +136,7 @@
     <string name="control_equipment_and_close_type">控制设备<br /> 和密闭通风 <br /> 类型</string>
 
     <string name="upload_tip">确定上传吗？</string>
+    <string name="delete_tip">确定删除吗？</string>
     <string name="clear_cache_tip">确定清空缓存吗？</string>
 
     <string name="not_data">暂无数据，点击刷新</string>
@@ -176,6 +177,7 @@
     <string name="download_tip">再次下载将会覆盖历史任务信息，是否确认下载？</string>
     <string name="continue_position">位置延续</string>
     <string name="continue_last">延续上次</string>
+    <string name="edit">修改</string>
     <string name="cancel">取消</string>
     <string name="confirm">确认</string>
     <string name="please_enter">请输入</string>

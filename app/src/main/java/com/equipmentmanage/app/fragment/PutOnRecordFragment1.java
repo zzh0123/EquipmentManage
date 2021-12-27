@@ -22,6 +22,8 @@ import com.equipmentmanage.app.activity.NewRecordAreaActivity;
 import com.equipmentmanage.app.activity.ProductFlowActivity;
 import com.equipmentmanage.app.base.LazyFragment;
 import com.equipmentmanage.app.bean.BaseBean;
+import com.equipmentmanage.app.bean.BaseStreamBean;
+import com.equipmentmanage.app.bean.BaseStreamTableBean;
 import com.equipmentmanage.app.bean.ImgTableBean;
 import com.equipmentmanage.app.bean.ImgTableBean1;
 import com.equipmentmanage.app.bean.NetImgBean;
@@ -29,11 +31,13 @@ import com.equipmentmanage.app.bean.NewRecordBean;
 import com.equipmentmanage.app.bean.PointBean;
 import com.equipmentmanage.app.bean.PointBean1;
 import com.equipmentmanage.app.bean.PutOnRecordBean;
+import com.equipmentmanage.app.bean.WeatherParamsBean;
 import com.equipmentmanage.app.dao.AppDatabase;
 import com.equipmentmanage.app.netapi.ConstantValue;
 import com.equipmentmanage.app.netsubscribe.Subscribe;
 import com.equipmentmanage.app.utils.DateUtil;
 import com.equipmentmanage.app.utils.L;
+import com.equipmentmanage.app.utils.StringUtils;
 import com.equipmentmanage.app.utils.gson.GsonUtils;
 import com.equipmentmanage.app.utils.netutils.OnSuccessAndFaultListener;
 import com.equipmentmanage.app.utils.netutils.OnSuccessAndFaultSub;
@@ -117,7 +121,6 @@ public class PutOnRecordFragment1 extends LazyFragment {
 
     @Override
     protected void initData() {
-
     }
 
     @Override
@@ -175,6 +178,8 @@ public class PutOnRecordFragment1 extends LazyFragment {
 
     // 上传建档
     private void upLoadRecord() {
+        readProductCache();
+
         List<ImgTableBean1> list = AppDatabase.getInstance(getActivity()).imgTableDao1().loadByDate(currentDate);
 //        L.i("zzz1--ImgTableBean.size-->" + list.size());
 //        L.i("zzz1--ImgTableBean-->" + GsonUtils.toJson(list));
@@ -406,6 +411,77 @@ public class PutOnRecordFragment1 extends LazyFragment {
 //        }
 //
 //    }
+
+    /**
+     * 建档数据上传
+     */
+    private void upLoadProdStream() {
+        if (baseStreamBeanList == null || baseStreamBeanList.size() == 0){
+            return;
+        }
+
+//        for (BaseStreamBean baseStreamBean:
+//        baseStreamBeanList) {
+//            Log.i("zzz1-code->", "" + baseStreamBean.getProdStreamCode());
+//        }
+
+        Subscribe.upLoadProdStream(baseStreamBeanList, new OnSuccessAndFaultSub(new OnSuccessAndFaultListener() {
+            @Override
+            public void onSuccess(String result) {
+                try {
+                    BaseBean<String> baseBean = GsonUtils.fromJson(result, new TypeToken<BaseBean<String>>() {
+                    }.getType());
+
+                    if (baseBean != null) {
+                        if (baseBean.isSuccess()) {
+//                            Toasty.success(getActivity(), R.string.submit_success, Toast.LENGTH_SHORT, true).show();
+
+
+                        } else {
+                            Toasty.error(getActivity(), StringUtils.nullStrToEmpty(baseBean.getMessage()), Toast.LENGTH_SHORT, true).show();
+                        }
+                    } else {
+                        Toasty.error(getActivity(), R.string.return_empty, Toast.LENGTH_SHORT, true).show();
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    Toasty.error(getActivity(), R.string.parse_fail, Toast.LENGTH_SHORT, true).show();
+                }
+            }
+
+            @Override
+            public void onFault(String errorMsg) {
+                Toasty.error(getActivity(), R.string.request_fail, Toast.LENGTH_SHORT, true).show();
+
+            }
+        }, getActivity()));
+    }
+
+    private List<BaseStreamBean> baseStreamBeanList = new ArrayList<>();
+
+    private void readProductCache() {
+//        BaseDeviceTableBean list = AppDatabase.getInstance(AreaManageActivity.this).baseDeviceTableDao().loadById("1");
+//                L.i("zzz1-readProductCache->" + GsonUtils.toJson(list3));
+//        GsonUtils.fromJson(list.content, List<BaseEquipmentBean>)
+
+        baseStreamBeanList.clear();
+        BaseStreamTableBean list = AppDatabase.getInstance(getActivity()).baseStreamTableDao().loadById("1");
+
+        if (list != null) {
+            List<BaseStreamBean> baseStreamBeans = GsonUtils.fromJson(list.content, new TypeToken<List<BaseStreamBean>>() {
+            }.getType());
+
+//            L.i("zzz1-baseStreamBeans.list222--->" + baseStreamBeans.size());
+
+            if (baseStreamBeans != null && baseStreamBeans.size() > 0) {
+                baseStreamBeanList.addAll(baseStreamBeans);
+                upLoadProdStream();
+            } else {
+                Toasty.warning(getActivity(), R.string.return_empty, Toast.LENGTH_SHORT, true).show();
+            }
+        }
+
+    }
 
     private class MyGridViewAdapter extends BaseAdapter {
 

@@ -1,14 +1,19 @@
 package com.equipmentmanage.app.activity;
 
+import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
+
 import android.content.Context;
 import android.content.Intent;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.listener.OnItemChildClickListener;
 import com.chad.library.adapter.base.listener.OnItemClickListener;
@@ -29,8 +34,15 @@ import com.equipmentmanage.app.utils.DateUtil;
 import com.equipmentmanage.app.utils.L;
 import com.equipmentmanage.app.utils.StringUtils;
 import com.equipmentmanage.app.view.AddAreaDialog;
+import com.equipmentmanage.app.view.TipDialog;
 import com.xuexiang.xaop.annotation.SingleClick;
 import com.xuexiang.xui.widget.actionbar.TitleBar;
+import com.yanzhenjie.recyclerview.OnItemMenuClickListener;
+import com.yanzhenjie.recyclerview.SwipeMenu;
+import com.yanzhenjie.recyclerview.SwipeMenuBridge;
+import com.yanzhenjie.recyclerview.SwipeMenuCreator;
+import com.yanzhenjie.recyclerview.SwipeMenuItem;
+import com.yanzhenjie.recyclerview.SwipeRecyclerView;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.ThreadMode;
@@ -78,7 +90,7 @@ public class NewRecordTagActivity extends BaseActivity {
 
 
     @BindView(R.id.rvTag)
-    RecyclerView rvTag;
+    SwipeRecyclerView rvTag;
     private NewTagAdapter adapterNewTag;
     private List<NewTagBean> newTagBeanList = new ArrayList<>();
 
@@ -92,6 +104,14 @@ public class NewRecordTagActivity extends BaseActivity {
 
     private String currentDate;
     private List<ImgTableBean1> list;
+
+    private TipDialog tipDialog;
+    private NewTagBean bean, selectBean;
+    private int selectPos;
+
+    @BindView(R.id.iv_preview)
+    ImageView iv_preview;
+
 
     @Override
     protected int initLayout() {
@@ -140,7 +160,7 @@ public class NewRecordTagActivity extends BaseActivity {
             @Override
             public void performAction(View view) {
                 L.i("zzz1--->1111");
-                SealPointOnRecordActivity1.open(NewRecordTagActivity.this, true,null,
+                SealPointOnRecordActivity1.open(NewRecordTagActivity.this, true, null,
                         deviceCode, deviceName, deviceType, deviceId,
                         areaCode, areaName,
                         equipCode, equipName);
@@ -154,6 +174,15 @@ public class NewRecordTagActivity extends BaseActivity {
             @Override
             public int rightPadding() {
                 return 0;
+            }
+        });
+
+        tipDialog = new TipDialog(this);
+        tipDialog.setOnConfirmListener(new TipDialog.OnConfirmListener() {
+            @Override
+            public void onConfirm() {
+                // 删除
+                delete();
             }
         });
 
@@ -217,52 +246,23 @@ public class NewRecordTagActivity extends BaseActivity {
         LinearLayoutManager manager1 = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         rvTag.setLayoutManager(manager1);
         adapterNewTag = new NewTagAdapter(newTagBeanList);
-        adapterNewTag.addChildClickViewIds(R.id.tv_delete, R.id.tv_edit);
-        adapterNewTag.setOnItemChildClickListener(new OnItemChildClickListener() {
-            @Override
-            public void onItemChildClick(@NonNull BaseQuickAdapter adapter, @NonNull View view, int position) {
-                int id = view.getId();
-                NewTagBean bean = newTagBeanList.get(position);
-                if (bean != null) {
-                    clearChecked1();
-                    bean.setSelected(true);
-                    adapterNewTag.notifyDataSetChanged();
-
-                    if (id == R.id.tv_edit) {
-//                        String tagNum = bean.getTagNum();
-//                        String equipName = bean.getName();
-                        ImgTableBean1 imgTableBean1 = list.get(position);
-                        // 跳转密封点建档-编辑
-                        SealPointOnRecordActivity1.open(NewRecordTagActivity.this, false, imgTableBean1,
-                                deviceCode, deviceName, deviceType, deviceId,
-                                areaCode, areaName,
-                                equipCode, equipName);
-                    } else if (id == R.id.tv_delete){
-                        String tagNum = bean.getTagNum();
-                        int rowCount = AppDatabase.getInstance(NewRecordTagActivity.this)
-                                .imgTableDao1()
-                                .deleteByTagNum(currentDate, deviceId, areaCode, equipCode, tagNum);
-//                        L.i("zzz1--rowCount->" + rowCount);
-                        if (rowCount > 0) {
-                            Toasty.success(NewRecordTagActivity.this, "删除成功！", Toast.LENGTH_SHORT, true).show();
-                            readTagCache();
-                        } else {
-                            Toasty.error(NewRecordTagActivity.this, "删除失败！", Toast.LENGTH_SHORT, true).show();
-                        }
-                    }
-                }
-            }
-        });
         adapterNewTag.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(@NonNull BaseQuickAdapter<?, ?> adapter, @NonNull View view, int position) {
                 int id = view.getId();
-                NewTagBean bean = newTagBeanList.get(position);
-                if (bean != null) {
+                selectBean = newTagBeanList.get(position);
+                selectPos = position;
+                if (selectBean != null) {
                     clearChecked1();
-                    bean.setSelected(true);
+                    selectBean.setSelected(true);
                     adapterNewTag.notifyDataSetChanged();
 
+                    Glide.with(NewRecordTagActivity.this)
+                            .load(selectBean.getLocalPath())
+                            .skipMemoryCache(true)
+                            .diskCacheStrategy(DiskCacheStrategy.NONE)
+                            .error(R.mipmap.ic_no_data)//图片加载失败后，显示的图片
+                            .into(iv_preview);
 //                    if (id == R.id.tv_edit) {
 //                        String tagNum = bean.getTagNum();
 ////                        String equipName = bean.getName();
@@ -278,13 +278,126 @@ public class NewRecordTagActivity extends BaseActivity {
             }
         });
 
+        // 设置监听器。
+        rvTag.setSwipeMenuCreator(mSwipeMenuCreator);
+        // 菜单点击监听。
+        rvTag.setOnItemMenuClickListener(mItemMenuClickListener);
         rvTag.setAdapter(adapterNewTag);
 
+        iv_preview.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!StringUtils.isNullOrEmpty(selectBean.getLocalPath())){
+                    // SealPointOnRecordActivity1.open(NewRecordTagActivity.this, false, imgTableBean1,
+                    //                deviceCode, deviceName, deviceType, deviceId,
+                    //                areaCode, areaName,
+                    //                equipCode, equipName);
+                    ImgTableBean1 imgTableBean1 = list.get(selectPos);
+                    TakePhotoActivity1.open(NewRecordTagActivity.this, false, imgTableBean1.fileName, imgTableBean1.localPath, imgTableBean1.content, deviceCode, deviceName, deviceType, deviceId,
+                            areaCode, areaName, equipCode, equipName,
+                            imgTableBean1.mediumState, imgTableBean1.prodStream, imgTableBean1.prodStreamName, imgTableBean1.chemicalName, imgTableBean1.chemicalName,
+                            imgTableBean1.directionName, imgTableBean1.directionValue, imgTableBean1.directionPosName, imgTableBean1.directionPosValue,
+                            imgTableBean1.tagNum, imgTableBean1.refMaterial,
+                            imgTableBean1.distance, imgTableBean1.height,
+                            imgTableBean1.floorLevel,
+                            imgTableBean1.unreachable, imgTableBean1.unreachableDesc,
+                            imgTableBean1.remark);
+                }
+            }
+        });
         // 初始化数据
         equipCode = newEquipBeanList.get(pos).getCode();
         equipName = newEquipBeanList.get(pos).getName();
         readTagCache();
 
+    }
+
+    // 创建菜单：
+    SwipeMenuCreator mSwipeMenuCreator = new SwipeMenuCreator() {
+        @Override
+        public void onCreateMenu(SwipeMenu leftMenu, SwipeMenu rightMenu, int position) {
+            SwipeMenuItem deleteItem = new SwipeMenuItem(NewRecordTagActivity.this);
+            deleteItem.setText("删除");
+            deleteItem.setTextSize(16);
+            deleteItem.setTextColor(getResources().getColor(R.color.white));
+            deleteItem.setWidth(200);
+            deleteItem.setHeight(MATCH_PARENT);
+            deleteItem.setBackgroundColor(getResources().getColor(R.color.c_F56C6C));
+            // 各种文字和图标属性设置。
+            rightMenu.addMenuItem(deleteItem); // 在Item左侧添加一个菜单。
+
+            SwipeMenuItem editItem = new SwipeMenuItem(NewRecordTagActivity.this);
+            editItem.setText("编辑");
+            editItem.setTextSize(16);
+            editItem.setTextColor(getResources().getColor(R.color.white));
+            editItem.setWidth(200);
+            editItem.setHeight(MATCH_PARENT);
+            editItem.setBackgroundColor(getResources().getColor(R.color.c_409EFF));
+            // 各种文字和图标属性设置。
+            rightMenu.addMenuItem(editItem); // 在Item右侧添加一个菜单。
+
+            // 注意：哪边不想要菜单，那么不要添加即可。
+        }
+    };
+
+    OnItemMenuClickListener mItemMenuClickListener = new OnItemMenuClickListener() {
+        @Override
+        public void onItemClick(SwipeMenuBridge menuBridge, int position) {
+            // 任何操作必须先关闭菜单，否则可能出现Item菜单打开状态错乱。
+            menuBridge.closeMenu();
+
+            // 左侧还是右侧菜单：
+            int direction = menuBridge.getDirection();
+            // 菜单在Item中的Position：
+            int menuPosition = menuBridge.getPosition();
+            selectPos = position;
+
+            bean = newTagBeanList.get(position);
+            if (bean != null) {
+                clearChecked1();
+                bean.setSelected(true);
+                adapterNewTag.notifyDataSetChanged();
+
+                if (menuPosition == 0) {
+                    showDeleteDialog();
+                } else if (menuPosition == 1) {
+//                        String tagNum = bean.getTagNum();
+//                        String equipName = bean.getName();
+                    edit();
+                }
+            }
+        }
+    };
+
+    private void edit(){
+        ImgTableBean1 imgTableBean1 = list.get(selectPos);
+        // 跳转密封点建档-编辑
+        SealPointOnRecordActivity1.open(NewRecordTagActivity.this, false, imgTableBean1,
+                deviceCode, deviceName, deviceType, deviceId,
+                areaCode, areaName,
+                equipCode, equipName);
+    }
+
+    private void showDeleteDialog() {
+        if (tipDialog == null) {
+            tipDialog = new TipDialog(this);
+        }
+        tipDialog.show();
+        tipDialog.setTitleAndTip(null, getString(R.string.delete_tip));
+    }
+
+    private void delete(){
+        String tagNum = bean.getTagNum();
+        int rowCount = AppDatabase.getInstance(NewRecordTagActivity.this)
+                .imgTableDao1()
+                .deleteByTagNum(currentDate, deviceId, areaCode, equipCode, tagNum);
+//                        L.i("zzz1--rowCount->" + rowCount);
+        if (rowCount > 0) {
+            Toasty.success(NewRecordTagActivity.this, "删除成功！", Toast.LENGTH_SHORT, true).show();
+            readTagCache();
+        } else {
+            Toasty.error(NewRecordTagActivity.this, "删除失败！", Toast.LENGTH_SHORT, true).show();
+        }
     }
 
     private boolean validCode(String code) {
@@ -341,17 +454,23 @@ public class NewRecordTagActivity extends BaseActivity {
                 .loadByDateAndEquip(currentDate, deviceId, areaCode, equipCode);
 //        L.i("zzz1-list->" + list.size());
         if (list != null && list.size() > 0) {
-            for (int i = 0; i < list.size(); i++){
+            for (int i = 0; i < list.size(); i++) {
                 ImgTableBean1 imgTableBean1 = list.get(i);
                 NewTagBean bean = new NewTagBean();
                 bean.setTagNum(imgTableBean1.tagNum);
-                if (StringUtils.isNullOrEmpty(imgTableBean1.localPath)){
+                if (StringUtils.isNullOrEmpty(imgTableBean1.localPath)) {
                     bean.setCount("0");
                 } else {
                     bean.setCount("1");
                 }
+
+                if (StringUtils.isNullOrEmpty(imgTableBean1.pointCount)) {
+                    bean.setPointCount("0");
+                } else {
+                    bean.setPointCount(imgTableBean1.pointCount);
+                }
                 bean.setLocalPath(imgTableBean1.localPath);
-                L.i("zzz1-tagNum->" + imgTableBean1.tagNum);
+//                L.i("zzz1-tagNum->" + imgTableBean1.tagNum);
                 newTagBeanList.add(bean);
             }
 //            for (ImgTableBean1 imgTableBean1 : list) {
@@ -381,6 +500,13 @@ public class NewRecordTagActivity extends BaseActivity {
         if (!StringUtils.isNullOrEmpty(event)) {
             if (ConstantValue.event_photo_save.equals(event)) {
                 readTagCache();
+
+//                Glide.with(NewRecordTagActivity.this)
+//                        .load(selectBean.getLocalPath())
+//                        .skipMemoryCache(true)
+//                        .diskCacheStrategy(DiskCacheStrategy.NONE)
+//                        .error(R.mipmap.ic_launcher)//图片加载失败后，显示的图片
+//                        .into(iv_preview);
             }
         }
     }

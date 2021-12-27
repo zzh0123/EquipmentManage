@@ -1,4 +1,5 @@
 package com.equipmentmanage.app.netsubscribe;
+import com.equipmentmanage.app.bean.BaseStreamBean;
 import com.equipmentmanage.app.bean.CorrectCheckBean;
 import com.equipmentmanage.app.bean.LoginPostBean;
 import com.equipmentmanage.app.bean.NewRecordBean;
@@ -183,7 +184,22 @@ public class Subscribe {
         RetrofitFactory.getInstance().toSubscribe(observable, subscriber);
     }
 
+    /**
+     * 建档数据上传
+     */
+    public static void upLoadProdStream(List<BaseStreamBean> streamBeans, DisposableObserver<ResponseBody> subscriber) {
+        Observable<ResponseBody> observable =  RetrofitFactory.getInstance().getHttpApi().upLoadProdStream(streamBeans);
+        RetrofitFactory.getInstance().toSubscribe(observable, subscriber);
+    }
 
+
+    /**
+     * 获取字典值
+     */
+    public static void getDictItems(String code, DisposableObserver<ResponseBody> subscriber) {
+        Observable<ResponseBody> observable =  RetrofitFactory.getInstance().getHttpApi().getDictItems(code);
+        RetrofitFactory.getInstance().toSubscribe(observable, subscriber);
+    }
 
     /**
      * getDeviceList

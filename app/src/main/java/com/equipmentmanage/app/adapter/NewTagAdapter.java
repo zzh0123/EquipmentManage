@@ -25,15 +25,18 @@ public class NewTagAdapter extends BaseQuickAdapter<NewTagBean, BaseViewHolder> 
     @Override
     protected void convert(@NotNull BaseViewHolder holder, @Nullable NewTagBean bean) {
         holder.setText(R.id.tv_tag_num, "标签号：" + StringUtils.nullStrToEmpty(bean.getTagNum())); //
-        holder.setText(R.id.tv_count, "图片数量：" +StringUtils.nullStrToEmpty(bean.getCount())); //
+        holder.setText(R.id.tv_count, "图片数量：" + StringUtils.nullStrToEmpty(bean.getCount())); //
+        holder.setText(R.id.tv_point_count, "标点数量：" + StringUtils.nullStrToEmpty(bean.getPointCount())); //
 
         boolean isSelected = bean.isSelected();
-        if (isSelected){
+        if (isSelected) {
             holder.setTextColor(R.id.tv_tag_num, getContext().getResources().getColor(R.color.c_409EFF));
             holder.setTextColor(R.id.tv_count, getContext().getResources().getColor(R.color.c_409EFF));
+            holder.setTextColor(R.id.tv_point_count, getContext().getResources().getColor(R.color.c_409EFF));
         } else {
             holder.setTextColor(R.id.tv_tag_num, getContext().getResources().getColor(R.color.c_303133));
             holder.setTextColor(R.id.tv_count, getContext().getResources().getColor(R.color.c_303133));
+            holder.setTextColor(R.id.tv_point_count, getContext().getResources().getColor(R.color.c_303133));
         }
 
     }

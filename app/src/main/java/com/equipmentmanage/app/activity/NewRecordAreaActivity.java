@@ -1,5 +1,7 @@
 package com.equipmentmanage.app.activity;
 
+import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -23,8 +25,10 @@ import com.equipmentmanage.app.bean.BaseBean;
 import com.equipmentmanage.app.bean.BaseDeviceBean;
 import com.equipmentmanage.app.bean.BaseDeviceTableBean;
 import com.equipmentmanage.app.bean.DeviceManageResultBean;
+import com.equipmentmanage.app.bean.ImgTableBean1;
 import com.equipmentmanage.app.bean.NewAreaBean;
 import com.equipmentmanage.app.bean.NewAreaTableBean;
+import com.equipmentmanage.app.bean.NewTagBean;
 import com.equipmentmanage.app.dao.AppDatabase;
 import com.equipmentmanage.app.netapi.ConstantValue;
 import com.equipmentmanage.app.netsubscribe.Subscribe;
@@ -38,6 +42,12 @@ import com.equipmentmanage.app.view.TipDialog;
 import com.google.gson.reflect.TypeToken;
 import com.xuexiang.xaop.annotation.SingleClick;
 import com.xuexiang.xui.widget.actionbar.TitleBar;
+import com.yanzhenjie.recyclerview.OnItemMenuClickListener;
+import com.yanzhenjie.recyclerview.SwipeMenu;
+import com.yanzhenjie.recyclerview.SwipeMenuBridge;
+import com.yanzhenjie.recyclerview.SwipeMenuCreator;
+import com.yanzhenjie.recyclerview.SwipeMenuItem;
+import com.yanzhenjie.recyclerview.SwipeRecyclerView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -68,14 +78,17 @@ public class NewRecordAreaActivity extends BaseActivity {
 
 
     @BindView(R.id.rvArea)
-    RecyclerView rvArea;
+    SwipeRecyclerView rvArea;
     private NewAreaAdapter adapterArea;
     private List<NewAreaBean> newAreaBeanList = new ArrayList<>();
 
     private AddAreaDialog addAreaDialog;
 
     private String deviceCode, deviceName, deviceType, deviceId;
-    
+
+    private TipDialog tipDialog;
+    private NewAreaBean bean;
+
     @Override
     protected int initLayout() {
         return R.layout.activity_new_record;
@@ -145,6 +158,15 @@ public class NewRecordAreaActivity extends BaseActivity {
             @Override
             public int rightPadding() {
                 return 0;
+            }
+        });
+
+        tipDialog = new TipDialog(this);
+        tipDialog.setOnConfirmListener(new TipDialog.OnConfirmListener() {
+            @Override
+            public void onConfirm() {
+                // 删除
+                delete();
             }
         });
 
@@ -224,9 +246,86 @@ public class NewRecordAreaActivity extends BaseActivity {
 
             }
         });
+
+        // 设置监听器。
+        rvArea.setSwipeMenuCreator(mSwipeMenuCreator);
+        // 菜单点击监听。
+        rvArea.setOnItemMenuClickListener(mItemMenuClickListener);
         rvArea.setAdapter(adapterArea);
 
 
+    }
+
+    // 创建菜单：
+    SwipeMenuCreator mSwipeMenuCreator = new SwipeMenuCreator() {
+        @Override
+        public void onCreateMenu(SwipeMenu leftMenu, SwipeMenu rightMenu, int position) {
+            SwipeMenuItem deleteItem = new SwipeMenuItem(NewRecordAreaActivity.this);
+            deleteItem.setText("删除");
+            deleteItem.setTextSize(16);
+            deleteItem.setTextColor(getResources().getColor(R.color.white));
+            deleteItem.setWidth(200);
+            deleteItem.setHeight(MATCH_PARENT);
+            deleteItem.setBackgroundColor(getResources().getColor(R.color.c_F56C6C));
+            // 各种文字和图标属性设置。
+            rightMenu.addMenuItem(deleteItem); // 在Item左侧添加一个菜单。
+
+            // 注意：哪边不想要菜单，那么不要添加即可。
+        }
+    };
+
+    OnItemMenuClickListener mItemMenuClickListener = new OnItemMenuClickListener() {
+        @Override
+        public void onItemClick(SwipeMenuBridge menuBridge, int position) {
+            // 任何操作必须先关闭菜单，否则可能出现Item菜单打开状态错乱。
+            menuBridge.closeMenu();
+
+            // 左侧还是右侧菜单：
+            int direction = menuBridge.getDirection();
+            // 菜单在Item中的Position：
+            int menuPosition = menuBridge.getPosition();
+
+            bean = newAreaBeanList.get(position);
+            if (bean != null) {
+                clearChecked1();
+                bean.setSelected(true);
+                adapterArea.notifyDataSetChanged();
+
+                if (menuPosition == 0) {
+                    showDeleteDialog();
+                }
+            }
+        }
+    };
+
+    private void showDeleteDialog() {
+        if (tipDialog == null) {
+            tipDialog = new TipDialog(this);
+        }
+        tipDialog.show();
+        tipDialog.setTitleAndTip(null, getString(R.string.delete_tip));
+    }
+
+    private void delete(){
+        String areaCode = bean.getCode();
+        int rowCount = AppDatabase.getInstance(NewRecordAreaActivity.this)
+                .newAreaTableDao()
+                .deleteByAreaCode(deviceCode, areaCode);
+//                        L.i("zzz1--rowCount->" + rowCount);
+        if (rowCount > 0) {
+            Toasty.success(NewRecordAreaActivity.this, "删除成功！", Toast.LENGTH_SHORT, true).show();
+            readNewAreaCache();
+
+            int rowCountEquip = AppDatabase.getInstance(NewRecordAreaActivity.this)
+                    .newEquipTableDao()
+                    .deleteByAreaCode(deviceCode, areaCode);
+
+            int rowCountTag = AppDatabase.getInstance(NewRecordAreaActivity.this)
+                    .imgTableDao1()
+                    .deleteByAreaCode(deviceId, areaCode);
+        } else {
+            Toasty.error(NewRecordAreaActivity.this, "删除失败！", Toast.LENGTH_SHORT, true).show();
+        }
     }
 
     private boolean validCode(String code){

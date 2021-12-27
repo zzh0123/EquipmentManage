@@ -120,43 +120,15 @@ public class SelectDialog1 extends Dialog {
             public void onClick(View v) {
                 // 读取缓存
                 type = kv.getString(Constant.select_type, "");
+                if (StringUtils.isNullOrEmpty(type)){
+                    Toasty.warning(context, "没有可延续的数据！", Toast.LENGTH_SHORT, true).show();
+                    return;
+                }
                 heatPre = kv.getString(Constant.select_heatpre, "");
                 size = kv.getString(Constant.select_size, "");
                 count = kv.getString(Constant.select_count, "");
 
-                clearSelectType();
-                if (!StringUtils.isNullOrEmpty(type)){
-                    for (int i = 0; i < typeList.size(); i++) {
-                        if (type.equals(typeList.get(i).getName())){
-                            typeList.get(i).setSelected(true);
-                            adapterType.notifyDataSetChanged();
-                            break;
-                        }
-
-                    }
-                }
-
-                if (heatPre.equals(ConstantValue.heatPre_type_1)){
-                    iv_selected1.setImageResource(R.mipmap.selected);
-                    iv_unselect1.setImageResource(R.mipmap.unselect);
-                } else {
-                    iv_selected1.setImageResource(R.mipmap.unselect);
-                    iv_unselect1.setImageResource(R.mipmap.selected);
-                }
-
-                clearSizeType();
-                if (!StringUtils.isNullOrEmpty(size)){
-                    for (int i = 0; i < sizeList.size(); i++) {
-                        if (size.equals(sizeList.get(i).getName())){
-                            sizeList.get(i).setSelected(true);
-                            adapterSize.notifyDataSetChanged();
-                            break;
-                        }
-
-                    }
-                }
-
-                et_count.setText(count);
+                setLast();
 
             }
         });
@@ -269,6 +241,51 @@ public class SelectDialog1 extends Dialog {
         rv_size.setAdapter(adapterSize);
         initSizeData();
 
+    }
+
+    private void setLast(){
+        clearSelectType();
+        if (!StringUtils.isNullOrEmpty(type)){
+            for (int i = 0; i < typeList.size(); i++) {
+                if (type.equals(typeList.get(i).getName())){
+                    typeList.get(i).setSelected(true);
+                    adapterType.notifyDataSetChanged();
+                    break;
+                }
+
+            }
+        }
+
+        if (heatPre.equals(ConstantValue.heatPre_type_1)){
+            iv_selected1.setImageResource(R.mipmap.selected);
+            iv_unselect1.setImageResource(R.mipmap.unselect);
+        } else {
+            iv_selected1.setImageResource(R.mipmap.unselect);
+            iv_unselect1.setImageResource(R.mipmap.selected);
+        }
+
+        clearSizeType();
+        if (!StringUtils.isNullOrEmpty(size)){
+            for (int i = 0; i < sizeList.size(); i++) {
+                if (size.equals(sizeList.get(i).getName())){
+                    sizeList.get(i).setSelected(true);
+                    adapterSize.notifyDataSetChanged();
+                    break;
+                }
+
+            }
+        }
+
+        et_count.setText(count);
+    }
+
+    public void setEdit(String type, String heatPre, String size, String count){
+        this.type = type;
+        this.heatPre = heatPre;
+        this.size = size;
+        this.count = count;
+
+        setLast();
     }
 
     private void clearSelectType() {

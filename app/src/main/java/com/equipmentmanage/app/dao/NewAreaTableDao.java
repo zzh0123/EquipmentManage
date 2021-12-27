@@ -51,4 +51,7 @@ public interface NewAreaTableDao {
 
     @Query("DELETE FROM tb_new_area")
     int deleteAll();
+
+    @Query("DELETE FROM tb_new_area WHERE `device_code` ==(:deviceCode) " + "AND `code` ==(:areaCode) ")
+    int deleteByAreaCode(String deviceCode, String areaCode);
 }

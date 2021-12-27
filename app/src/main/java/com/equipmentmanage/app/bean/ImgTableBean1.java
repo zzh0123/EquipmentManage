@@ -33,6 +33,9 @@ public class ImgTableBean1 implements Serializable {
     @ColumnInfo(name = "content")
     public String content;
 
+    @ColumnInfo(name = "point_count")
+    public String pointCount;
+
     // 缓存存储日期
     @ColumnInfo(name = "current_date")
     public String currentDate;

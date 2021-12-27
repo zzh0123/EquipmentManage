@@ -40,6 +40,7 @@ import com.equipmentmanage.app.view.SelectDialog;
 import com.equipmentmanage.app.view.SelectDialog1;
 import com.equipmentmanage.app.view.TagImageView;
 import com.equipmentmanage.app.view.TipDialog;
+import com.equipmentmanage.app.view.TipDialog1;
 import com.google.gson.reflect.TypeToken;
 import com.licrafter.tagview.DIRECTION;
 import com.licrafter.tagview.TagViewGroup;
@@ -187,7 +188,7 @@ public class TakePhotoActivity1 extends BaseActivity {
     private GestureDetector detector;
 
     // 删除点
-    private TipDialog tipDialog;
+    private TipDialog1 tipDialog;
     private int deletePos;
 
     private String content, localPath;
@@ -216,7 +217,7 @@ public class TakePhotoActivity1 extends BaseActivity {
                 float getY = (float) e.getY();
 //                L.i("zzz1--离开位置->" + getX + "--getY->" + getY);
                 if (!StringUtils.isNullOrEmpty(compressPath)) {
-                    showCheckDialog(getX, getY);
+                    showCheckDialog(getX, getY, false);
                 } else {
                     Toasty.warning(TakePhotoActivity1.this, "请先拍照！", Toast.LENGTH_SHORT, true).show();
                 }
@@ -360,8 +361,8 @@ public class TakePhotoActivity1 extends BaseActivity {
         });
 
 
-        tipDialog = new TipDialog(this);
-        tipDialog.setOnConfirmListener(new TipDialog.OnConfirmListener() {
+        tipDialog = new TipDialog1(this);
+        tipDialog.setOnConfirmListener(new TipDialog1.OnConfirmListener() {
             @Override
             public void onConfirm() {
                 // 删除点
@@ -369,12 +370,21 @@ public class TakePhotoActivity1 extends BaseActivity {
                 tagImageView.setTagList(tagGroupList);
                 pointBeanList.remove(deletePos);
             }
+
+            @Override
+            public void onEdit() {
+                // String type, String heatPre, String size, String count)
+                PointBean1 pointBean =  pointBeanList.get(deletePos);
+
+                showCheckDialog(0, 0, true);
+                checkDialog2.setEdit(pointBean.getComponentType(), pointBean.getHeatPreser(), "" + pointBean.getComponentSize(), "");
+            }
         });
     }
 
     private void showDeletePointDialog() {
         if (tipDialog == null) {
-            tipDialog = new TipDialog(this);
+            tipDialog = new TipDialog1(this);
         }
         tipDialog.show();
         tipDialog.setTitleAndTip(null, "确定删除当前点吗？");
@@ -486,6 +496,7 @@ public class TakePhotoActivity1 extends BaseActivity {
             imgTableBean.fileName = fileName;
             imgTableBean.localPath = compressPath;
             imgTableBean.content = GsonUtils.toJson(pointBeanList);
+            imgTableBean.pointCount = "" + pointBeanList.size();
             imgTableBean.currentDate = currentDate;
 
             imgTableBean.deviceCode = deviceCode;
@@ -619,49 +630,59 @@ public class TakePhotoActivity1 extends BaseActivity {
 //    }
 
 
-    private void showCheckDialog(float getX, float getY) {
+    private void showCheckDialog(float getX, float getY, boolean isEdit) {
         checkDialog2 = new SelectDialog1(this);
         checkDialog2.setOnSelectClickListener(new SelectDialog1.OnSelectClickListener() {
             @Override
             public void onSelectClick(String type, String heatPre, String size, String count) {
                 componentType = type;
-                L.i("zzz1--type->" + type + "--heatPre--" + heatPre + "--size->" + size);
+//                L.i("zzz1--type->" + type + "--heatPre--" + heatPre + "--size->" + size);
 //                L.i("zzz1--getX->" + getX + "--getY->" + getY);
 //                L.i("zzz1--getscreenWidth->" + screenWidth + "--screenHeight->" + screenHeight);
-                float x = getX / ((float) screenWidth);
-                float y = getY / ((float) screenHeight);
+                if (isEdit){
+                    PointBean1 pointBean =  pointBeanList.get(deletePos);
+                    pointBean.setComponentType(type);
+                    pointBean.setHeatPreser(heatPre);
+                    pointBean.setComponentSize(Integer.parseInt(size));
+                    clearLastest();
+                    tagGroupList.get(deletePos).setLastest(true);
+                    tagImageView.setTagList(tagGroupList);
+                } else {
+                    float x = getX / ((float) screenWidth);
+                    float y = getY / ((float) screenHeight);
 //                L.i("zzz1--x->" + x + "--y->" + y);
-                PointBean1 pointBean = new PointBean1();
+                    PointBean1 pointBean = new PointBean1();
 //                pointBean.setX(x);
 //                pointBean.setY(y);
-                pointBean.setExtNum("" + index);
-                pointBean.setComponentType(type);
-                pointBean.setHeatPreser(heatPre);
-                pointBean.setComponentSize(Integer.parseInt(size));
-                pointBeanList.add(pointBean);
-                // 存储点
+                    pointBean.setExtNum("" + index);
+                    pointBean.setComponentType(type);
+                    pointBean.setHeatPreser(heatPre);
+                    pointBean.setComponentSize(Integer.parseInt(size));
+                    pointBeanList.add(pointBean);
+                    // 存储点
 
 //                    test.setText("结束位置：(" + event.getX() + "," + event.getY());
-                TagGroupModel tagGroupModel = new TagGroupModel();
-                List<TagGroupModel.Tag> tagList = new ArrayList<>();
-                TagGroupModel.Tag tag = new TagGroupModel.Tag();
-                tag.setName(type + "00" + index);
-                tag.setDirection(DirectionUtils.getValue(DIRECTION.RIGHT_TOP_STRAIGHT));
-                tagList.add(tag);
-                tagGroupModel.setTags(tagList);
-                tagGroupModel.setPercentX(x);
-                tagGroupModel.setPercentY(y);
-                tagGroupModel.setPercentX1(x);
-                tagGroupModel.setPercentY1(y);
-                clearLastest();
-                tagGroupModel.setLastest(true);
+                    TagGroupModel tagGroupModel = new TagGroupModel();
+                    List<TagGroupModel.Tag> tagList = new ArrayList<>();
+                    TagGroupModel.Tag tag = new TagGroupModel.Tag();
+                    tag.setName(type + "00" + index);
+                    tag.setDirection(DirectionUtils.getValue(DIRECTION.RIGHT_TOP_STRAIGHT));
+                    tagList.add(tag);
+                    tagGroupModel.setTags(tagList);
+                    tagGroupModel.setPercentX(x);
+                    tagGroupModel.setPercentY(y);
+                    tagGroupModel.setPercentX1(x);
+                    tagGroupModel.setPercentY1(y);
+                    clearLastest();
+                    tagGroupModel.setLastest(true);
 
 //                tagImageView.setTag(tagGroupModel);
-                tagGroupList.add(tagGroupModel);
-                L.i("zzz1--tagGroupList.size->" + tagGroupList.size());
+                    tagGroupList.add(tagGroupModel);
+                    L.i("zzz1--tagGroupList.size->" + tagGroupList.size());
 
-                tagImageView.setTagList(tagGroupList);
-                index++;
+                    tagImageView.setTagList(tagGroupList);
+                    index++;
+                }
                 checkDialog2.dismiss();
 
             }
