@@ -58,6 +58,23 @@
                 android:visibility="gone"/>
 
             <com.xuexiang.xui.widget.textview.supertextview.SuperButton
+                android:id="@+id/sb_remake"
+                style="@style/superButton_style"
+                android:layout_width="@dimen/dp_0"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginTop="@dimen/dp_30"
+                android:layout_marginBottom="@dimen/dp_10"
+                android:text="@string/remake"
+                android:textColor="@color/white"
+                app:sSelectorDisableColor="@color/white"
+                app:sSelectorNormalColor="@color/c_409EFF"
+                app:sSelectorPressedColor="@color/c_80409EFF"
+                app:sStrokeColor="@color/c_FF9900"
+                app:sStrokeWidth="@dimen/dp_1"
+                android:visibility="visible"/>
+
+            <com.xuexiang.xui.widget.textview.supertextview.SuperButton
                 android:id="@+id/sb_save"
                 style="@style/superButton_style"
                 android:layout_width="@dimen/dp_0"

@@ -507,6 +507,8 @@ public class NewRecordTagActivity extends BaseActivity {
 //                        .diskCacheStrategy(DiskCacheStrategy.NONE)
 //                        .error(R.mipmap.ic_launcher)//图片加载失败后，显示的图片
 //                        .into(iv_preview);
+
+                iv_preview.setImageResource(R.mipmap.ic_no_data);
             }
         }
     }

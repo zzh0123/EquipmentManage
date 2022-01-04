@@ -190,6 +190,8 @@ public class UserFragment extends LazyFragment {
 
                     if (baseBean != null) {
                         if (baseBean.isSuccess()) {
+                            kv.removeValuesForKeys(new String[]{Constant.isLogin});
+
                             Toasty.success(getActivity(), R.string.logout_success, Toast.LENGTH_SHORT, true).show();
                             ActivityCollector.finishAll();
                             LoginActivity.open(getActivity());

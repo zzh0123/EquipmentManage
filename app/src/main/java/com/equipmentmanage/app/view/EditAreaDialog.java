@@ -12,7 +12,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.equipmentmanage.app.R;
-import com.equipmentmanage.app.activity.AreaManageActivity;
 import com.equipmentmanage.app.utils.L;
 import com.equipmentmanage.app.utils.StringUtils;
 
@@ -23,7 +22,7 @@ import es.dmoral.toasty.Toasty;
  * @Author: zzh
  * @CreateDate: 2021/12/11
  */
-public class AddAreaDialog extends Dialog implements View.OnClickListener {
+public class EditAreaDialog extends Dialog implements View.OnClickListener {
 
     private EditText et_code, et_name;
     private TextView tv_title, tvCancel, tvConfirm;
@@ -31,12 +30,12 @@ public class AddAreaDialog extends Dialog implements View.OnClickListener {
 
     private OnConfirmListener listener;
 
-    public AddAreaDialog(Context context) {
+    public EditAreaDialog(Context context) {
         this(context, R.style.tipDialog);
         this.context = context;
     }
 
-    public AddAreaDialog(Context context, int themeResId) {
+    public EditAreaDialog(Context context, int themeResId) {
         super(context, themeResId);
     }
 
@@ -44,7 +43,7 @@ public class AddAreaDialog extends Dialog implements View.OnClickListener {
     protected void onCreate(Bundle savedInstanceState) {
         requestWindowFeature(Window.FEATURE_NO_TITLE); // 设置Content前设定
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.dialog_add_area);
+        setContentView(R.layout.dialog_edit_area);
         initView();
         initListener();
     }
@@ -83,11 +82,6 @@ public class AddAreaDialog extends Dialog implements View.OnClickListener {
         if (!StringUtils.isNullOrEmpty(title)){
             tv_title.setText(title);
         }
-    }
-
-    public void setCodeName(String code, String name){
-        et_code.setText(code);
-        et_name.setText(name);
     }
 
     public void clearView(){

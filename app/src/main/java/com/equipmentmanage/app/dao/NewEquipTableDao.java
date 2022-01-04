@@ -58,4 +58,8 @@ public interface NewEquipTableDao {
     @Query("DELETE FROM tb_new_equip WHERE `device_code` ==(:deviceCode) "
             + "AND `area_code` ==(:areaCode)")
     int deleteByAreaCode(String deviceCode, String areaCode);
+
+    @Query("UPDATE tb_new_equip SET `code` =(:equipCode), `name` =(:equipName) WHERE`device_code` ==(:deviceCode) "
+            + "AND `area_code` ==(:areaCode)")
+    int updateByEquipCode(String equipCode, String equipName, String deviceCode, String areaCode);
 }

@@ -154,6 +154,9 @@ public class TakePhotoActivity1 extends BaseActivity {
     @BindView(R.id.sb_save)
     SuperButton sb_save; //保存
 
+    @BindView(R.id.sb_remake)
+    SuperButton sb_remake; //重拍
+
 
     @BindView(R.id.tagImageView)
     TagImageView tagImageView; //组件图片
@@ -341,9 +344,9 @@ public class TakePhotoActivity1 extends BaseActivity {
 
                 if (tagGroupList != null && tagGroupList.size() > 0) {
                     index--;
-                    tagGroupList.remove((index -1));
+                    tagGroupList.remove((index - 1));
                     tagImageView.setTagList(tagGroupList);
-                    pointBeanList.remove((index -1));
+                    pointBeanList.remove((index - 1));
                 } else {
                     Toasty.warning(TakePhotoActivity1.this, "没有可撤回的点了！", Toast.LENGTH_SHORT, true).show();
                 }
@@ -374,7 +377,7 @@ public class TakePhotoActivity1 extends BaseActivity {
             @Override
             public void onEdit() {
                 // String type, String heatPre, String size, String count)
-                PointBean1 pointBean =  pointBeanList.get(deletePos);
+                PointBean1 pointBean = pointBeanList.get(deletePos);
 
                 showCheckDialog(0, 0, true);
                 checkDialog2.setEdit(pointBean.getComponentType(), pointBean.getHeatPreser(), "" + pointBean.getComponentSize(), "");
@@ -451,9 +454,14 @@ public class TakePhotoActivity1 extends BaseActivity {
 //        refresh();
     }
 
-    @OnClick({R.id.sb_save, R.id.sb_recall})
+    @OnClick({R.id.sb_save, R.id.sb_recall, R.id.sb_remake})
     public void onClick(View v) {
         switch (v.getId()) {
+            case R.id.sb_remake:
+                fileName = "IMG_" + System.currentTimeMillis() + ".jpg";
+                deleteTag();
+                break;
+
             case R.id.sb_save:
                 save();
                 finish();
@@ -462,14 +470,27 @@ public class TakePhotoActivity1 extends BaseActivity {
             case R.id.sb_recall:
                 if (tagGroupList != null && tagGroupList.size() > 0) {
                     index--;
-                    tagGroupList.remove((index -1));
+                    tagGroupList.remove((index - 1));
                     tagImageView.setTagList(tagGroupList);
-                    pointBeanList.remove((index -1));
+                    pointBeanList.remove((index - 1));
                 } else {
                     Toasty.warning(TakePhotoActivity1.this, "没有可撤回的点了！", Toast.LENGTH_SHORT, true).show();
                 }
                 break;
 
+        }
+    }
+
+    private void deleteTag() {
+        int rowCount = AppDatabase.getInstance(TakePhotoActivity1.this)
+                .imgTableDao1()
+                .deleteByTagNum(currentDate, deviceId, areaCode, equipCode, tagNum);
+        L.i("zzz1--rowCount->" + rowCount);
+        if (rowCount >= 0) {
+//            Toasty.success(TakePhotoActivity1.this, "删除成功！", Toast.LENGTH_SHORT, true).show();
+            takePhoto();
+        } else {
+//            Toasty.error(TakePhotoActivity1.this, "删除失败！", Toast.LENGTH_SHORT, true).show();
         }
     }
 
@@ -514,7 +535,7 @@ public class TakePhotoActivity1 extends BaseActivity {
 
             imgTableBean.directionValue = directionTypeValue;
             imgTableBean.directionName = directionTypeName;
-            imgTableBean.directionPosValue= directionTypeValue1;
+            imgTableBean.directionPosValue = directionTypeValue1;
             imgTableBean.directionPosName = directionTypeName1;
 
             imgTableBean.distance = distance;
@@ -639,8 +660,8 @@ public class TakePhotoActivity1 extends BaseActivity {
 //                L.i("zzz1--type->" + type + "--heatPre--" + heatPre + "--size->" + size);
 //                L.i("zzz1--getX->" + getX + "--getY->" + getY);
 //                L.i("zzz1--getscreenWidth->" + screenWidth + "--screenHeight->" + screenHeight);
-                if (isEdit){
-                    PointBean1 pointBean =  pointBeanList.get(deletePos);
+                if (isEdit) {
+                    PointBean1 pointBean = pointBeanList.get(deletePos);
                     pointBean.setComponentType(type);
                     pointBean.setHeatPreser(heatPre);
                     pointBean.setComponentSize(Integer.parseInt(size));
@@ -691,7 +712,7 @@ public class TakePhotoActivity1 extends BaseActivity {
         checkDialog2.show();
     }
 
-    private void clearLastest(){
+    private void clearLastest() {
         if (tagGroupList != null && tagGroupList.size() > 0) {
             for (int i = 0; i < tagGroupList.size(); i++) {
                 tagGroupList.get(i).setLastest(false);
@@ -710,7 +731,7 @@ public class TakePhotoActivity1 extends BaseActivity {
 //                .setPictureCropStyle(mCropParameterStyle)// 动态自定义裁剪主题
                 .setPictureWindowAnimationStyle(mWindowAnimationStyle)// 自定义相册启动退出动画
                 .maxSelectNum(maxSelectNum)// 最大图片选择数量
-                .isUseCustomCamera(true)// 是否使用自定义相机
+                .isUseCustomCamera(false)// 是否使用自定义相机
                 //.setOutputCameraPath()// 自定义相机输出目录
                 .minSelectNum(1)// 最小选择数量
                 //.querySpecifiedFormatSuffix(PictureMimeType.ofPNG())// 查询指定后缀格式资源
@@ -878,6 +899,10 @@ public class TakePhotoActivity1 extends BaseActivity {
 
 //        tagImageView.setImageRes(R.mipmap.ic_test1);
         }
+
+        pointBeanList.clear();
+        tagGroupList.clear();
+        tagImageView.setTagList(tagGroupList);
     }
 
     /**

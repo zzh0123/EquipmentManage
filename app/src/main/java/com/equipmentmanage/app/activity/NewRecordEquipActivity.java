@@ -36,6 +36,7 @@ import com.equipmentmanage.app.utils.gson.GsonUtils;
 import com.equipmentmanage.app.utils.netutils.OnSuccessAndFaultListener;
 import com.equipmentmanage.app.utils.netutils.OnSuccessAndFaultSub;
 import com.equipmentmanage.app.view.AddAreaDialog;
+import com.equipmentmanage.app.view.EditAreaDialog;
 import com.equipmentmanage.app.view.TipDialog;
 import com.google.gson.reflect.TypeToken;
 import com.xuexiang.xaop.annotation.SingleClick;
@@ -87,7 +88,7 @@ public class NewRecordEquipActivity extends BaseActivity {
     private NewEquipAdapter adapterEquip;
     private List<NewEquipBean> newEquipBeanList = new ArrayList<>();
 
-    private AddAreaDialog addAreaDialog;
+    private AddAreaDialog addAreaDialog, addAreaDialog1;
 
     private String areaCode, areaName;
     private String deviceCode, deviceName, deviceType, deviceId;
@@ -192,6 +193,42 @@ public class NewRecordEquipActivity extends BaseActivity {
             }
         });
 
+        addAreaDialog1 = new AddAreaDialog(this);
+        addAreaDialog1.setOnConfirmListener(new AddAreaDialog.OnConfirmListener() {
+            @Override
+            public void onConfirm(String code, String name) {
+//                List<TaskBean> list = DaoUtilsStore.getInstance().getUserDaoUtils().queryAll();
+//                L.i("zzz1--->size--" + list.size());
+                L.i("zzz1--->code--" + code + "--name--"+ name);
+                if (StringUtils.isNullOrEmpty(areaCode)){
+                    Toasty.warning(NewRecordEquipActivity.this, "请先选择区域！", Toast.LENGTH_SHORT, true).show();
+                    return;
+                }
+
+//                if (!validCode(code)){
+//                    Toasty.warning(NewRecordEquipActivity.this, "编号不能重复！", Toast.LENGTH_SHORT, true).show();
+//                    return;
+//                }
+
+                // String equipCode, String equipName, String deviceCode, String areaCode
+                int rowId = AppDatabase.getInstance(NewRecordEquipActivity.this)
+                        .newEquipTableDao()
+                        .updateByEquipCode(code, name, deviceCode, areaCode);
+                if (rowId >= 0){
+                    Toasty.success(NewRecordEquipActivity.this, "编辑成功！", Toast.LENGTH_SHORT, true).show();
+                  // String equipCode, String equipName, String deviceCode, String areaCode, String oldEquipCode
+                    int row = AppDatabase.getInstance(NewRecordEquipActivity.this)
+                            .imgTableDao1()
+                            .updateByEquipCode(code, name, deviceCode, areaCode, bean.getCode());
+                    readEquipAreaCache();
+                } else {
+                    Toasty.error(NewRecordEquipActivity.this, "编辑失败！", Toast.LENGTH_SHORT, true).show();
+                }
+                addAreaDialog1.dismiss();
+            }
+        });
+
+
 
         LinearLayoutManager manager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         rvArea1.setLayoutManager(manager);
@@ -271,6 +308,15 @@ public class NewRecordEquipActivity extends BaseActivity {
             // 各种文字和图标属性设置。
             rightMenu.addMenuItem(deleteItem); // 在Item左侧添加一个菜单。
 
+            SwipeMenuItem editItem = new SwipeMenuItem(NewRecordEquipActivity.this);
+            editItem.setText("编辑");
+            editItem.setTextSize(16);
+            editItem.setTextColor(getResources().getColor(R.color.white));
+            editItem.setWidth(200);
+            editItem.setHeight(MATCH_PARENT);
+            editItem.setBackgroundColor(getResources().getColor(R.color.c_409EFF));
+            // 各种文字和图标属性设置。
+            rightMenu.addMenuItem(editItem); // 在Item右侧添加一个菜单。
             // 注意：哪边不想要菜单，那么不要添加即可。
         }
     };
@@ -294,10 +340,28 @@ public class NewRecordEquipActivity extends BaseActivity {
 
                 if (menuPosition == 0) {
                     showDeleteDialog();
+                }else if (menuPosition == 1) {
+                        String equipCode = bean.getCode();
+                        String equipName = bean.getName();
+                    showEditAreaDialog(equipCode, equipName);
                 }
             }
         }
     };
+
+    private void edit(){
+
+    }
+
+    private void showEditAreaDialog(String equipCode, String equipName){
+        if (addAreaDialog1 == null) {
+            addAreaDialog1 = new AddAreaDialog(this);
+        }
+        addAreaDialog1.show();
+        addAreaDialog1.setTitle("编辑设备");
+        addAreaDialog1.clearView();
+        addAreaDialog1.setCodeName(equipCode, equipName);
+    }
 
     private void showDeleteDialog() {
         if (tipDialog == null) {
@@ -306,6 +370,8 @@ public class NewRecordEquipActivity extends BaseActivity {
         tipDialog.show();
         tipDialog.setTitleAndTip(null, getString(R.string.delete_tip));
     }
+
+
 
     private void delete(){
         String equipCode = bean.getCode();

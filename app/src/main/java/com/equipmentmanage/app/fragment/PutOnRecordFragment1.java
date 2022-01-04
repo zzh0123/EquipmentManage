@@ -68,11 +68,11 @@ public class PutOnRecordFragment1 extends LazyFragment {
     @BindView(R.id.gridView)
     GridView gridView; //gridView
 
-    // 图片封装为一个数组
-    private int[] icons = {R.mipmap.ic_equipment_manage, R.mipmap.ic_device_manage,
-            R.mipmap.ic_product_flow, R.mipmap.ic_part_manage, R.mipmap.ic_part_manage};
-    // "上传"
-    private String[] iconNames = {"基础数据", "装置管理", "产品流", "密封点建档", "上传"};
+    // 图片封装为一个数组 R.mipmap.ic_device_manage
+    private int[] icons = {R.mipmap.ic_equipment_manage, R.mipmap.ic_product_flow,
+            R.mipmap.ic_part_manage, R.mipmap.ic_part_manage};
+    // "上传", "装置管理"
+    private String[] iconNames = {"基础数据", "产品流", "密封点建档", "上传"};
 
     private TipDialog tipDialog;
 
@@ -134,24 +134,24 @@ public class PutOnRecordFragment1 extends LazyFragment {
                         // 基础数据
                         BaseDataActivity.open(getActivity());
                         break;
+//                    case 1:
+//                        // 装置管理
+//                        DeviceManageActivity.open(getActivity());
+//                        break;
                     case 1:
-                        // 装置管理
-                        DeviceManageActivity.open(getActivity());
-                        break;
-                    case 2:
                         // 产品流
                         ProductFlowActivity.open(getActivity());
 //                        // 区域管理
 //                        AreaManageActivity.open(getActivity());
                         break;
-                    case 3:
+                    case 2:
                         // 密封点建档(组件管理)
 //                        SealPointOnRecordActivity.open(getActivity());
                         NewRecordAreaActivity.open(getActivity());
 //                        // 设备管理
 //                        EquipmentManageActivity.open(getActivity());
                         break;
-                    case 4:
+                    case 3:
                         // 上传
                         showUploadDialog();
                         break;

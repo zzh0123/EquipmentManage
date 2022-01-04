@@ -78,7 +78,9 @@ public class LoginActivity extends BaseActivity {
     @BindView(R.id.tv_login)
     TextView tvLogin; //登录
 
+    private boolean isLogin;
     private MMKV kv = MMKV.defaultMMKV();
+
 
     @Override
     protected int initLayout() {
@@ -87,6 +89,7 @@ public class LoginActivity extends BaseActivity {
 
     @Override
     protected void initView() {
+
         // xlhx2021/123456  登录后 切换公司 到信联化学 然后点下载数据
         // 20001 123456 taorui1     Aa123456!
 //        etAccount.setText("ygp2021");
@@ -143,6 +146,11 @@ public class LoginActivity extends BaseActivity {
                 }
             }
         });
+
+        isLogin = kv.getBoolean(Constant.isLogin, false);
+        if (isLogin){
+            login();
+        }
     }
 
     @OnClick({R.id.tv_login, R.id.imb_clear_account, R.id.imb_clear_password})
@@ -221,6 +229,8 @@ public class LoginActivity extends BaseActivity {
 
                             }
                             Toasty.success(LoginActivity.this, R.string.login_success, Toast.LENGTH_SHORT, true).show();
+
+                            kv.encode(Constant.isLogin, true);
 
                             MainActivity.open(LoginActivity.this);
                             finish();

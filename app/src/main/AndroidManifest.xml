@@ -28,25 +28,37 @@
         android:usesCleartextTraffic="true">
         <activity
             android:name=".activity.NewRecordAreaActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="portrait"/>
 
         <activity
             android:name=".activity.NewRecordEquipActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".activity.NewRecordTagActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="portrait"/>
 
 
-        <activity android:name=".activity.PartImgsActivity" />
-        <activity android:name=".activity.TakePhotoActivity" />
-        <activity android:name=".activity.TakePhotoActivity1" />
-        <activity android:name=".activity.BaseDataActivity" />
-        <activity android:name=".activity.SealPointOnRecordActivity" />
+        <activity android:name=".activity.PartImgsActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".activity.TakePhotoActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".activity.TakePhotoActivity1"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".activity.BaseDataActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".activity.SealPointOnRecordActivity"
+            android:screenOrientation="portrait"/>
         <activity android:name=".activity.SealPointOnRecordActivity1"
-            android:windowSoftInputMode="adjustPan"/>
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" />
 
-        <activity android:name=".activity.UploadActivity" /> <!-- 沉浸式 -->
+        <activity android:name=".activity.UploadActivity"
+            android:screenOrientation="portrait"/>
+
+        <!-- 沉浸式 -->
         <meta-data
             android:name="android.max_aspect"
             android:value="2.4" /> <!-- 适配华为（huawei）刘海屏 -->

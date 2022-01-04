@@ -76,4 +76,8 @@ public interface ImgTableDao1 {
     @Query("DELETE FROM tb_base_img1 WHERE `device_id` ==(:deviceId) "
             + "AND `area_code` ==(:areaCode)")
     int deleteByAreaCode(String deviceId, String areaCode);
+
+    @Query("UPDATE tb_base_img1 SET `equipment_code` =(:equipCode), `equip_name` =(:equipName) WHERE`device_code` ==(:deviceCode) "
+            + "AND `area_code` ==(:areaCode) AND `equipment_code` ==(:oldEquipCode)")
+    int updateByEquipCode(String equipCode, String equipName, String deviceCode, String areaCode, String oldEquipCode);
 }
