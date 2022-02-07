@@ -270,8 +270,8 @@ public class PutOnRecordFragment1 extends LazyFragment {
         Subscribe.uploadImgList(parts, new OnSuccessAndFaultSub(new OnSuccessAndFaultListener() {
             @Override
             public void onSuccess(String result) {
-                L.i("zzz1-upLoadImgList-->" + result);
-//                Log.i("zzz1-upLoadImgList-->", result);
+//                L.i("zzz1-upLoadImgList-->" + result);
+                Log.i("zzz1-upLoadImgList-->", result);
 
                 BaseBean<List<NetImgBean>> baseBean = GsonUtils.fromJson(result, new TypeToken<BaseBean<List<NetImgBean>>>() {
                 }.getType());
@@ -363,6 +363,7 @@ public class PutOnRecordFragment1 extends LazyFragment {
 //                Constant.realname, Constant.orgCode, Constant.orgCodeTxt, Constant.telephone,
 //                Constant.post});
 
+        Log.i("zzz1-records.s-->", "" + records.size());
         Log.i("zzz1-RecordtoJson-->", GsonUtils.toJson(records));
         Subscribe.putOnRecordUpload(records, new OnSuccessAndFaultSub(new OnSuccessAndFaultListener() {
             @Override

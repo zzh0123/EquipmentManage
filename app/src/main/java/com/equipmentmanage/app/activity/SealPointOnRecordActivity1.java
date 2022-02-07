@@ -5,6 +5,9 @@ import static com.equipmentmanage.app.base.MyApplication.getContext;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Handler;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -169,6 +172,9 @@ public class SealPointOnRecordActivity1 extends BaseActivity {
 
     @BindView(R.id.tv_direction_type_name)
     TextView tv_direction_type_name; //方向
+
+    @BindView(R.id.tv_tag_num_pre)
+    TextView tv_tag_num_pre; //标签号前缀
 
     @BindView(R.id.et_tag_num)
     EditText et_tag_num; //标签号
@@ -442,6 +448,7 @@ public class SealPointOnRecordActivity1 extends BaseActivity {
 
         int tagNum = kv.getInt(Constant.tag_num, 0);
         et_tag_num.setText("" + (tagNum + 1));
+        tv_tag_num_pre.setText(getTagPre(et_tag_num.getText().toString().trim()));
 
         titleBar.setLeftClickListener(new View.OnClickListener() {
             @SingleClick
@@ -551,7 +558,7 @@ public class SealPointOnRecordActivity1 extends BaseActivity {
                     adapterFloor.notifyDataSetChanged();
 
 
-                    if (isHalfSelected){
+                    if (isHalfSelected) {
                         floorValue = "" + (Integer.parseInt(bean.getValue()) + 0.5);
                     } else {
                         floorValue = bean.getValue();
@@ -709,7 +716,9 @@ public class SealPointOnRecordActivity1 extends BaseActivity {
             chemicalName = imgTableBean1.chemicalName;
             tv_chemical_type_name.setText(StringUtils.nullStrToEmpty(imgTableBean1.chemicalName));
 
-            String tagNumValue = imgTableBean1.tagNum.substring(6);
+            String tagNumPre = imgTableBean1.tagNumPre;
+            tv_tag_num_pre.setText(StringUtils.nullStrToEmpty(tagNumPre));
+            String tagNumValue = imgTableBean1.tagNumValue;
             et_tag_num.setText(StringUtils.nullStrToEmpty(tagNumValue));
 
             // 楼层
@@ -801,6 +810,35 @@ public class SealPointOnRecordActivity1 extends BaseActivity {
 
     @Override
     protected void initEvent() {
+
+        et_tag_num.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (!StringUtils.isNullString(s.toString().trim())) {
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (s.length() > 5) {
+                                Toasty.warning(SealPointOnRecordActivity1.this, "不能超过5位！", Toast.LENGTH_SHORT, false).show();
+                                return;
+                            }
+                            tv_tag_num_pre.setText(getTagPre(s.toString().trim()));
+                        }
+                    }, 600);
+
+                }
+            }
+        });
 
         streamTypePopupWindow.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -978,6 +1016,27 @@ public class SealPointOnRecordActivity1 extends BaseActivity {
         }
 //        L.i("zzz1--mFileName->" + isNewAdd + "---" + mFileName);
 //        readCache(); 报错
+    }
+
+    private String getTagPre(String s) {
+        String preStr = ConstantValue.tag_num;
+
+        if (!StringUtils.isNullOrEmpty(s)) {
+            int preInt = Integer.parseInt(s);
+            if (preInt >= 0 && preInt < 10) {
+                preStr = ConstantValue.tag_num;
+            } else if (preInt >= 10 && preInt < 100) {
+                preStr = ConstantValue.tag_num3;
+            } else if (preInt >= 100 && preInt < 1000) {
+                preStr = ConstantValue.tag_num2;
+            } else if (preInt >= 1000 && preInt < 10000) {
+                preStr = ConstantValue.tag_num1;
+            } else if (preInt >= 10000) {
+                preStr = ConstantValue.tag_num0;
+            }
+        }
+
+        return preStr;
     }
 
 
@@ -1194,7 +1253,7 @@ public class SealPointOnRecordActivity1 extends BaseActivity {
                 } else {
                     isHalfSelected = true;
                     iv_select_half.setImageResource(R.mipmap.selected);
-                    if (!StringUtils.isNullOrEmpty(floorValue)){
+                    if (!StringUtils.isNullOrEmpty(floorValue)) {
                         floorValue = "" + (Integer.parseInt(floorValue) + 0.5);
                     } else {
                         floorValue = "0.5";
@@ -1335,8 +1394,8 @@ public class SealPointOnRecordActivity1 extends BaseActivity {
                 // 直接拍照-->跳转
                 if (isValid()) {
                     // 编辑
-                    if (!isNewAdd){
-                        if (StringUtils.isNullOrEmpty(localPath)){
+                    if (!isNewAdd) {
+                        if (StringUtils.isNullOrEmpty(localPath)) {
                             takePhoto();
                         } else {
                             openTakePhotoActivity();
@@ -1409,7 +1468,6 @@ public class SealPointOnRecordActivity1 extends BaseActivity {
 //        clearCache();
 
     }
-
 
 
     private boolean isValid() {
@@ -1708,9 +1766,13 @@ public class SealPointOnRecordActivity1 extends BaseActivity {
         imgTableBean.equipmentCode = equipCode;
         imgTableBean.equipName = equipName;
 
-        String tagNum = ConstantValue.tag_num + et_tag_num.getText().toString().trim();
+        // ConstantValue.tag_num
+        String tagNum = tv_tag_num_pre.getText().toString() + et_tag_num.getText().toString().trim();
 
         imgTableBean.tagNum = tagNum;
+        imgTableBean.tagNumPre = tv_tag_num_pre.getText().toString();
+        imgTableBean.tagNumValue = et_tag_num.getText().toString().trim();
+
         imgTableBean.refMaterial = et_reference.getText().toString().trim();
 
         imgTableBean.directionValue = directionTypeValue;
@@ -1789,9 +1851,10 @@ public class SealPointOnRecordActivity1 extends BaseActivity {
         } else {
             et_tag_num.setText("" + tagNum);
         }
+        tv_tag_num_pre.setText(getTagPre(et_tag_num.getText().toString().trim()));
 
         directionTypeValue = kv.getString(Constant.imgtabbean1_direction_value, "");
-        if (StringUtils.isNullOrEmpty(directionTypeValue)){
+        if (StringUtils.isNullOrEmpty(directionTypeValue)) {
             Toasty.warning(context, "没有可延续的数据！", Toast.LENGTH_SHORT, true).show();
             return;
         }
@@ -2067,13 +2130,15 @@ public class SealPointOnRecordActivity1 extends BaseActivity {
 //                    L.i("zzz1--floorValue->" + floorValue);
         kv.encode(Constant.tag_num, Integer.parseInt(et_tag_num.getText().toString().trim()));
 
-        String tagNum = ConstantValue.tag_num + et_tag_num.getText().toString().trim();
+        String tagNum = tv_tag_num_pre.getText().toString() + et_tag_num.getText().toString().trim();
+        String tagNumPre = tv_tag_num_pre.getText().toString();
+        String tagNumValue = et_tag_num.getText().toString().trim();
 
         TakePhotoActivity1.open(this, isNewAdd, mFileName, localPath, content, deviceCode, deviceName, deviceType, deviceId,
                 areaCode, areaName, equipCode, equipName,
                 mediumState, streamTypeValue, prodStreamName, chemicalName, chemicalTypeValue,
                 directionTypeName, directionTypeValue, directionTypeName1, directionTypeValue1,
-                tagNum, et_reference.getText().toString().trim(),
+                tagNum, tagNumPre, tagNumValue, et_reference.getText().toString().trim(),
                 et_distance.getText().toString().trim(), et_height.getText().toString().trim(),
                 floorValue,
                 unreachableTypeValue, unreachReasonName,

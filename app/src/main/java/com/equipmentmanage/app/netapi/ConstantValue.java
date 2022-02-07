@@ -119,6 +119,10 @@ public class ConstantValue {
     public static String event_photo_save = "event_photo_save";
 
     public static String tag_num = "L-0000";
+    public static String tag_num3 = "L-000";
+    public static String tag_num2 = "L-00";
+    public static String tag_num1 = "L-0";
+    public static String tag_num0 = "L-";
 
     // 校准 1 通过  0 不通过
     public static String correct_pass_1 = "1";

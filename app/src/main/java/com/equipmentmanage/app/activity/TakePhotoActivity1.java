@@ -90,7 +90,7 @@ public class TakePhotoActivity1 extends BaseActivity {
                             String equipCode, String equipName,
                             String mediumState, String streamTypeValue, String prodStreamName, String chemicalName, String chemicalTypeValue,
                             String directionTypeName, String directionTypeValue, String directionTypeName1, String directionTypeValue1,
-                            String tagNum, String reference, String distance, String height,
+                            String tagNum, String tagNumPre, String tagNumValue, String reference, String distance, String height,
                             String floorLevel,
                             String unreachable, String unreachableReason,
                             String remark) {
@@ -122,6 +122,8 @@ public class TakePhotoActivity1 extends BaseActivity {
         i.putExtra(Constant.directionTypeValue1, directionTypeValue1);
 
         i.putExtra(Constant.tagNum, tagNum);
+        i.putExtra(Constant.tagNumPre, tagNumPre);
+        i.putExtra(Constant.tagNumValue, tagNumValue);
         i.putExtra(Constant.reference, reference);
         i.putExtra(Constant.distance, distance);
         i.putExtra(Constant.height, height);
@@ -142,7 +144,7 @@ public class TakePhotoActivity1 extends BaseActivity {
             mediumState, streamTypeValue, prodStreamName, chemicalName, chemicalTypeValue,
             directionTypeName, directionTypeValue, directionTypeName1, directionTypeValue1;
 
-    private String tagNum, reference, distance, height, floorLevel,
+    private String tagNum, tagNumPre, tagNumValue, reference, distance, height, floorLevel,
             unreachable, unreachableReason, remark;
 
     @BindView(R.id.titleBar)
@@ -258,6 +260,8 @@ public class TakePhotoActivity1 extends BaseActivity {
         directionTypeValue1 = getIntent().getStringExtra(Constant.directionTypeValue1);
 
         tagNum = getIntent().getStringExtra(Constant.tagNum);
+        tagNumPre = getIntent().getStringExtra(Constant.tagNumPre);
+        tagNumValue = getIntent().getStringExtra(Constant.tagNumValue);
         reference = getIntent().getStringExtra(Constant.reference);
         distance = getIntent().getStringExtra(Constant.distance);
         height = getIntent().getStringExtra(Constant.height);
@@ -531,6 +535,8 @@ public class TakePhotoActivity1 extends BaseActivity {
             imgTableBean.equipName = equipName;
 
             imgTableBean.tagNum = tagNum;
+            imgTableBean.tagNumPre = tagNumPre;
+            imgTableBean.tagNumValue = tagNumValue;
             imgTableBean.refMaterial = reference;
 
             imgTableBean.directionValue = directionTypeValue;

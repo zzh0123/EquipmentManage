@@ -69,6 +69,13 @@ public class ImgTableBean1 implements Serializable {
     //"标签号"
     @ColumnInfo(name = "tag_num")
     public String tagNum;
+
+    @ColumnInfo(name = "tag_num_pre")
+    public String tagNumPre;
+
+    @ColumnInfo(name = "tag_num_value")
+    public String tagNumValue;
+
     //"参考物"
     @ColumnInfo(name = "ref_material")
     public String refMaterial;

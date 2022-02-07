@@ -287,7 +287,7 @@ public class NewRecordTagActivity extends BaseActivity {
         iv_preview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!StringUtils.isNullOrEmpty(selectBean.getLocalPath())){
+                if (selectBean != null && !StringUtils.isNullOrEmpty(selectBean.getLocalPath())) {
                     // SealPointOnRecordActivity1.open(NewRecordTagActivity.this, false, imgTableBean1,
                     //                deviceCode, deviceName, deviceType, deviceId,
                     //                areaCode, areaName,
@@ -297,11 +297,14 @@ public class NewRecordTagActivity extends BaseActivity {
                             areaCode, areaName, equipCode, equipName,
                             imgTableBean1.mediumState, imgTableBean1.prodStream, imgTableBean1.prodStreamName, imgTableBean1.chemicalName, imgTableBean1.chemicalName,
                             imgTableBean1.directionName, imgTableBean1.directionValue, imgTableBean1.directionPosName, imgTableBean1.directionPosValue,
-                            imgTableBean1.tagNum, imgTableBean1.refMaterial,
+                            imgTableBean1.tagNum, imgTableBean1.tagNumPre, imgTableBean1.tagNumValue, imgTableBean1.refMaterial,
                             imgTableBean1.distance, imgTableBean1.height,
                             imgTableBean1.floorLevel,
                             imgTableBean1.unreachable, imgTableBean1.unreachableDesc,
                             imgTableBean1.remark);
+                } else {
+                    Toasty.warning(NewRecordTagActivity.this, "请先选择标签号！", Toast.LENGTH_SHORT, false).show();
+
                 }
             }
         });
@@ -369,7 +372,7 @@ public class NewRecordTagActivity extends BaseActivity {
         }
     };
 
-    private void edit(){
+    private void edit() {
         ImgTableBean1 imgTableBean1 = list.get(selectPos);
         // 跳转密封点建档-编辑
         SealPointOnRecordActivity1.open(NewRecordTagActivity.this, false, imgTableBean1,
@@ -386,7 +389,7 @@ public class NewRecordTagActivity extends BaseActivity {
         tipDialog.setTitleAndTip(null, getString(R.string.delete_tip));
     }
 
-    private void delete(){
+    private void delete() {
         String tagNum = bean.getTagNum();
         int rowCount = AppDatabase.getInstance(NewRecordTagActivity.this)
                 .imgTableDao1()

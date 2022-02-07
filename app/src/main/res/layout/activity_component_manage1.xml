@@ -60,6 +60,7 @@
                         android:textSize="@dimen/sp_16" />
 
                     <TextView
+                        android:id="@+id/tv_tag_num_pre"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical|right"
@@ -77,6 +78,7 @@
                         android:layout_height="match_parent"
                         android:background="@null"
                         android:gravity="left"
+                        android:maxLength="5"
                         android:hint="@string/tag_num_hint"
                         android:inputType="number"
                         android:paddingTop="@dimen/dp_12"

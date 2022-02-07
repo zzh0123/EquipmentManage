@@ -159,6 +159,8 @@ public class Constant {
     public static String directionTypeValue1 = "directionTypeValue1";
 
     public static String tagNum = "tagNum";
+    public static String tagNumPre = "tagNumPre";
+    public static String tagNumValue = "tagNumValue";
     public static String reference = "reference";
     public static String distance = "distance";
     public static String height = "height";
